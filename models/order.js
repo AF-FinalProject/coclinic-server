@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
 		static associate(models) {
 			// define association here
 			Order.belongsTo(models.User);
-			Order.hasOne(models.Location);
+			Order.hasOne(models.Live_Tracking);
 			Order.hasMany(models.Location_Log);
 		}
 	}
@@ -98,11 +98,20 @@ module.exports = (sequelize, DataTypes) => {
 					},
 				},
 			},
-			LocationId: {
+			Live_TrackingId: {
 				type: DataTypes.INTEGER,
 				allowNull: false,
 				references: {
 					model: "Locations",
+					key: "id",
+				},
+				validate: {},
+			},
+			Location_LogId: {
+				type: DataTypes.INTEGER,
+				allowNull: false,
+				references: {
+					model: "Location_Logs",
 					key: "id",
 				},
 				validate: {},
