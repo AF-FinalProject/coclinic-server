@@ -11,14 +11,25 @@ class UserController {
       const newUser = { name, nik, email, password, address, phone_number, dob, latitude, longitude }
 
       await User.create(newUser)
-      res.status(201).json({ status: true, message: "Successfully Added User"})
+      res.status(201).json({ status: true, message: "Successfully Added User" })
     } catch (err) {
       next(err)
     }
   }
 
-  static login(req, res, next) {
-    
+  static async login(req, res, next) {
+    try {
+      const { email, password } = req.body;
+      const user = await User.findOne({ where: { email } })
+      if (user && comparedPassword(password, user.password)) {
+        const access_token = generateToken({ id: user.id, email: user.email })
+        res.status(200).json({ status: true, access_token })
+      } else {
+        next({ msg: "Invalid email or password" })
+      }
+    } catch (err) {
+      next(err)
+    }
   }
 
 }

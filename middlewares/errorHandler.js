@@ -13,7 +13,7 @@ function errorHandler(err, req, res, next) {
       message = err.errors.map(el => `${el.value} is already exist`)
       break;
     case "SequelizeDatabaseError":
-     
+
       if (err.parent.code === '23502') {
         statusCode = 400
         message = err.errors[0].message
@@ -35,8 +35,12 @@ function errorHandler(err, req, res, next) {
       statusCode = 403
       message = [`${err.msg}`]
       break;
+    // case 'User not found':
+    //   statusCode = 404
+    //   message = [`${err.msg}`]
+    //   break;
   }
-  
+
 
   res.status(statusCode).json({ status: statusCode, message })
 }
