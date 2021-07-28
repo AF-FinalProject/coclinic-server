@@ -10,15 +10,14 @@ class OrderController {
   static fetchAllForAdmin(req, res, next) {
 
   }
-  static getStatus(req, res, next) {
+  static getDetailOrderById(req, res, next) {
+
   }
 
-  static updateStatus(req, res, next) {
-  }
+  static updateOrderById(req, res, next) {
 
-  static updatePayment(req, res, next) {
   }
-
+ 
   static delete(req, res, next) {
   }
 

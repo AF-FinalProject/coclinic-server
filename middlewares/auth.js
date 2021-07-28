@@ -22,18 +22,19 @@ const authAdmin = (req, res, next) => {
   (req.logginUser.role.tolowerCase() === 'admin') ? next() : { msg: "UnAuthorized - Access is denied" }
 };
 
+
+
 const authCustomer = async (req, res, next) => {
-  const idOrder = +req.params.id;
-  try {
-    const order = await Order.findByPk(idOrder)
-    if (order) {
-      const isAuthorized = order.UserId === +req.logginUser.id;
-      isAuthorized ? next() : next({ msg: "UnAuthorized - Access is denied" })
-    } else {
-      next({ msg: 'Order not found' })
+  const isCustomer = req.logginUser.role.tolowerCase() === 'customer'
+  if (isCustomer) {
+    try {
+      const orders = await Order.findAll({ where: { UserId: +req.logginUser.id } })
+        (orders.length) ? next() : next({ msg: "Order not found" })
+    } catch (err) {
+      next(err)
     }
-  } catch (err) {
-    next(err)
+  } else {
+    next({ msg: "UnAuthorized - Access is denied" })
   }
 };
 
