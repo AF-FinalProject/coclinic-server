@@ -1,5 +1,6 @@
 'use strict';
-const bcrypt = require('bcrypt');
+
+const { hashPassword } = require('../helpers/password-helpers')
 
 const {
   Model
@@ -77,8 +78,8 @@ module.exports = (sequelize, DataTypes) => {
         }
       },
       unique: {
-          args: true,
-          msg: 'Email address already in use'
+        args: true,
+        msg: 'Email address already in use'
       }
     },
     password: {
@@ -176,10 +177,8 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     hooks: {
       beforeCreate: (user) => {
-        const salt = bcrypt.genSaltSync(8);
-        const hash = bcrypt.hashSync(user.password, salt);
-        user.password = hash;
-        if (!user.role) user.role = 'customer'
+        user.password = hashPassword(user.password)
+        if (!user.role) user.role = 'Customer'
       }
     },
     sequelize,

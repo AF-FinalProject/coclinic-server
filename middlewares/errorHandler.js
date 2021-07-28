@@ -1,22 +1,45 @@
-const errorHandler = (err, req, res, next) => {
-  let errorCode;
-  let errorMessages = [];
+function errorHandler(err, req, res, next) {
+  console.log(err)
+  let statusCode = 500
+  let message = ["Internal server errors"]
 
   switch (err.name) {
     case 'SequelizeValidationError':
-      errorCode = 400;
-      errorMessages = err.errors ? err.errors.map((el) => el.message) : [];
+      statusCode = 400
+      message = err.errors.map(el => el.message)
       break;
     case 'SequelizeUniqueConstraintError':
-      errorCode = 409;
-      errorMessages = err.errors ? err.errors.map((el) => el.message) : [];
+      statusCode = 400
+      message = err.errors.map(el => `${el.value} is already exist`)
       break;
-    default:
-      errorCode = 500;
-      errorMessages.push('Internal server error');
+    case "SequelizeDatabaseError":
+     
+      if (err.parent.code === '23502') {
+        statusCode = 400
+        message = err.errors[0].message
+      }
+      break;
+    case 'JsonWebTokenError':
+      statusCode = 401
+      message = [`UnAuthenticated - You are not logged in`]
+      break;
   }
 
-  res.status(errorCode).json({ errorMessages });
-};
 
-module.exports = errorHandler;
+  switch (err.msg) {
+    case 'Invalid email or password':
+      statusCode = 400
+      message = [`${err.msg}`]
+      break;
+    case 'UnAuthorized - Access is denied':
+      statusCode = 403
+      message = [`${err.msg}`]
+      break;
+  }
+  
+
+  res.status(statusCode).json({ status: statusCode, message })
+}
+
+
+module.exports = errorHandler

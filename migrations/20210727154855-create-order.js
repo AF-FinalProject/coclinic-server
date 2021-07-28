@@ -15,10 +15,12 @@ module.exports = {
         type: Sequelize.STRING
       },
       type_swab: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        defaultValue: 'PCR'
       },
       date_swab: {
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        allowNull: false,
       },
       UserId: {
         type: Sequelize.INTEGER

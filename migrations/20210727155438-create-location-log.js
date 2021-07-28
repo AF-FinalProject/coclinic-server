@@ -9,9 +9,11 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       latitude: {
+        allowNull: false,
         type: Sequelize.DOUBLE
       },
       longitude: {
+        allowNull: false,
         type: Sequelize.DOUBLE
       },
       OrderId: {
