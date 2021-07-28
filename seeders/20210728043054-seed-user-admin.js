@@ -1,15 +1,14 @@
 'use strict';
-const bcrypt = require('bcrypt');
+const { hashPassword } = require('../helpers/password-helpers')
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    const salt = bcrypt.genSaltSync(8);
     await queryInterface.bulkInsert('Users', [{
       name: 'admin',
       nik: '123456789',
       role: 'admin',
       email: 'admin@mail.com',
-      password: bcrypt.hashSync('123456', salt),
+      password: hashPassword('123456'),
       address: 'Jl. Jeruk No. 2 Jakarta',
       phone_number: '081211223344',
       dob: '1996-06-06',
@@ -17,7 +16,7 @@ module.exports = {
       longitude: 0,
       createdAt: new Date(),
       updatedAt: new Date()
-      }], {});
+    }], {});
     /**
      * Add seed commands here.
      *
