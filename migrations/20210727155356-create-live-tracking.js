@@ -1,34 +1,22 @@
 "use strict";
 module.exports = {
 	up: async (queryInterface, Sequelize) => {
-		await queryInterface.createTable("Orders", {
+		await queryInterface.createTable("Live_Tracking", {
 			id: {
 				allowNull: false,
 				autoIncrement: true,
 				primaryKey: true,
 				type: Sequelize.INTEGER,
 			},
-			status_payment: {
-				type: Sequelize.BOOLEAN,
-			},
-			status_swab: {
-				type: Sequelize.STRING,
-			},
-			type_swab: {
-				type: Sequelize.STRING,
-				defaultValue: "PCR",
-			},
-			date_swab: {
-				type: Sequelize.DATE,
+			latitude: {
+				type: Sequelize.DOUBLE,
 				allowNull: false,
 			},
-			UserId: {
-				type: Sequelize.INTEGER,
+			longitude: {
+				type: Sequelize.DOUBLE,
+				allowNull: false,
 			},
-			Live_TrackingId: {
-				type: Sequelize.INTEGER,
-			},
-			Location_LogId: {
+			OrderId: {
 				type: Sequelize.INTEGER,
 			},
 			createdAt: {
@@ -42,6 +30,6 @@ module.exports = {
 		});
 	},
 	down: async (queryInterface, Sequelize) => {
-		await queryInterface.dropTable("Orders");
+		await queryInterface.dropTable("Live_Tracking");
 	},
 };
