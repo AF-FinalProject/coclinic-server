@@ -999,7 +999,7 @@ Returns message.
 
   ```javascript
   axios({
-  	method: "post",
+  	method: "UPDATE",
   	url: `http://localhost:3000/location/:id`,
     headers: {
       "Content-Type": "application/json"
