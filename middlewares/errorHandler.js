@@ -35,10 +35,10 @@ function errorHandler(err, req, res, next) {
       statusCode = 403
       message = [`${err.msg}`]
       break;
-    // case 'User not found':
-    //   statusCode = 404
-    //   message = [`${err.msg}`]
-    //   break;
+    case 'Order not found':
+      statusCode = 404
+      message = [`${err.msg}`]
+      break;
   }
 
   console.log(statusCode,'code', message, '>>>>>>>>>>>.....>>>>>>')

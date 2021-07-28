@@ -1,11 +1,17 @@
 const router = require('express').Router()
 const OrderController = require('../controllers/OrderController')
+const { authAdmin, authCustomer } = require('../middlewares/auth')
 
-router.post('/', OrderController.add)
-router.get('/', OrderController.fetchAll)
-router.get('/status/:id', OrderController.getStatus)
-router.patch('/status/:id', OrderController.updateStatus)
-router.patch('/payment/:id', OrderController.updatePayment)
-router.delete('/:id', OrderController.delete)
 
-module.exports = router
+
+router.post('/', authCustomer, OrderController.add)
+router.get('/customers', authCustomer, OrderController.fetchAllForCustomer) // di controller ada where UserId = +req.logginUser.id
+router.get('/admin', authAdmin, OrderController.fetchAllForAdmin) // tambahan router 
+router.get('/:id', authAdmin, OrderController.getDetailOrderById)
+router.put('/:id', authAdmin, OrderController.updateOrderById)
+router.delete('/:id', authAdmin, OrderController.delete)
+
+
+
+
+module.exports = router;

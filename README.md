@@ -1,6 +1,6 @@
 # co.Clinic-server
 
-- 
+-
 
 ## Project setup
 
@@ -24,10 +24,11 @@ npm start
 
 ### Deployment
 
-Frontend: 
-Backend: 
+Frontend:
+Backend:
 
 ### Routes
+
 /register (Post)
 /login (Post)
 /orders (Post)
@@ -125,7 +126,6 @@ Returns new user.
 ---
 
 ## **_Login_**
-
 
 Returns new user.
 
@@ -289,6 +289,7 @@ Returns order message.
   	},
   });
   ```
+
 ---
 
 ## **_Patch Payment - Admin_**
@@ -377,6 +378,7 @@ Returns payment message.
   	},
   });
   ```
+
 ---
 
 ## **_Patch Swab Status - Admin_**
@@ -466,6 +468,7 @@ Returns update message.
   	},
   });
   ```
+
 ---
 
 ## **_Delete Order - Admin_**
@@ -550,6 +553,7 @@ Returns update message.
     }
   });
   ```
+
 ---
 
 ## **_Get Orders - Admin_**
@@ -659,6 +663,7 @@ Returns orders.
     }
   });
   ```
+
 ---
 
 ## **_Get Status Info - Client/Admin_**
@@ -687,10 +692,10 @@ Returns update message.
       access_token: req.headers.access_token
     }
   ```
+
 - **URL Params**
 
   None
-
 
 - **Success Response:**
 
@@ -741,6 +746,7 @@ Returns update message.
   	},
   });
   ```
+
 ---
 
 ## **_Post Location - Client_**
@@ -914,6 +920,94 @@ Returns message.
     headers: {
       "Content-Type": "application/json"
       "access_token": "adsfasdfasdfadfadfasdf"
+    }
+  });
+  ```
+
+---
+
+## **_Update Location - Client_**
+
+Returns message.
+
+- **URL**
+
+  /location/:id
+
+- **Method:**
+
+  `UPDATE`
+
+- **Auth**
+
+  `Client`
+
+- **Header**
+
+  **Required:**
+
+  ```
+    {
+      access_token: req.headers.access_token
+    }
+  ```
+
+- **URL Params**
+
+  :id
+
+- **Data Params**
+
+  {
+  lattitude: <lattitude>
+  longitude: <longitude>
+  }
+
+- **Success Response:**
+
+  - **Code:** 200 <br />
+    **Content:**
+
+    ```
+    {
+        "success": true,
+        "message": "successfully updated"
+    }
+    ```
+
+- **Error Response:**
+
+  - **Code:** 400 <br />
+    **Content:**
+    ```
+    {
+      "errors": [
+          "Bad Request"
+      ]
+    }
+    ```
+
+  OR
+
+  - **Code:** 500 <br />
+    **Content:**
+    ```
+    { errors : "Internal Server Error" }
+    ```
+
+- **Sample Call:**
+
+  ```javascript
+  axios({
+  	method: "UPDATE",
+  	url: `http://localhost:3000/location/:id`,
+    headers: {
+      "Content-Type": "application/json"
+      "access_token": "adsfasdfasdfadfadfasdf"
+    }
+    data: {
+      "latitude": 107.000000,
+      "longitude": 108.00000
     }
   });
   ```
