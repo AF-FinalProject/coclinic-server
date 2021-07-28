@@ -48,17 +48,6 @@ module.exports = (sequelize, DataTypes) => {
     },
     role: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notNull: {
-          args: true,
-          msg: 'Role must not be null'
-        },
-        notEmpty: {
-          args: true,
-          msg: 'Role must not be empty'
-        }
-      }
     },
     email: {
       type: DataTypes.STRING,
@@ -178,7 +167,6 @@ module.exports = (sequelize, DataTypes) => {
     hooks: {
       beforeCreate: (user) => {
         user.password = hashPassword(user.password)
-        if (!user.role) user.role = 'Customer'
       }
     },
     sequelize,
