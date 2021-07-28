@@ -22,7 +22,7 @@ class UserController {
       const { email, password } = req.body;
       const user = await User.findOne({ where: { email } })
       if (user && comparedPassword(password, user.password)) {
-        const access_token = generateToken({ id: user.id, email: user.email })
+        const access_token = generateToken({ id: user.id, email: user.email, name: user.name })
         res.status(200).json({ status: true, access_token })
       } else {
         next({ msg: "Invalid email or password" })
