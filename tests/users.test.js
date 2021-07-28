@@ -17,6 +17,7 @@ const userCustomer = {
   updatedAt: new Date()
 }
 
+const { name, nik, email, password, address, phone_number, dob, latitude, longitude } = userCustomer
 const admin = {
   email: 'admin@mail.com',
   password: '123456'
@@ -53,21 +54,84 @@ describe('POST /register', () => {
 
   //error
   describe('Error Cases', () => {
+    // NAME
+    it('400 Bad Request- error SequelizeValidationError, because name is empty', (done) => {
+      request(app)
+        .post('/register')
+        .send({
+          email: 'lili@mail.com', name: "",
+          password, nik, address, phone_number, dob, latitude, longitude,
+        })
+        .end(function (err, res) {
+          if (err) done(err)
+          else {
+            expect(res.status).toBe(400)
+            expect(typeof res.body).toEqual('object')
+            expect(res.body.message[0]).toEqual('Name must not be empty')
+            done()
+          }
+        })
+    })
+    it('400 Bad Request- error SequelizeValidationError, because name is null', (done) => {
+      request(app)
+        .post('/register')
+        .send({
+          email: 'lili@mail.com',
+          password, nik, address, phone_number, dob, latitude, longitude,
+        })
+        .end(function (err, res) {
+          if (err) done(err)
+          else {
+            expect(res.status).toBe(400)
+            expect(typeof res.body).toEqual('object')
+            expect(res.body.message[0]).toEqual('Name must not be null')
+            done()
+          }
+        })
+    })
+    // NIK
+    it('400 Bad Request- error SequelizeValidationError, because NIK is empty', (done) => {
+      request(app)
+        .post('/register')
+        .send({
+          email: 'lili@mail.com', name,
+          password, nik: "", address, phone_number, dob, latitude, longitude,
+        })
+        .end(function (err, res) {
+          if (err) done(err)
+          else {
+            expect(res.status).toBe(400)
+            expect(typeof res.body).toEqual('object')
+            expect(res.body.message[0]).toEqual('NIK must not be empty')
+            done()
+          }
+        })
+    })
+    it('400 Bad Request- error SequelizeValidationError, because NIK is null', (done) => {
+      request(app)
+        .post('/register')
+        .send({
+          email: 'lili@mail.com', name,
+          password, address, phone_number, dob, latitude, longitude,
+        })
+        .end(function (err, res) {
+          if (err) done(err)
+          else {
+            expect(res.status).toBe(400)
+            expect(typeof res.body).toEqual('object')
+            expect(res.body.message[0]).toEqual('NIK must not be null')
+            done()
+          }
+        })
+    })
+    // EMAIL
+    // email must be unique
     it('400 Bad Request -  error because SequelizeUniqueConstraintError, email is already exist in database or email must be unique', (done) => {
       request(app)
         .post('/register')
         .send({
           email: userCustomer.email,
-          password: 'password',
-          name: userCustomer.name,
-          nik: userCustomer.nik,
-          address: userCustomer.address,
-          phone_number: userCustomer.phone_number,
-          dob: userCustomer.dob,
-          latitude: userCustomer.latitude,
-          longitude: userCustomer.longitude,
-          createdAt: new Date(),
-          updatedAt: new Date()
+          password, name, nik, address, phone_number, dob, latitude, longitude,
         })
         .end(function (err, res) {
           if (err) done(err)
@@ -79,52 +143,347 @@ describe('POST /register', () => {
           }
         })
     })
-  })
-
-})
-
-
-
-describe('POST /login', () => {
-  describe('Success Case Admin', () => {
-    it('200 OK - should return object with success true and access_token', (done) => {
+    //invalid format email
+    it('400 Bad Request- error SequelizeValidationError because invalid format email', (done) => {
       request(app)
-        .post('/login')
+        .post('/register')
         .send({
-          email: admin.email,
-          password: admin.password
+          email: 'doni.com',
+          password, name, nik, address, phone_number, dob, latitude, longitude,
         })
         .end(function (err, res) {
           if (err) done(err)
           else {
-            expect(res.status).toBe(200)
+            expect(res.status).toBe(400)
             expect(typeof res.body).toEqual('object')
-            expect(res.body).toHaveProperty('status', true)
-            expect(res.body).toHaveProperty('access_token', expect.any(String))
+            expect(res.body.message[0]).toEqual('Invalid email address')
+            done()
+          }
+        })
+    })
+    // email is empty and invalid format email
+    it('400 Bad Request- error SequelizeValidationError, because email is empty', (done) => {
+      request(app)
+        .post('/register')
+        .send({
+          email: '',
+          password, name, nik, address, phone_number, dob, latitude, longitude,
+        })
+        .end(function (err, res) {
+          if (err) done(err)
+          else {
+            expect(res.status).toBe(400)
+            expect(typeof res.body).toEqual('object')
+            expect(res.body.message[0]).toEqual('Email must not be empty')
+            expect(res.body.message[1]).toEqual('Invalid email address')
+            done()
+          }
+        })
+    })
+    // email is null
+    it('400 Bad Request- error SequelizeValidationError, because email is null', (done) => {
+      request(app)
+        .post('/register')
+        .send({
+          password, name, nik, address, phone_number, dob, latitude, longitude,
+        })
+        .end(function (err, res) {
+          if (err) done(err)
+          else {
+            expect(res.status).toBe(400)
+            expect(typeof res.body).toEqual('object')
+            expect(res.body.message[0]).toEqual('Email must not be null')
+            done()
+          }
+        })
+    })
+    // PASSWORD
+    it('400 Bad Request- error SequelizeValidationError, because password is empty', (done) => {
+      request(app)
+        .post('/register')
+        .send({
+          email: "lili@mail.com", password: '', name, nik, address, phone_number, dob, latitude, longitude,
+        })
+        .end(function (err, res) {
+          if (err) done(err)
+          else {
+            expect(res.status).toBe(400)
+            expect(typeof res.body).toEqual('object')
+            expect(res.body.message[0]).toEqual('Password must not be empty')
+            done()
+          }
+        })
+    })
+    it('400 Bad Request- error SequelizeValidationError, because password is null', (done) => {
+      request(app)
+        .post('/register')
+        .send({
+          email: "lili@mail.com", name, nik, address, phone_number, dob, latitude, longitude,
+        })
+        .end(function (err, res) {
+          if (err) done(err)
+          else {
+            expect(res.status).toBe(400)
+            expect(typeof res.body).toEqual('object')
+            expect(res.body.message[0]).toEqual('Password must not be null')
+            done()
+          }
+        })
+    })
+    //password min 6 character
+    it('400 Bad Request- error SequelizeValidationError, because password is less than 6 character', (done) => {
+      request(app)
+        .post('/register')
+        .send({
+          email: "lili@mail.com", password: 'pas12', name, nik, address, phone_number, dob, latitude, longitude,
+        })
+        .end(function (err, res) {
+          if (err) done(err)
+          else {
+            expect(res.status).toBe(400)
+            expect(typeof res.body).toEqual('object')
+            expect(res.body.message[0]).toEqual('Password must be at least 6 characters')
+            done()
+          }
+        })
+    })
+    // ADDRESS
+    it('400 Bad Request- error SequelizeValidationError, because address is empty', (done) => {
+      request(app)
+        .post('/register')
+        .send({
+          email: 'lili@mail.com', name,
+          password, address: "", nik, phone_number, dob, latitude, longitude,
+        })
+        .end(function (err, res) {
+          if (err) done(err)
+          else {
+            expect(res.status).toBe(400)
+            expect(typeof res.body).toEqual('object')
+            expect(res.body.message[0]).toEqual('Address must not be empty')
+            done()
+          }
+        })
+    })
+    it('400 Bad Request- error SequelizeValidationError, because address is null', (done) => {
+      request(app)
+        .post('/register')
+        .send({
+          email: 'lili@mail.com', name,
+          password, nik, phone_number, dob, latitude, longitude,
+        })
+        .end(function (err, res) {
+          if (err) done(err)
+          else {
+            expect(res.status).toBe(400)
+            expect(typeof res.body).toEqual('object')
+            expect(res.body.message[0]).toEqual('Address must not be null')
+            done()
+          }
+        })
+    })
+    // PHONE NUMBER 
+    it('400 Bad Request- error SequelizeValidationError, because phone_number is empty', (done) => {
+      request(app)
+        .post('/register')
+        .send({
+          email: 'lili@mail.com', name,
+          password, address, nik, phone_number: "", dob, latitude, longitude,
+        })
+        .end(function (err, res) {
+          if (err) done(err)
+          else {
+            expect(res.status).toBe(400)
+            expect(typeof res.body).toEqual('object')
+            expect(res.body.message[0]).toEqual('Phone Number must not be empty')
+            done()
+          }
+        })
+    })
+    it('400 Bad Request- error SequelizeValidationError, because phone_number is null', (done) => {
+      request(app)
+        .post('/register')
+        .send({
+          email: 'lili@mail.com', name,
+          password, nik, address, dob, latitude, longitude,
+        })
+        .end(function (err, res) {
+          if (err) done(err)
+          else {
+            expect(res.status).toBe(400)
+            expect(typeof res.body).toEqual('object')
+            expect(res.body.message[0]).toEqual('Phone Number must not be null')
+            done()
+          }
+        })
+    })
+    //DATE OF BIRTH
+    it('400 Bad Request- error SequelizeValidationError, because date of birth is empty', (done) => {
+      request(app)
+        .post('/register')
+        .send({
+          email: 'lili@mail.com', name,
+          password, address, nik, phone_number, dob: "", latitude, longitude,
+        })
+        .end(function (err, res) {
+          if (err) done(err)
+          else {
+            expect(res.status).toBe(400)
+            expect(typeof res.body).toEqual('object')
+            expect(res.body.message[0]).toEqual('Date of Birth must not be empty')
+            done()
+          }
+        })
+    })
+    it('400 Bad Request- error SequelizeValidationError, because date of birth is null', (done) => {
+      request(app)
+        .post('/register')
+        .send({
+          email: 'lili@mail.com', name,
+          password, nik, address, phone_number, latitude, longitude,
+        })
+        .end(function (err, res) {
+          if (err) done(err)
+          else {
+            expect(res.status).toBe(400)
+            expect(typeof res.body).toEqual('object')
+            expect(res.body.message[0]).toEqual('Date of Birth must not be null')
+            done()
+          }
+        })
+    })
+    it('400 Bad Request- error SequelizeValidationError, because invalid format date of birth', (done) => {
+      request(app)
+        .post('/register')
+        .send({
+          email: 'lili@mail.com', name, dob: "2021-07-32",
+          password, nik, address, phone_number, latitude, longitude,
+        })
+        .end(function (err, res) {
+          if (err) done(err)
+          else {
+            expect(res.status).toBe(400)
+            expect(typeof res.body).toEqual('object')
+            expect(res.body.message[0]).toEqual('Invalid date')
+            done()
+          }
+        })
+    })
+    // LATITUDE
+    it('400 Bad Request- error SequelizeValidationError, because invalid latitude', (done) => {
+      request(app)
+        .post('/register')
+        .send({
+          email: 'lili@mail.com', name,
+          password, address, nik, phone_number, dob, latitude: "", longitude,
+        })
+        .end(function (err, res) {
+          if (err) done(err)
+          else {
+            expect(res.status).toBe(400)
+            expect(typeof res.body).toEqual('object')
+            expect(res.body.message[0]).toEqual('Invalid latitude')
+            done()
+          }
+        })
+    })
+    it('400 Bad Request- error SequelizeValidationError, because latitude is null', (done) => {
+      request(app)
+        .post('/register')
+        .send({
+          email: 'lili@mail.com', name,
+          password, nik, dob, address, phone_number, longitude,
+        })
+        .end(function (err, res) {
+          if (err) done(err)
+          else {
+            expect(res.status).toBe(400)
+            expect(typeof res.body).toEqual('object')
+            expect(res.body.message[0]).toEqual('Latitude must not be null')
+            done()
+          }
+        })
+    })
+    // LONGITUDE 
+    it('400 Bad Request- error SequelizeValidationError, because invalid longitude', (done) => {
+      request(app)
+        .post('/register')
+        .send({
+          email: 'lili@mail.com', name,
+          password, address, nik, phone_number, dob, longitude: "", latitude,
+        })
+        .end(function (err, res) {
+          if (err) done(err)
+          else {
+            expect(res.status).toBe(400)
+            expect(typeof res.body).toEqual('object')
+            expect(res.body.message[0]).toEqual('Invalid longitude')
+            done()
+          }
+        })
+    })
+    it('400 Bad Request- error SequelizeValidationError, because longitude is null', (done) => {
+      request(app)
+        .post('/register')
+        .send({
+          email: 'lili@mail.com', name,
+          password, nik, dob, address, phone_number, latitude,
+        })
+        .end(function (err, res) {
+          if (err) done(err)
+          else {
+            expect(res.status).toBe(400)
+            expect(typeof res.body).toEqual('object')
+            expect(res.body.message[0]).toEqual('Longitude must not be null')
             done()
           }
         })
     })
   })
-
-  describe('Success Case Customer', () => {
-    it('200 OK - should return object with success true and access_token', (done) => {
-      request(app)
-        .post('/login')
-        .send({
-          email: userCustomer.email,
-          password: userCustomer.password
-        })
-        .end(function (err, res) {
-          if (err) done(err)
-          else {
-            expect(res.status).toBe(200)
-            expect(typeof res.body).toEqual('object')
-            expect(res.body).toHaveProperty('status', true)
-            expect(res.body).toHaveProperty('access_token', expect.any(String))
-            done()
-          }
-        })
-    })
-  })
 })
+
+
+
+// describe('POST /login', () => {
+//   describe('Success Case Admin', () => {
+//     it('200 OK - should return object with success true and access_token', (done) => {
+//       request(app)
+//         .post('/login')
+//         .send({
+//           email: admin.email,
+//           password: admin.password
+//         })
+//         .end(function (err, res) {
+//           if (err) done(err)
+//           else {
+//             expect(res.status).toBe(200)
+//             expect(typeof res.body).toEqual('object')
+//             expect(res.body).toHaveProperty('status', true)
+//             expect(res.body).toHaveProperty('access_token', expect.any(String))
+//             done()
+//           }
+//         })
+//     })
+//   })
+
+//   describe('Success Case Customer', () => {
+//     it('200 OK - should return object with success true and access_token', (done) => {
+//       request(app)
+//         .post('/login')
+//         .send({
+//           email: userCustomer.email,
+//           password: userCustomer.password
+//         })
+//         .end(function (err, res) {
+//           if (err) done(err)
+//           else {
+//             expect(res.status).toBe(200)
+//             expect(typeof res.body).toEqual('object')
+//             expect(res.body).toHaveProperty('status', true)
+//             expect(res.body).toHaveProperty('access_token', expect.any(String))
+//             done()
+//           }
+//         })
+//     })
+//   })
+// })
