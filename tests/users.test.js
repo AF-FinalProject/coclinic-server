@@ -444,46 +444,123 @@ describe('POST /register', () => {
 
 
 
-// describe('POST /login', () => {
-//   describe('Success Case Admin', () => {
-//     it('200 OK - should return object with success true and access_token', (done) => {
-//       request(app)
-//         .post('/login')
-//         .send({
-//           email: admin.email,
-//           password: admin.password
-//         })
-//         .end(function (err, res) {
-//           if (err) done(err)
-//           else {
-//             expect(res.status).toBe(200)
-//             expect(typeof res.body).toEqual('object')
-//             expect(res.body).toHaveProperty('status', true)
-//             expect(res.body).toHaveProperty('access_token', expect.any(String))
-//             done()
-//           }
-//         })
-//     })
-//   })
+describe('POST /login', () => {
+  describe('Success Case Admin', () => {
+    it('200 OK - should return object with success true and access_token', (done) => {
+      request(app)
+        .post('/login')
+        .send({
+          email: admin.email,
+          password: admin.password
+        })
+        .end(function (err, res) {
+          if (err) done(err)
+          else {
+            expect(res.status).toBe(200)
+            expect(typeof res.body).toEqual('object')
+            expect(res.body).toHaveProperty('status', true)
+            expect(res.body).toHaveProperty('access_token', expect.any(String))
+            done()
+          }
+        })
+    })
+  })
 
-//   describe('Success Case Customer', () => {
-//     it('200 OK - should return object with success true and access_token', (done) => {
-//       request(app)
-//         .post('/login')
-//         .send({
-//           email: userCustomer.email,
-//           password: userCustomer.password
-//         })
-//         .end(function (err, res) {
-//           if (err) done(err)
-//           else {
-//             expect(res.status).toBe(200)
-//             expect(typeof res.body).toEqual('object')
-//             expect(res.body).toHaveProperty('status', true)
-//             expect(res.body).toHaveProperty('access_token', expect.any(String))
-//             done()
-//           }
-//         })
-//     })
-//   })
-// })
+  describe('Error Case Admin', () => {
+    it('400 Bad Request - error because invalid email', (done) => {
+      request(app)
+        .post('/login')
+        .send({
+          email: "admi@mail.com",
+          password: admin.password
+        })
+        .end(function (err, res) {
+          if (err) done(err)
+          else {
+            expect(res.status).toBe(400)
+            expect(typeof res.body).toEqual('object')
+            expect(res.body.message[0]).toEqual('Invalid email or password')
+            done()
+          }
+        })
+    })
+
+    it('400 Bad Request - error because invalid password', (done) => {
+      request(app)
+        .post('/login')
+        .send({
+          email: admin.email,
+          password: "salah"
+        })
+        .end(function (err, res) {
+          if (err) done(err)
+          else {
+            expect(res.status).toBe(400)
+            expect(typeof res.body).toEqual('object')
+            expect(res.body.message[0]).toEqual('Invalid email or password')
+            done()
+          }
+        })
+    })
+  })
+
+  describe('Success Case Customer', () => {
+    it('200 OK - should return object with success true and access_token', (done) => {
+      request(app)
+        .post('/login')
+        .send({
+          email: userCustomer.email,
+          password: userCustomer.password
+        })
+        .end(function (err, res) {
+          if (err) done(err)
+          else {
+            expect(res.status).toBe(200)
+            expect(typeof res.body).toEqual('object')
+            expect(res.body).toHaveProperty('status', true)
+            expect(res.body).toHaveProperty('access_token', expect.any(String))
+            done()
+          }
+        })
+    })
+  })
+
+  describe('Error Case Customer', () => {
+    it('400 Bad Request - error because invalid email', (done) => {
+      request(app)
+        .post('/login')
+        .send({
+          email: "testCusto@mail.com",
+          password: userCustomer.password
+        })
+        .end(function (err, res) {
+          if (err) done(err)
+          else {
+            expect(res.status).toBe(400)
+            expect(typeof res.body).toEqual('object')
+            expect(res.body.message[0]).toEqual('Invalid email or password')
+            done()
+          }
+        })
+    })
+
+    it('400 Bad Request - error because invalid password', (done) => {
+      request(app)
+        .post('/login')
+        .send({
+          email: userCustomer.email,
+          password: "salahPass"
+        })
+        .end(function (err, res) {
+          if (err) done(err)
+          else {
+            expect(res.status).toBe(400)
+            expect(typeof res.body).toEqual('object')
+            expect(res.body.message[0]).toEqual('Invalid email or password')
+            done()
+          }
+        })
+    })
+  })
+
+})
