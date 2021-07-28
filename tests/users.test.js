@@ -52,7 +52,6 @@ describe('POST /register', () => {
     })
   })
 
-  //error
   describe('Error Cases', () => {
     // NAME
     it('400 Bad Request- error SequelizeValidationError, because name is empty', (done) => {
