@@ -11,17 +11,137 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Order.belongsTo(models.User)
+      Order.hasOne(models.Location)
+      Order.hasMany(models.Location_Log)
     }
   };
   Order.init({
-    status_payment: DataTypes.BOOLEAN,
-    status_swab: DataTypes.STRING,
-    type_swab: DataTypes.STRING,
-    date_swab: DataTypes.DATE,
-    UserId: DataTypes.INTEGER,
-    LocationId: DataTypes.INTEGER,
-    LocationLogId: DataTypes.INTEGER
+    status_payment: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      validate: {
+        notNull: {
+          args: true,
+          msg: 'Payment status must not be null'
+        },
+        notEmpty: {
+          args: true,
+          msg: 'Payment status must not be empty'
+        }
+      }
+    },
+    status_swab: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: {
+          args: true,
+          msg: 'Swab status must not be null'
+        },
+        notEmpty: {
+          args: true,
+          msg: 'Swab status must not be empty'
+        }
+      }
+    },
+    type_swab: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: {
+          args: true,
+          msg: 'Swab type must not be null'
+        },
+        notEmpty: {
+          args: true,
+          msg: 'Swab type must not be empty'
+        }
+      }
+    },
+    date_swab: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      validate: {
+        notNull: {
+          args: true,
+          msg: 'Swab date must not be null'
+        },
+        notEmpty: {
+          args: true,
+          msg: 'Swab date must not be empty'
+        },
+        isDate: {
+          args: true,
+          msg: 'Invalid date'
+        },
+        isAfter: {
+          args: new Date().toLocaleDateString(),
+          msg: "Swab Date must not be before than today"
+        }
+      }
+    },
+    UserId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'Users',
+        key: 'id'
+      },
+      validate: {
+        notNull: {
+          args: true,
+          msg: 'User Id must not be null'
+        },
+        isInt: {
+          args: true,
+          msg: 'User Id must be integer'
+        }
+      }
+    },
+    LocationId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'Locations',
+        key: 'id'
+      },
+      validate: {
+        notNull: {
+          args: true,
+          msg: 'Location Id must not be null'
+        },
+        isInt: {
+          args: true,
+          msg: 'Location Id must be integer'
+        }
+      }
+    },
+    LocationLogId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'Location_Logs',
+        key: 'id'
+      },
+      validate: {
+        notNull: {
+          args: true,
+          msg: 'Location Log Id must not be null'
+        },
+        isInt: {
+          args: true,
+          msg: 'Location Log Id must be integer'
+        }
+      }
+    }
   }, {
+    hooks: {
+      beforeCreate: (order) => {
+        if (!order.status_payment) order.status_payment = false
+        if (!order.type_swab) order.type_swab = 'PCR'
+      }
+    },
     sequelize,
     modelName: 'Order',
   });

@@ -11,12 +11,56 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Location_Log.belongsTo(models.Order)
     }
   };
   Location_Log.init({
-    latitude: DataTypes.DOUBLE,
-    longitude: DataTypes.DOUBLE,
-    OrderId: DataTypes.INTEGER
+    latitude: {
+      type: DataTypes.DOUBLE,
+      allowNull: false,
+      validate: {
+        notNull: {
+          args: true,
+          msg: 'Latitude must not be null'
+        },
+        isDecimal: {
+          args: true,
+          msg: 'Invalid latitude'
+        }
+      }
+    },
+    longitude: {
+      type: DataTypes.DOUBLE,
+      allowNull: false,
+      validate: {
+        notNull: {
+          args: true,
+          msg: 'Longitude must not be null'
+        },
+        isDecimal: {
+          args: true,
+          msg: 'Invalid longitude'
+        }
+      }
+    },
+    OrderId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'Orders',
+        key: 'id'
+      },
+      validate: {
+        notNull: {
+          args: true,
+          msg: 'Order Id must not be null'
+        },
+        isInt: {
+          args: true,
+          msg: 'Order Id must be integer'
+        }
+      }
+    }
   }, {
     sequelize,
     modelName: 'Location_Log',
