@@ -39,6 +39,10 @@ function errorHandler(err, req, res, next) {
       statusCode = 404
       message = [`${err.msg}`]
       break;
+    case 'Location not found':
+      statusCode = 404
+      message = [`${err.msg}`]
+      break;
   }
 
 
