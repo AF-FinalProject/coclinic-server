@@ -1,1015 +1,595 @@
-# co.Clinic-server
-
--
-
-## Project setup
+### Title:
 
 ```
-npm install
+Co.Clinic
 ```
 
-### Run server
-
-# Development
+### URL:
 
 ```
-npm run dev
+http://localhost:3000
 ```
 
-# Production
+### Methods:
+
+1. Users
 
 ```
-npm start
+- POST /register
+- POST /login
 ```
 
-### Deployment
+2. Orders
 
-Frontend:
-Backend:
+```
+- POST /orders
+- GET /orders/customers
+- GET /orders/admin
+- GET /orders/:id
+- PUT /orders/:id
+- DELETE /orders/:id
+```
 
-### Routes
+3. Live Tracking
 
-/register (Post)
-/login (Post)
-/orders (Post)
-/orders:id (Delete)
-/orders/payment/:id (Patch)
-/orders/status/:id (Patch)
-/orders (Get)
-/orders/status/:id (Get)
-/location (Post)
-/location/:id (Get)
+```
+- GET /tracking/:id
+- PUT /tracking/:id
+```
 
-## **_Register_**
+# Endpoints
 
-Returns new user.
+### USERS
 
-- **URL**
+1. Register
 
-  /register
+```
+Create/Register new User
+URL: /register
+Method: POST
+Required Auth: No
+```
 
-- **Method:**
+- Request Body:
 
-  `POST`
+```
+{
+  name: 'User Customer Test',
+  nik: '45678910',
+  email: 'testCustomer@mail.com',
+  password: hashPassword('lala123'),
+  address: 'Jl. Batu Gede Bogor',
+  phone_number: '085712345678',
+  dob: '1993-01-09',
+  latitude: -6.531673,
+  longitude: 106.796378,
+}
+```
 
-- **URL Params**
+- Success Response:
 
-  None
+```
+Status: 201 Created
+Response Body:
 
-- **Data Params**
+{
+  status: true,
+  message: "Successfully Added User",
+}
+```
 
-  **Required:**
+2. Login
 
-  ```
-    {
-      nik: req.body.nik,
-      name: req.body.name
-      dob: req.body.dob
-      email: req.body.email
-      phone_number: req.body.phone_number
-      address: req.body.address
-      latitude: req.body.latitude
-      logitude: req.body.logitude
+```
+Login with account that already register in database system
+URL: /users/login
+Method: POST
+Required Auth: No
+```
+
+- Request Body:
+
+```
+{
+ email: "<user email>",
+ password: "<user password>"
+}
+```
+
+- Success Response:
+
+```
+Status: 200 OK
+Response Body:
+
+{
+  email: "<user email>",
+  access_token: "<user access_token>"
+}
+```
+
+### ORDERS
+
+1. Create Orders
+
+```
+Create new order
+URL: /orders
+Method: POST
+Required Auth: Yes(only for customer)
+```
+
+- Request Headers:
+
+```
+{
+  access_token: "<user access_token>"
+}
+```
+
+- Request Body:
+
+```
+{
+  date_swab: "<new todo title>",
+}
+```
+
+- Success Response:
+
+```
+Status: 201 Created
+Response Body:
+
+{
+  status: true,
+  message: "Successfully placed order"
+}
+```
+
+2. Get Orders for Customers
+
+```
+Get all orders from database
+URL: /orders
+Method: GET
+Required Auth: Yes (only for customer role, orders belongs to current user loggin only)
+```
+
+- Request Headers:
+
+```
+{
+  access_token: "<user access_token>"
+}
+```
+
+- Success Response:
+
+```
+Status: 200 OK
+Response Body:
+
+
+{
+  "success": true,
+    "data": {
+        "orders": [
+            {
+                "id": 1,
+                "status_payment": "Belum bayar",
+                "status_swab": "Menunggu",
+                "type_swab": "PCR",
+                "date_swab": "2021-07-30T00:00:00.000Z",
+                "UserId": 2,
+                "createdAt": "2021-07-29T18:26:37.120Z",
+                "updatedAt": "2021-07-29T18:26:37.120Z",
+                "Live_Tracking": null,
+                "Location_Logs": []
+            }
+        ]
     }
-  ```
+}
+```
 
-- **Success Response:**
+3. Get Orders for Admins
 
-  - **Code:** 201 <br />
-    **Content:**
+```
+Get all orders from database
+URL: /orders
+Method: GET
+Required Auth: Yes (only for admin role)
+```
 
-    ```
-    {
-        "success": true,
-        "message": "Succesfully Added User"
+- Request Headers:
+
+```
+{
+  access_token: "<user access_token>"
+}
+```
+
+- Success Response:
+
+```
+Status: 200 OK
+Response Body:
+{
+    "success": true,
+    "data": {
+        "orders": [
+            {
+                "id": 2,
+                "status_payment": "Belum bayar",
+                "status_swab": "Menunggu",
+                "type_swab": "PCR",
+                "date_swab": "2021-08-01T00:00:00.000Z",
+                "UserId": 2,
+                "createdAt": "2021-07-29T18:55:53.628Z",
+                "updatedAt": "2021-07-29T18:55:53.628Z",
+                "Live_Tracking": null,
+                "Location_Logs": []
+            },
+            {
+                "id": 1,
+                "status_payment": "Belum bayar",
+                "status_swab": "Menunggu",
+                "type_swab": "PCR",
+                "date_swab": "2021-07-30T00:00:00.000Z",
+                "UserId": 2,
+                "createdAt": "2021-07-29T18:26:37.120Z",
+                "updatedAt": "2021-07-29T18:26:37.120Z",
+                "Live_Tracking": null,
+                "Location_Logs": []
+            }
+        ]
     }
-    ```
-
-- **Error Response:**
-
-  - **Code:** 400 <br />
-    **Content:**
-    ```
-    { errors : ["SequelizeValidationError"] }
-    ```
-
-  OR
-
-  - **Code:** 500 <br />
-    **Content:**
-    ```
-    { errors : ["Internal Server Error"] }
-    ```
-
-- **Sample Call:**
-
-  ```javascript
-  axios({
-  	method: "POST",
-  	url: `http://localhost:3000/register`,
-    headers: {
-      "Content-Type": "application/json"
-    }
-  	data: {
-      nik,
-      name,
-      dob,
-      email,
-      phone_number,
-      address,
-      latitude,
-      logitude,
-  	},
-  });
-  ```
-
----
-
-## **_Login_**
-
-Returns new user.
-
-- **URL**
-
-  /login
-
-- **Method:**
-
-  `POST`
-
-- **URL Params**
-
-  None
-
-- **Data Params**
-
-  **Required:**
-
-  ```
-    {
-      email: req.body.email,
-      password: req.body.password
-    }
-  ```
-
-- **Success Response:**
-
-  - **Code:** 200 <br />
-    **Content:**
-
-    ```
-    {
-        "success": true,
-        "access_token": <user access_token>
-    }
-    ```
-
-- **Error Response:**
-
-  - **Code:** 400 <br />
-    **Content:**
-    ```
-    {
-      "errors": [
-          "Invalid email and password"
-      ]
-    }
-    ```
-
-  OR
-
-  - **Code:** 500 <br />
-    **Content:**
-    ```
-    { errors : ["Internal Server Error"] }
-    ```
-
-- **Sample Call:**
-
-  ```javascript
-  axios({
-  	method: "POST",
-  	url: `http://localhost:3000/login`,
-    headers: {
-      "Content-Type": "application/json"
-    }
-  	data: {
-  		email,
-  		password,
-  	},
-  });
-  ```
-
----
-
-## **_Post Orders - Client_**
-
-Returns order message.
-
-- **URL**
-
-  /orders
-
-- **Method:**
-
-  `POST`
-
-- **Auth**
-
-  `Client`
-
-- **Header**
-
-  **Required:**
-
-  ```
-    {
-      access_token: req.headers.access_token
-    }
-  ```
-
-- **URL Params**
-
-  None
-
-- **Data Params**
-
-  **Required:**
-
-  ```
-    {
-      date: req.body.date
-    }
-  ```
-
-- **Success Response:**
-
-  - **Code:** 200 <br />
-    **Content:**
-
-    ```
-    {
-        "success": true,
-        "message": "Successfully placed order"
-    }
-    ```
-
-- **Error Response:**
-
-  - **Code:** 400 <br />
-    **Content:**
-    ```
-    {
-      "errors": [
-          "Bad Request"
-      ]
-    }
-    ```
-
-  OR
-
-  - **Code:** 500 <br />
-    **Content:**
-    ```
-    { errors : "Internal Server Error" }
-    ```
-
-- **Sample Call:**
-
-  ```javascript
-  axios({
-  	method: "POST",
-  	url: `http://localhost:3000/order`,
-    headers: {
-      "Content-Type": "application/json"
-      "access_token": "adsfasdfasdfasdadf"
-    }
-  	data: {
-  		date,
-  	},
-  });
-  ```
-
----
-
-## **_Patch Payment - Admin_**
-
-Returns payment message.
-
-- **URL**
-
-  /orders/payment/:id
-
-- **Method:**
-
-  `PATCH`
-
-- **Auth**
-
-  `Admin`
-
-- **Header**
-
-  **Required:**
-
-  ```
-    {
-      access_token: req.headers.access_token
-    }
-  ```
-
-- **URL Params**
-
-  id: order_id
-
-- **Data Params**
-
-  **Required:**
-
-  ```
-    {
-      status_payment: req.body.status_payment
-    }
-  ```
-
-- **Success Response:**
-
-  - **Code:** 200 <br />
-    **Content:**
-
-    ```
-    {
-        "success": true,
-        "message": "Successfully update payment"
-    }
-    ```
-
-- **Error Response:**
-
-  - **Code:** 400 <br />
-    **Content:**
-    ```
-    {
-      "errors": [
-          "Bad request"
-      ]
-    }
-    ```
-
-  OR
-
-  - **Code:** 500 <br />
-    **Content:**
-    ```
-    { errors : "Internal Server Error" }
-    ```
-
-- **Sample Call:**
-
-  ```javascript
-  axios({
-  	method: "POST",
-  	url: `http://localhost:3000/orders/payment/:id`,
-    headers: {
-      "Content-Type": "application/json"
-    }
-  	data: {
-  		date,
-  	},
-  });
-  ```
-
----
-
-## **_Patch Swab Status - Admin_**
-
-Returns update message.
-
-- **URL**
-
-  /orders/status/:id
-
-- **Method:**
-
-  `PATCH`
-
-- **Auth**
-
-  `Admin`
-
-- **Header**
-
-  **Required:**
-
-  ```
-    {
-      access_token: req.headers.access_token
-    }
-  ```
-
-- **URL Params**
-
-  order id
-
-- **Data Params**
-
-  **Required:**
-
-  ```
-    {
-      status_swab: req.body.status_swab
-    }
-  ```
-
-- **Success Response:**
-
-  - **Code:** 200 <br />
-    **Content:**
-
-    ```
-    {
-        "success": true,
-        "message": "Successfully update swab"
-    }
-    ```
-
-- **Error Response:**
-
-  - **Code:** 400 <br />
-    **Content:**
-    ```
-    {
-      "errors": [
-          "Bad request"
-      ]
-    }
-    ```
-
-  OR
-
-  - **Code:** 500 <br />
-    **Content:**
-    ```
-    { errors : "Internal Server Error" }
-    ```
-
-- **Sample Call:**
-
-  ```javascript
-  axios({
-  	method: "PATCH",
-  	url: `http://localhost:3000/order/status/:id`,
-    headers: {
-      "Content-Type": "application/json"
-      "access_token": "adsfasdfasdfadfadfasdf"
-    }
-  	data: {
-  		status_swab,
-  	},
-  });
-  ```
-
----
-
-## **_Delete Order - Admin_**
-
-Returns update message.
-
-- **URL**
-
-  /orders/:id
-
-- **Method:**
-
-  `Delete`
-
-- **Auth**
-
-  `Admin`
-
-- **Header**
-
-  **Required:**
-
-  ```
-    {
-      access_token: req.headers.access_token
-    }
-  ```
-
-- **URL Params**
-
-  order id
-
-- **Data Params**
-
-  **Required:**
-
-  ```
-    None
-  ```
-
-- **Success Response:**
-
-  - **Code:** 200 <br />
-    **Content:**
-
-    ```
-    {
-        "success": true,
-        "message": "Successfully deleted order"
-    }
-    ```
-
-- **Error Response:**
-
-  - **Code:** 400 <br />
-    **Content:**
-    ```
-    {
-      "errors": [
-          "Bad request"
-      ]
-    }
-    ```
-
-  OR
-
-  - **Code:** 500 <br />
-    **Content:**
-    ```
-    { errors : "Internal Server Error" }
-    ```
-
-- **Sample Call:**
-
-  ```javascript
-  axios({
-  	method: "PATCH",
-  	url: `http://localhost:3000/order/status/:id`,
-    headers: {
-      "Content-Type": "application/json"
-      "access_token": "adsfasdfasdfadfadfasdf"
-    }
-  });
-  ```
-
----
-
-## **_Get Orders - Admin_**
-
-Returns orders.
-
-- **URL**
-
-  /orders
-
-- **Method:**
-
-  `GET`
-
-- **Auth**
-
-  `Admin`
-
-- **Header**
-
-  **Required:**
-
-  ```
-    {
-      access_token: req.headers.access_token
-    }
-  ```
-
-- **URL Params**
-
-  none
-
-- **Data Params**
-
-  **Required:**
-
-  ```
-  none
-  ```
-
-- **Success Response:**
-
-  - **Code:** 200 <br />
-    **Content:**
-
-    ```
-    {
-        "success": true,
-        "data": {
-                  orders: [
-                    {
-                      User,
-                      status_payment,
-                      status_swab,
-                      type_swab,
-                      date_swab,
-                      Location,
-                      LocationLog,
-                      CreatedAt,
-                      UpdatedAt
-                    },
-                    {
-                      User,
-                      status_payment,
-                      status_swab,
-                      type_swab,
-                      date_swab,
-                      Location,
-                      LocationLog,
-                      CreatedAt,
-                      UpdatedAt
-                    }
-                  ]
-                }
-    }
-    ```
-
-- **Error Response:**
-
-  - **Code:** 400 <br />
-    **Content:**
-    ```
-    {
-      "errors": [
-          "Bad request"
-      ]
-    }
-    ```
-
-  OR
-
-  - **Code:** 500 <br />
-    **Content:**
-    ```
-    { errors : "Internal Server Error" }
-    ```
-
-- **Sample Call:**
-
-  ```javascript
-  axios({
-  	method: "GET",
-  	url: `http://localhost:3000/order`,
-    headers: {
-      "Content-Type": "application/json"
-      "access_token": "adsfasdfasdfadfadfasdf"
-    }
-  });
-  ```
-
----
-
-## **_Get Status Info - Client/Admin_**
-
-Returns update message.
-
-- **URL**
-
-  /orders/status/:id
-
-- **Method:**
-
-  `GET`
-
-- **Auth**
-
-  `Client` or `Admin`
-  `Order`
-
-- **Header**
-
-  **Required:**
-
-  ```
-    {
-      access_token: req.headers.access_token
-    }
-  ```
-
-- **URL Params**
-
-  None
-
-- **Success Response:**
-
-  - **Code:** 200 <br />
-    **Content:**
-
-    ```
-    {
-        "success": true,
-        "data": {
-          "status_swab": <status_swab>
+}
+```
+
+4. Get Detail Order
+
+```
+Get detail order by specific id
+URL: /orders/:id
+Method: GET
+Required Auth: Yes (only for admin role)
+```
+
+- Params:
+
+```
+id: integer
+```
+
+- Request Headers:
+
+```
+{
+  access_token: "<user access_token>"
+}
+```
+
+- Success Response:
+
+```
+Status: 200 OK
+Response Body:
+{
+    "success": true,
+    "data": {
+        "order": {
+            "id": 1,
+            "status_payment": "Belum bayar",
+            "status_swab": "Menunggu",
+            "type_swab": "PCR",
+            "date_swab": "2021-07-30T00:00:00.000Z",
+            "UserId": 2,
+            "createdAt": "2021-07-29T18:26:37.120Z",
+            "updatedAt": "2021-07-29T18:26:37.120Z",
+            "Live_Tracking": null
         }
     }
-    ```
+}
+```
 
-- **Error Response:**
+5. Update Order
 
-  - **Code:** 400 <br />
-    **Content:**
-    ```
-    {
-      "errors": [
-          "Bad request""Successfully update swab status"
-      ]
-    }
-    ```
+```
+Update order by specific id
+URL: /orders/:id
+Method: PUT
+Required Auth: Yes (only for admin role)
+```
 
-  OR
+- Params:
 
-  - **Code:** 500 <br />
-    **Content:**
-    ```
-    { errors : "Internal Server Error" }
-    ```
+```
+id: integer
+```
 
-- **Sample Call:**
+- Request Headers:
 
-  ```javascript
-  axios({
-  	method: "GET",
-  	url: `http://localhost:3000/order/status/:id`,
-    headers: {
-      "Content-Type": "application/json"
-      "access_token": "adsfasdfasdfadfadfasdf"
-    }
-  	data: {
-  		date,
-  	},
-  });
-  ```
+```
+{
+  access_token: "<user access_token>"
+}
+```
 
----
+- Request Body:
 
-## **_Post Location - Client_**
+```
+{
+  status_payment: "<new payment status>",
+  status_swab: "<new status swab>",
+}
+```
 
-Returns message.
+- Success Response:
 
-- **URL**
+```
+Status: 200 OK
+Response Body:
+{
+    "success": true,
+    "message": "Successfully updated order"
+}
 
-  /location
+note:
+if status_swab = "Positif", maka create Live_Tracking untuk mendeteksi keberadaan user positif
+Live_Tracking.create({ latitude: 0, longitude: 0, OrderId: order.id })
+jika "Negatif" maka tidak usah di pantau dan deteksi keberadaannya
+```
 
-- **Method:**
+6. Delete Order
 
-  `POST`
+```
+Delete order by specific id
+URL: /orders/:id
+Method: DELETE
+Required Auth: Yes (only for admin role)
+```
 
-- **Auth**
+- Params:
 
-  `Client`
-  `Order`
+```
+id: integer
+```
 
-- **Header**
+- Request Headers:
 
-  **Required:**
+```
+{
+  access_token: "<user access_token>"
+}
+```
 
-  ```
-    {
-      access_token: req.headers.access_token
-    }
-  ```
+- Success Response:
 
-- **URL Params**
+```
+Status: 200 OK
+Response Body:
 
-  None
+{
+    "success": true,
+    "message": "Successfully deleted order"
+}
 
-- **Data Params**
+```
 
-  **Required:**
+### LIVE TRACKING
 
-  ```
-    {
-      latitude: req.body.latitude,
-      longitude: req.body.longitude
-    }
-  ```
+1. Update Live Tracking
 
-- **Success Response:**
+```
+Update Lice Tracking by specific id
+URL: /tracking/:id
+Method: PUT
+Required Auth: Yes (only for admin role)
+```
 
-  - **Code:** 200 <br />
-    **Content:**
+- Params:
 
-    ```
-    {
-        "success": true,
-        "message": "Location updated"
-    }
-    ```
+```
+id: integer
+```
 
-- **Error Response:**
+- Request Headers:
 
-  - **Code:** 400 <br />
-    **Content:**
-    ```
-    {
-      "errors": [
-          "Invalid email and password"
-      ]
-    }
-    ```
+```
+{
+  access_token: "<user access_token>"
+}
+```
 
-  OR
+- Request Body:
 
-  - **Code:** 500 <br />
-    **Content:**
-    ```
-    { errors : "Internal Server Error" }
-    ```
+```
+{
+  "latitude": <new latitude>,
+  "longitude": <new longitude>
+}
 
-- **Sample Call:**
+```
 
-  ```javascript
-  axios({
-  	method: "post",
-  	url: `http://localhost:3000/location`,
-    headers: {
-      "Content-Type": "application/json"
-      "access_token": "adsfasdfasdfadfadfasdf"
-    }
-  	data: {
-  		latitude,
-  		longitude,
-  	},
-  });
-  ```
+- Success Response:
 
----
+```
+Status: 200 OK
+Response Body:
+{
+  "success": true,
+  "message": "Successfully updated"
+}
 
-## **_Get Location - Admin_**
+note:
+if status_swab = "Positif", maka create Live_Tracking untuk mendeteksi keberadaan user positif
+Live_Tracking.create({ latitude: 0, longitude: 0, OrderId: order.id })
+jika "Negatif" maka tidak usah di pantau dan deteksi keberadaannya
+```
 
-Returns message.
+2. Get Detail Live Tracking
 
-- **URL**
+```
+Get live tracking by specific id
+URL: /tracking/:id
+Method: GET
+Required Auth: Yes (only for admin role)
+```
 
-  /location/:id
+- Params:
 
-- **Method:**
+```
+id: integer
+```
 
-  `GET`
+- Request Headers:
 
-- **Auth**
+```
+{
+  access_token: "<user access_token>"
+}
+```
 
-  `Admin`
+- Success Response:
 
-- **Header**
-
-  **Required:**
-
-  ```
-    {
-      access_token: req.headers.access_token
-    }
-  ```
-
-- **URL Params**
-
-  :id
-
-- **Data Params**
-
-  None
-
-- **Success Response:**
-
-  - **Code:** 200 <br />
-    **Content:**
-
-    ```
-    {
-        "success": true,
-        "data": {
-          "latitude": 107.010191,
-          "longitude": -100.001010
+```
+Status: 200 OK
+Response Body:
+{
+    "success": true,
+    "data": {
+        "id": 1,
+        "latitude": 0,
+        "longitude": 0,
+        "OrderId": 1,
+        "createdAt": "2021-07-29T19:32:44.148Z",
+        "updatedAt": "2021-07-29T19:32:44.148Z",
+        "Order": {
+            "id": 1,
+            "status_payment": "Belum bayar",
+            "status_swab": "Negatif",
+            "type_swab": "PCR",
+            "date_swab": "2021-07-30T00:00:00.000Z",
+            "UserId": 2,
+            "createdAt": "2021-07-29T18:26:37.120Z",
+            "updatedAt": "2021-07-29T20:04:10.058Z",
+            "User": {
+                "id": 2,
+                "name": "testCus",
+                "nik": "1222222",
+                "role": "Customer",
+                "email": "testcus@mail.com",
+                "address": "Jl. Bogor",
+                "phone_number": "3333333333333",
+                "dob": "1994-01-09T00:00:00.000Z",
+                "latitude": -6.531673,
+                "longitude": 106.796378,
+                "createdAt": "2021-07-29T18:26:18.835Z",
+                "updatedAt": "2021-07-29T18:26:18.835Z"
+            }
         }
     }
-    ```
+}
+```
 
-- **Error Response:**
+# RESTful Error Message
 
-  - **Code:** 400 <br />
-    **Content:**
-    ```
-    {
-      "errors": [
-          "Bad Request"
-      ]
-    }
-    ```
+1. Response Error (400) Bad Request - SequelizeValidationError
 
-  OR
+- Response Body:
 
-  - **Code:** 500 <br />
-    **Content:**
-    ```
-    { errors : "Internal Server Error" }
-    ```
+```
+{
+  status: 400,
+  message: "<array of error message>"
+}
+```
 
-- **Sample Call:**
+2. Status 400 Bad Request - SequelizeDatabaseError
 
-  ```javascript
-  axios({
-  	method: "post",
-  	url: `http://localhost:3000/location/:id`,
-    headers: {
-      "Content-Type": "application/json"
-      "access_token": "adsfasdfasdfadfadfasdf"
-    }
-  });
-  ```
+- Response Body:
 
----
+```
+{
+  status: 400,
+  message: "<array of error message>"
+}
+```
 
-## **_Update Location - Client_**
+3. Status 400 Bad Request - SequelizeUniqueConstraintError
 
-Returns message.
+- Response Body:
 
-- **URL**
+```
+{
+  status: 400,
+  message: "<array of error message>"
+}
+```
 
-  /location/:id
+4. Response Error (400) Bad Request - Invalid email or password
 
-- **Method:**
+- Response Body:
 
-  `UPDATE`
+```
+{
+  status: 400,
+  message: ['Invalid email or password']
+}
+```
 
-- **Auth**
+5. Status 401 JsonWebTokenError
 
-  `Client`
+- Response Body:
 
-- **Header**
+```
+{
+  status: 401,
+  message: ['UnAuthenticated - You are not logged in']
+}
+```
 
-  **Required:**
+6. Status 403 Forbidden UnAuthorized - Access is denied
 
-  ```
-    {
-      access_token: req.headers.access_token
-    }
-  ```
+- Response Body:
 
-- **URL Params**
+```
+{
+  status: 401,
+  message: ['UnAuthorized - Access is denied']
+}
+```
 
-  :id
+7. Status 404 Order Not Found
 
-- **Data Params**
+- Response Body:
 
-  {
-  lattitude: <lattitude>
-  longitude: <longitude>
-  }
+```
+{
+  status: 404,
+  message: ['Order not found']
+}
+```
 
-- **Success Response:**
+8. Status 404 Location Not Found
 
-  - **Code:** 200 <br />
-    **Content:**
+- Response Body:
 
-    ```
-    {
-        "success": true,
-        "message": "successfully updated"
-    }
-    ```
+```
+{
+  status: 404,
+  message: ['Location not found']
+}
+```
 
-- **Error Response:**
+9. Status 500 Internal server errors
 
-  - **Code:** 400 <br />
-    **Content:**
-    ```
-    {
-      "errors": [
-          "Bad Request"
-      ]
-    }
-    ```
+- Response Body:
 
-  OR
-
-  - **Code:** 500 <br />
-    **Content:**
-    ```
-    { errors : "Internal Server Error" }
-    ```
-
-- **Sample Call:**
-
-  ```javascript
-  axios({
-  	method: "UPDATE",
-  	url: `http://localhost:3000/location/:id`,
-    headers: {
-      "Content-Type": "application/json"
-      "access_token": "adsfasdfasdfadfadfasdf"
-    }
-    data: {
-      "latitude": 107.000000,
-      "longitude": 108.00000
-    }
-  });
-  ```
-
----
+```
+{
+  status: 500,
+  message: ['Internal server errors']
+}
+```
