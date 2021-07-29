@@ -131,7 +131,7 @@ Required Auth: Yes(only for customer)
 
 ```
 {
-  "date_swab": "2021-07-30T00:00:00.000Z"
+  date_swab: "<new todo title>",
 }
 ```
 
@@ -192,7 +192,7 @@ Response Body:
 }
 ```
 
-3. Get Orders for Admins
+3. Get Orders for Admin
 
 ```
 Get all orders from database
@@ -556,7 +556,7 @@ Response Body:
 
 ```
 {
-  status: 401,
+  status: 403,
   message: ['UnAuthorized - Access is denied']
 }
 ```

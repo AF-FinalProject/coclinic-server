@@ -45,7 +45,7 @@ function errorHandler(err, req, res, next) {
       break;
   }
 
-  console.log(statusCode, message, '>>>>>>>>>>>>>')
+  console.log(statusCode, message, 'error handler ...........')
   res.status(statusCode).json({ status: statusCode, message })
 }
 

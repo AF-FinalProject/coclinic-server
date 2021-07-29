@@ -192,7 +192,7 @@ Response Body:
 }
 ```
 
-3. Get Orders for Admins
+3. Get Orders for Admin
 
 ```
 Get all orders from database
@@ -556,7 +556,7 @@ Response Body:
 
 ```
 {
-  status: 401,
+  status: 403,
   message: ['UnAuthorized - Access is denied']
 }
 ```
