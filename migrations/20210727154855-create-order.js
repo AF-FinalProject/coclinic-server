@@ -25,12 +25,6 @@ module.exports = {
 			UserId: {
 				type: Sequelize.INTEGER,
 			},
-			Live_TrackingId: {
-				type: Sequelize.INTEGER,
-			},
-			Location_LogId: {
-				type: Sequelize.INTEGER,
-			},
 			createdAt: {
 				allowNull: false,
 				type: Sequelize.DATE,
