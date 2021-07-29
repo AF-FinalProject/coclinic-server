@@ -82,7 +82,7 @@ Response Body:
 
 ```
 Login with account that already register in database system
-URL: /users/login
+URL: /login
 Method: POST
 Required Auth: No
 ```
