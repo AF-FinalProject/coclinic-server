@@ -12,25 +12,33 @@ class LiveTrackingController {
         location.latitude = latitude
         location.longitude = longitude
         await location.save()
-        res.status(200).json({ success: true, message: "successfully updated" })
+        res.status(200).json({ success: true, message: "Successfully updated" })
       } else {
         next({ msg: "Location not found" })
       }
     } catch (err) {
       next(err)
     }
-	}
+  }
 
-  static async detail (req, res, next) {
+  static async detail(req, res, next) {
     const { id } = req.params
 
     try {
       const location = await Live_Tracking.findOne({
         where: { id },
-        include: [{
-          model: Order,
-          include: [User]
-        }]
+        include: [
+          {
+            model: Order,
+            include: [
+              {
+                model: User,
+                attributes: {
+                  exclude: ['password']
+                }
+              }],
+
+          }],
       })
       if (location) {
         res.status(200).json({ success: true, data: location })
@@ -39,7 +47,7 @@ class LiveTrackingController {
         next({ msg: "Location not found" })
       }
     } catch (err) {
-      next(err) 
+      next(err)
     }
   }
 

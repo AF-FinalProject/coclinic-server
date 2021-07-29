@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
 	Order.init(
 		{
 			status_payment: {
-				type: DataTypes.BOOLEAN,
+				type: DataTypes.STRING,
 				allowNull: false,
 				validate: {
 					notNull: {
@@ -82,29 +82,14 @@ module.exports = (sequelize, DataTypes) => {
 			},
 			UserId: {
 				type: DataTypes.INTEGER,
-				allowNull: false,
-				references: {
-					model: "Users",
-					key: "id",
-				},
-				validate: {
-					notNull: {
-						args: true,
-						msg: "User Id must not be null",
-					},
-					isInt: {
-						args: true,
-						msg: "User Id must be integer",
-					},
-				},
 			},
 		},
 		{
 			hooks: {
 				beforeCreate: (order) => {
-					if (!order.status_payment) order.status_payment = false;
+					if (!order.status_payment) order.status_payment = "Belum bayar";
 					if (!order.type_swab) order.type_swab = "PCR";
-					if (!order.status_swab) order.status_swab = "menunggu"; 
+					if (!order.status_swab) order.status_swab = "Menunggu"; 
 					return order
 				},
 			},
