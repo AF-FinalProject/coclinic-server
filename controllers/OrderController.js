@@ -60,6 +60,9 @@ class OrderController {
 				if (status_swab === "Positif") {
 					Live_Tracking.create({ latitude: 0, longitude: 0, OrderId: order.id })
 				}
+				// else if (status_swab === "Negatif") {
+				// 	delete LT nya yang punya orderId ini
+				// }
 
 				order.status_payment = status_payment;
 				order.status_swab = status_swab;
@@ -67,7 +70,7 @@ class OrderController {
 				res.status(200).json({ success: true, message: "Successfully updated order" })
 				// harusnya ada 1 kondisi lagi jika status_swab = "Negatif"
 				// maka hapus juga data orderId ini di LT
-				
+
 			} else {
 				next({ msg: "Order not found" })
 			}
