@@ -19,23 +19,11 @@ const authentication = async (req, res, next) => {
 };
 
 const authAdmin = (req, res, next) => {
-  (req.logginUser.role.toLowerCase() === 'admin') ? next() : { msg: "UnAuthorized - Access is denied" }
+  (req.logginUser.role.toLowerCase() === 'admin') ? next() : next({ msg: "UnAuthorized - Access is denied" })
 };
 
-
-
 const authCustomer = async (req, res, next) => {
-  const isCustomer = req.logginUser.role.toLowerCase() === 'customer'
-  if (isCustomer) {
-    try {
-      const orders = await Order.findAll({ where: { UserId: +req.logginUser.id } })
-        (orders.length) ? next() : next({ msg: "Order not found" })
-    } catch (err) {
-      next(err)
-    }
-  } else {
-    next({ msg: "UnAuthorized - Access is denied" })
-  }
+  (req.logginUser.role.toLowerCase() === 'customer') ? next() : next({ msg: "UnAuthorized - Access is denied" })
 };
 
 module.exports = { authentication, authAdmin, authCustomer };

@@ -517,7 +517,7 @@ Returns update message.
     ```
     {
         "success": true,
-        "message": "Successfully delete order"
+        "message": "Successfully deleted order"
     }
     ```
 

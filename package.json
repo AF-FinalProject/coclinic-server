@@ -16,6 +16,7 @@
     "db:create:development": "NODE_ENV=development npx sequelize db:create",
     "db:migrate:development": "NODE_ENV=development npx sequelize db:migrate",
     "db:seed:development": "NODE_ENV=development npx sequelize db:seed:all",
+    "db:setup:development": "NODE_ENV=development npm run db:create:development && NODE_ENV=development npm run db:migrate:development && NODE_ENV=development npm run db:seed:development",
     "test": "NODE_ENV=test npx jest --detectOpenHandles --forceExit --runInBand",
     "dev": "NODE_ENV=development nodemon bin/http.js",
     "start": "node bin/http.js"
