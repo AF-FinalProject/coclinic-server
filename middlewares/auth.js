@@ -19,13 +19,13 @@ const authentication = async (req, res, next) => {
 };
 
 const authAdmin = (req, res, next) => {
-  (req.logginUser.role.tolowerCase() === 'admin') ? next() : { msg: "UnAuthorized - Access is denied" }
+  (req.logginUser.role.toLowerCase() === 'admin') ? next() : { msg: "UnAuthorized - Access is denied" }
 };
 
 
 
 const authCustomer = async (req, res, next) => {
-  const isCustomer = req.logginUser.role.tolowerCase() === 'customer'
+  const isCustomer = req.logginUser.role.toLowerCase() === 'customer'
   if (isCustomer) {
     try {
       const orders = await Order.findAll({ where: { UserId: +req.logginUser.id } })

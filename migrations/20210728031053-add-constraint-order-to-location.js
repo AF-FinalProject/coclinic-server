@@ -2,7 +2,7 @@
 
 module.exports = {
 	up: async (queryInterface, Sequelize) => {
-		queryInterface.addConstraint("Live_Tracking", {
+		queryInterface.addConstraint("Live_Trackings", {
 			fields: ["OrderId"],
 			type: "foreign key",
 			name: "fk_location_OrderId",
@@ -23,7 +23,7 @@ module.exports = {
 
 	down: async (queryInterface, Sequelize) => {
 		await queryInterface.removeConstraint(
-			"Live_Tracking",
+			"Live_Trackings",
 			"fk_location_OrderId"
 		);
 		/**
