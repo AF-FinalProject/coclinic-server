@@ -9,14 +9,16 @@ module.exports = {
 				type: Sequelize.INTEGER,
 			},
 			status_payment: {
-				type: Sequelize.BOOLEAN,
+				type: Sequelize.STRING,
+				defaultValue: 'Belum bayar',
 			},
 			status_swab: {
 				type: Sequelize.STRING,
+				defaultValue: 'Menunggu',
 			},
 			type_swab: {
 				type: Sequelize.STRING,
-				defaultValue: "PCR",
+				defaultValue: 'PCR',
 			},
 			date_swab: {
 				type: Sequelize.DATE,
@@ -24,6 +26,12 @@ module.exports = {
 			},
 			UserId: {
 				type: Sequelize.INTEGER,
+        references: {
+          model: 'Users',
+          key: 'id'
+        },
+        onDelete: 'cascade',
+        onUpdate: 'cascade'
 			},
 			createdAt: {
 				allowNull: false,

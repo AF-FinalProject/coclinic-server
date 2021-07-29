@@ -13,8 +13,6 @@ const userCustomer = {
   dob: '1993-01-09',
   latitude: -6.531673,
   longitude: 106.796378,
-  createdAt: new Date(),
-  updatedAt: new Date()
 }
 
 const { name, nik, email, password, address, phone_number, dob, latitude, longitude } = userCustomer

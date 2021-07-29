@@ -50,6 +50,7 @@ beforeAll(done => {
     .then(customer2 => {
       tokenCustomer2 = generateToken({ id: customer2.id, email: customer2.email, name: customer2.name })
       customer2Id = customer2.id;
+      done()
     })
     .catch(err => done(err))
 })
@@ -57,6 +58,7 @@ beforeAll(done => {
 afterAll(done => {
   User.destroy({ where: { id: customer1Id } })
     .then(_ => User.destroy({ where: { id: customer2Id } }))
+    .then(_ => done())
     .catch(err => done(err))
 })
 
