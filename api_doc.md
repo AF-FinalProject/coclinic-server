@@ -131,7 +131,7 @@ Required Auth: Yes(only for customer)
 
 ```
 {
-  date_swab: "<new todo title>",
+  "date_swab": "2021-07-30T00:00:00.000Z"
 }
 ```
 
