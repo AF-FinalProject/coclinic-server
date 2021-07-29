@@ -20,6 +20,7 @@ function errorHandler(err, req, res, next) {
       }
       break;
     case 'JsonWebTokenError':
+      console.log('masuk')
       statusCode = 401
       message = [`UnAuthenticated - You are not logged in`]
       break;

@@ -3,14 +3,14 @@ const { verifyToken } = require('../helpers/token-helper')
 
 
 const authentication = async (req, res, next) => {
-  const decode = verifyToken(req.headers.access_token)
   try {
+    const decode = verifyToken(req.headers.access_token)
     const user = await User.findByPk(+decode.id)
     if (user) {
       req.logginUser = { id: user.id, email: user.email, role: user.role }
       next()
     } else {
-      next({ msg: "Invalid email or password" })
+      next(err)
     }
   } catch (err) {
     next(err)
