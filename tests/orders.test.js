@@ -8,6 +8,7 @@ let tokenAdmin;
 let tokenCustomer;
 let customerId;
 let idOrder;
+const idNotFound = 1232;
 
 
 const customer = {
@@ -49,7 +50,6 @@ afterAll(done => {
 
 
 describe('POST /orders', () => {
-  // sukses dengan role customer
   describe('Success Case', () => {
     it('201 Created - should return object of success true and message Successfully placed order', (done) => {
       const newOrder = {
@@ -72,9 +72,7 @@ describe('POST /orders', () => {
         })
     })
   })
-  // error add order
   describe('Error Case', () => {
-    // has not logged in
     it('401 UnAuthenticated - error because user has not logged in', (done) => {
       const newOrder = {
         date_swab: new Date(),
@@ -92,7 +90,6 @@ describe('POST /orders', () => {
           }
         })
     })
-    //unauthorized, not customer token
     it('403 UnAuthorized - error because user is not customer', (done) => {
       const newOrder = {
         date_swab: new Date(),
@@ -111,7 +108,6 @@ describe('POST /orders', () => {
           }
         })
     })
-    //date swab is null
     it('400 bad Request - error because req body does not have date_swab ', (done) => {
       const newOrder = {
       }
@@ -132,7 +128,6 @@ describe('POST /orders', () => {
   })
 })
 
-// fethAllCustomer
 describe('GET /orders/customers', () => {
   describe('Success Case', () => {
     it('200 OK - should return object of success true and data include array of orders that belongs to logged in user', (done) => {
@@ -165,7 +160,6 @@ describe('GET /orders/customers', () => {
           }
         })
     })
-    //unauthorized, not customer token
     it('403 UnAuthorized - error because user is not customer', (done) => {
       request(app)
         .post('/orders')
@@ -184,7 +178,6 @@ describe('GET /orders/customers', () => {
   })
 })
 
-//fetchAllAdmin
 describe('GET /orders/admin', () => {
   describe('Success Case', () => {
     it('200 OK - should return object of success true and data include array of all orders in database', (done) => {
@@ -217,7 +210,6 @@ describe('GET /orders/admin', () => {
           }
         })
     })
-    //unauthorized, not admin token
     it('403 UnAuthorized - error because user is not admin', (done) => {
       request(app)
         .get('/orders/admin')
@@ -236,7 +228,6 @@ describe('GET /orders/admin', () => {
   })
 })
 
-//getDetailOrder
 describe('GET /orders/:id', () => {
   describe('Success Case', () => {
     it('200 OK - should return object of success true and data include of object orders', (done) => {
@@ -269,7 +260,6 @@ describe('GET /orders/:id', () => {
           }
         })
     })
-    //unauthorized, not admin token
     it('403 UnAuthorized - error because user is not admin', (done) => {
       request(app)
         .get(`/orders/${idOrder}`)
@@ -284,10 +274,23 @@ describe('GET /orders/:id', () => {
           }
         })
     })
-
+    it('404 Not Found - error because order with the specific id not found', (done) => {
+      request(app)
+        .get(`/orders/${idNotFound}`)
+        .set('access_token', tokenAdmin)
+        .end(function (err, res) {
+          if (err) done(err)
+          else {
+            expect(res.status).toBe(404)
+            expect(typeof res.body).toEqual('object')
+            expect(res.body.message[0]).toEqual('Order not found')
+            done()
+          }
+        })
+    })
   })
 })
-//Put order
+
 describe('PUT /orders/:id', () => {
   describe('Success Case', () => {
     it('200 OK - should return object of success true and message Successfully updated orders', (done) => {
@@ -328,7 +331,6 @@ describe('PUT /orders/:id', () => {
           }
         })
     })
-    //unauthorized, not admin token
     it('403 UnAuthorized - error because user is not admin', (done) => {
       request(app)
         .put(`/orders/${idOrder}`)
@@ -347,10 +349,29 @@ describe('PUT /orders/:id', () => {
           }
         })
     })
+    it('404 Not Found - error because order with the specific id not found', (done) => {
+      request(app)
+        .put(`/orders/${idNotFound}`)
+        .set('access_token', tokenAdmin)
+        .send({
+          status_payment: "Berhasil",
+          status_swab: "Positif"
+        })
+        .end(function (err, res) {
+          if (err) done(err)
+          else {
+            expect(res.status).toBe(404)
+            expect(typeof res.body).toEqual('object')
+            expect(res.body.message[0]).toEqual('Order not found')
+            done()
+          }
+        })
+    })
+
   })
 })
-//delete order
-describe('PUT /orders/:id', () => {
+
+describe('DELETE /orders/:id', () => {
   describe('Success Case', () => {
     it('200 OK - should return object of success true and message Successfully updated orders', (done) => {
       request(app)
@@ -382,7 +403,6 @@ describe('PUT /orders/:id', () => {
           }
         })
     })
-    //unauthorized, not admin token
     it('403 UnAuthorized - error because user is not admin', (done) => {
       request(app)
         .delete(`/orders/${idOrder}`)
@@ -393,6 +413,20 @@ describe('PUT /orders/:id', () => {
             expect(res.status).toBe(403)
             expect(typeof res.body).toEqual('object')
             expect(res.body.message[0]).toEqual('UnAuthorized - Access is denied')
+            done()
+          }
+        })
+    })
+    it('404 Not Found - error because order with the specific id not found', (done) => {
+      request(app)
+        .delete(`/orders/${idNotFound}`)
+        .set('access_token', tokenAdmin)
+        .end(function (err, res) {
+          if (err) done(err)
+          else {
+            expect(res.status).toBe(404)
+            expect(typeof res.body).toEqual('object')
+            expect(res.body.message[0]).toEqual('Order not found')
             done()
           }
         })

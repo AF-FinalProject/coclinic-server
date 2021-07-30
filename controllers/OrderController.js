@@ -60,16 +60,11 @@ class OrderController {
 				if (status_swab === "Positif" && order.status_swab === "Menunggu") {
 					Live_Tracking.create({ latitude: 0, longitude: 0, OrderId: order.id })
 				}
-				// else if (status_swab === "Negatif") {
-				// 	delete LT nya yang punya orderId ini
-				// }
 
 				order.status_payment = Boolean(status_payment);
 				order.status_swab = status_swab;
 				order.save()
 				res.status(200).json({ success: true, message: "Successfully updated order" })
-				// harusnya ada 1 kondisi lagi jika status_swab = "Negatif"
-				// maka hapus juga data orderId ini di LT
 
 			} else {
 				next({ msg: "Order not found" })
@@ -82,7 +77,7 @@ class OrderController {
 	static async delete(req, res, next) {
 		try {
 			const { id } = req.params;
-			const order = await Order.findByPk(id) // jika dapat order, hasilnya object
+			const order = await Order.findByPk(id)
 			if (order) {
 				await order.destroy()
 				res.status(200).json({ success: true, message: "Successfully deleted order" })

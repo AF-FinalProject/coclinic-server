@@ -8,7 +8,7 @@ let tokenAdmin;
 let tokenCustomer;
 let customerId;
 let idLiveTracking;
-
+const idNotFound = 456789;
 
 const customer = {
   name: 'Lili',
@@ -72,7 +72,7 @@ afterAll(done => {
     .catch(err => done(err))
 })
 
-//getDetailLiveTracking
+
 describe('GET /tracking/:id', () => {
   describe('Success Case', () => {
     it('200 OK - should return object of success true and data include of object location', (done) => {
@@ -92,7 +92,6 @@ describe('GET /tracking/:id', () => {
     })
   })
   describe('Error Cases', () => {
-    // has not logged in
     it('401 UnAuthenticated - error because user has not logged in', (done) => {
       request(app)
         .get(`/tracking/${idLiveTracking}`)
@@ -106,7 +105,6 @@ describe('GET /tracking/:id', () => {
           }
         })
     })
-    //unauthorized, not admin token
     it('403 UnAuthorized - error because user is not admin', (done) => {
       request(app)
         .get(`/tracking/${idLiveTracking}`)
@@ -121,14 +119,27 @@ describe('GET /tracking/:id', () => {
           }
         })
     })
+    it('404 Not Found - error because live tracking with specific id is not found', (done) => {
+      request(app)
+        .get(`/tracking/${idNotFound}`)
+        .set("access_token", tokenAdmin)
+        .end(function (err, res) {
+          if (err) done(err)
+          else {
+            expect(res.status).toBe(404)
+            expect(typeof res.body).toEqual('object')
+            expect(res.body.message[0]).toEqual('Location not found')
+            done()
+          }
+        })
+    })
 
   })
 })
 
-//Put live tracking
 describe('PUT /tracking/:id', () => {
   describe('Success Case', () => {
-    it('200 OK - should return object of success true and message Successfully updated live tracking', (done) => {
+    it('200 OK - Should return object of success true and message Successfully updated live tracking', (done) => {
       request(app)
         .put(`/tracking/${idLiveTracking}`)
         .set('access_token', tokenAdmin)
@@ -149,7 +160,6 @@ describe('PUT /tracking/:id', () => {
     })
   })
   describe('Error Cases', () => {
-    // has not logged in
     it('401 UnAuthenticated - error because user has not logged in', (done) => {
       request(app)
         .put(`/tracking/${idLiveTracking}`)
@@ -167,7 +177,6 @@ describe('PUT /tracking/:id', () => {
           }
         })
     })
-    //unauthorized, not admin token
     it('403 UnAuthorized - error because user is not admin', (done) => {
       request(app)
         .put(`/tracking/${idLiveTracking}`)
@@ -186,7 +195,6 @@ describe('PUT /tracking/:id', () => {
           }
         })
     })
-    //latitude null
     it('400 Bad Request- error SequelizeValidationError, because latitude is null', (done) => {
       request(app)
         .put(`/tracking/${idLiveTracking}`)
@@ -204,7 +212,6 @@ describe('PUT /tracking/:id', () => {
           }
         })
     })
-    //longitude null
     it('400 Bad Request- error SequelizeValidationError, because longitude is null', (done) => {
       request(app)
         .put(`/tracking/${idLiveTracking}`)
@@ -222,7 +229,6 @@ describe('PUT /tracking/:id', () => {
           }
         })
     })
-    //wrong latitude data type
     it('400 Bad Request- error SequelizeValidationError, because latitude filled with wrong data type', (done) => {
       request(app)
         .put(`/tracking/${idLiveTracking}`)
@@ -241,7 +247,6 @@ describe('PUT /tracking/:id', () => {
           }
         })
     })
-    //wrong longitude data type
     it('400 Bad Request- error SequelizeValidationError, because longitude filled with wrong data type', (done) => {
       request(app)
         .put(`/tracking/${idLiveTracking}`)
@@ -256,6 +261,24 @@ describe('PUT /tracking/:id', () => {
             expect(res.status).toBe(400)
             expect(typeof res.body).toEqual('object')
             expect(res.body.message[0]).toEqual('Invalid longitude')
+            done()
+          }
+        })
+    })
+    it('404 Not Found - error because live tracking with specific id is not found', (done) => {
+      request(app)
+        .put(`/tracking/${idNotFound}`)
+        .set('access_token', tokenAdmin)
+        .send({
+          "latitude" : -6.186331,
+          "longitude" : 106.819939
+        })
+        .end(function (err, res) {
+          if (err) done(err)
+          else {
+            expect(res.status).toBe(404)
+            expect(typeof res.body).toEqual('object')
+            expect(res.body.message[0]).toEqual('Location not found')
             done()
           }
         })
