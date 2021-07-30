@@ -45,7 +45,7 @@ class LiveTrackingController {
         location.latitude = latitude
         location.longitude = longitude
         await location.save()
-        res.status(200).json({ success: true, message: "Successfully updated" })
+        res.status(200).json({ success: true, message: "Successfully updated live tracking" })
 
       } else {
         next({ msg: "Location not found" })
@@ -75,7 +75,7 @@ class LiveTrackingController {
           }],
       })
       if (location) {
-        res.status(200).json({ success: true, data: location })
+        res.status(200).json({ success: true, data: { location } })
         next()
       } else {
         next({ msg: "Location not found" })

@@ -4,7 +4,7 @@ class OrderController {
 	static async add(req, res, next) {
 		try {
 			const { date_swab } = req.body;
-			const status_payment = "Belum bayar";
+			const status_payment = false;
 			const status_swab = "Menunggu";
 			const type_swab = "PCR"
 			const newOrder = {
@@ -14,10 +14,9 @@ class OrderController {
 				type_swab,
 				date_swab
 			}
-
-			await Order.create(newOrder)
-
-			res.status(201).json({ success: true, message: "Successfully placed order" })
+			const order = await Order.create(newOrder)
+      console.log(order, 'ini order')
+			res.status(201).json({ success: true, message: "Successfully placed order", order })
 		} catch (error) {
 			next(error)
 		}
@@ -58,19 +57,14 @@ class OrderController {
 			const { status_payment, status_swab } = req.body
 			const order = await Order.findByPk(id)
 			if (order) {
-				if (status_swab === "Positif") {
+				if (status_swab === "Positif" && order.status_swab === "Menunggu") {
 					Live_Tracking.create({ latitude: 0, longitude: 0, OrderId: order.id })
 				}
-				// else if (status_swab === "Negatif") {
-				// 	delete LT nya yang punya orderId ini
-				// }
 
-				order.status_payment = status_payment;
+				order.status_payment = Boolean(status_payment);
 				order.status_swab = status_swab;
 				order.save()
 				res.status(200).json({ success: true, message: "Successfully updated order" })
-				// harusnya ada 1 kondisi lagi jika status_swab = "Negatif"
-				// maka hapus juga data orderId ini di LT
 
 			} else {
 				next({ msg: "Order not found" })
@@ -83,7 +77,7 @@ class OrderController {
 	static async delete(req, res, next) {
 		try {
 			const { id } = req.params;
-			const order = await Order.findByPk(id) // jika dapat order, hasilnya object
+			const order = await Order.findByPk(id)
 			if (order) {
 				await order.destroy()
 				res.status(200).json({ success: true, message: "Successfully deleted order" })

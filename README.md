@@ -82,7 +82,7 @@ Response Body:
 
 ```
 Login with account that already register in database system
-URL: /users/login
+URL: /login
 Method: POST
 Required Auth: No
 ```
@@ -142,8 +142,18 @@ Status: 201 Created
 Response Body:
 
 {
-  status: true,
-  message: "Successfully placed order"
+    "success": true,
+    "message": "Successfully placed order",
+    "order": {
+        "id": 1,
+        "UserId": 2,
+        "status_payment": "Belum bayar",
+        "status_swab": "Menunggu",
+        "type_swab": "PCR",
+        "date_swab": "2021-07-31T00:00:00.000Z",
+        "updatedAt": "2021-07-30T00:34:37.195Z",
+        "createdAt": "2021-07-30T00:34:37.195Z"
+    }
 }
 ```
 
@@ -192,7 +202,7 @@ Response Body:
 }
 ```
 
-3. Get Orders for Admins
+3. Get Orders for Admin
 
 ```
 Get all orders from database
@@ -556,7 +566,7 @@ Response Body:
 
 ```
 {
-  status: 401,
+  status: 403,
   message: ['UnAuthorized - Access is denied']
 }
 ```

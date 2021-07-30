@@ -80,14 +80,12 @@ module.exports = (sequelize, DataTypes) => {
 					},
 				},
 			},
-			UserId: {
-				type: DataTypes.INTEGER,
-			},
+			UserId: DataTypes.INTEGER,
 		},
 		{
 			hooks: {
 				beforeCreate: (order) => {
-					if (!order.status_payment) order.status_payment = "Belum bayar";
+					if (!order.status_payment) order.status_payment = false;
 					if (!order.type_swab) order.type_swab = "PCR";
 					if (!order.status_swab) order.status_swab = "Menunggu"; 
 					return order

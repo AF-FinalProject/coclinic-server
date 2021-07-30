@@ -31,7 +31,6 @@ afterAll(done => {
 
 
 describe('POST /register', () => {
-  // success
   describe('Success Case', () => {
     it('201 Created - should return object with success true and message Successfully Added User', (done) => {
       request(app)
@@ -51,7 +50,6 @@ describe('POST /register', () => {
   })
 
   describe('Error Cases', () => {
-    // NAME
     it('400 Bad Request- error SequelizeValidationError, because name is empty', (done) => {
       request(app)
         .post('/register')
@@ -86,7 +84,6 @@ describe('POST /register', () => {
           }
         })
     })
-    // NIK
     it('400 Bad Request- error SequelizeValidationError, because NIK is empty', (done) => {
       request(app)
         .post('/register')
@@ -121,8 +118,6 @@ describe('POST /register', () => {
           }
         })
     })
-    // EMAIL
-    // email must be unique
     it('400 Bad Request -  error because SequelizeUniqueConstraintError, email is already exist in database or email must be unique', (done) => {
       request(app)
         .post('/register')
@@ -140,7 +135,6 @@ describe('POST /register', () => {
           }
         })
     })
-    //invalid format email
     it('400 Bad Request- error SequelizeValidationError because invalid format email', (done) => {
       request(app)
         .post('/register')
@@ -158,7 +152,6 @@ describe('POST /register', () => {
           }
         })
     })
-    // email is empty and invalid format email
     it('400 Bad Request- error SequelizeValidationError, because email is empty', (done) => {
       request(app)
         .post('/register')
@@ -177,7 +170,6 @@ describe('POST /register', () => {
           }
         })
     })
-    // email is null
     it('400 Bad Request- error SequelizeValidationError, because email is null', (done) => {
       request(app)
         .post('/register')
@@ -194,7 +186,6 @@ describe('POST /register', () => {
           }
         })
     })
-    // PASSWORD
     it('400 Bad Request- error SequelizeValidationError, because password is empty', (done) => {
       request(app)
         .post('/register')
@@ -227,7 +218,6 @@ describe('POST /register', () => {
           }
         })
     })
-    //password min 6 character
     it('400 Bad Request- error SequelizeValidationError, because password is less than 6 character', (done) => {
       request(app)
         .post('/register')
@@ -244,7 +234,6 @@ describe('POST /register', () => {
           }
         })
     })
-    // ADDRESS
     it('400 Bad Request- error SequelizeValidationError, because address is empty', (done) => {
       request(app)
         .post('/register')
@@ -279,7 +268,6 @@ describe('POST /register', () => {
           }
         })
     })
-    // PHONE NUMBER 
     it('400 Bad Request- error SequelizeValidationError, because phone_number is empty', (done) => {
       request(app)
         .post('/register')
@@ -314,7 +302,6 @@ describe('POST /register', () => {
           }
         })
     })
-    //DATE OF BIRTH
     it('400 Bad Request- error SequelizeValidationError, because date of birth is empty', (done) => {
       request(app)
         .post('/register')
@@ -366,7 +353,6 @@ describe('POST /register', () => {
           }
         })
     })
-    // LATITUDE
     it('400 Bad Request- error SequelizeValidationError, because invalid latitude', (done) => {
       request(app)
         .post('/register')
@@ -401,7 +387,6 @@ describe('POST /register', () => {
           }
         })
     })
-    // LONGITUDE 
     it('400 Bad Request- error SequelizeValidationError, because invalid longitude', (done) => {
       request(app)
         .post('/register')
@@ -438,8 +423,6 @@ describe('POST /register', () => {
     })
   })
 })
-
-
 
 describe('POST /login', () => {
   describe('Success Case Admin', () => {
@@ -559,5 +542,4 @@ describe('POST /login', () => {
         })
     })
   })
-
 })
