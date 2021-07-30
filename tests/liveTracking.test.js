@@ -186,5 +186,79 @@ describe('PUT /tracking/:id', () => {
           }
         })
     })
+    //latitude null
+    it('400 Bad Request- error SequelizeValidationError, because latitude is null', (done) => {
+      request(app)
+        .put(`/tracking/${idLiveTracking}`)
+        .set("access_token", tokenAdmin)
+        .send({
+          "longitude" : 106.819939
+        })
+        .end(function (err, res) {
+          if (err) done(err)
+          else {
+            expect(res.status).toBe(400)
+            expect(typeof res.body).toEqual('object')
+            expect(res.body.message[0]).toEqual('Latitude must not be null')
+            done()
+          }
+        })
+    })
+    //longitude null
+    it('400 Bad Request- error SequelizeValidationError, because longitude is null', (done) => {
+      request(app)
+        .put(`/tracking/${idLiveTracking}`)
+        .set("access_token", tokenAdmin)
+        .send({
+          "latitude" : -6.186331
+        })
+        .end(function (err, res) {
+          if (err) done(err)
+          else {
+            expect(res.status).toBe(400)
+            expect(typeof res.body).toEqual('object')
+            expect(res.body.message[0]).toEqual('Longitude must not be null')
+            done()
+          }
+        })
+    })
+    //wrong latitude data type
+    it('400 Bad Request- error SequelizeValidationError, because latitude filled with wrong data type', (done) => {
+      request(app)
+        .put(`/tracking/${idLiveTracking}`)
+        .set("access_token", tokenAdmin)
+        .send({
+          "latitude" : "latitude",
+          "longitude" : 106.819939
+        })
+        .end(function (err, res) {
+          if (err) done(err)
+          else {
+            expect(res.status).toBe(400)
+            expect(typeof res.body).toEqual('object')
+            expect(res.body.message[0]).toEqual('Invalid latitude')
+            done()
+          }
+        })
+    })
+    //wrong longitude data type
+    it('400 Bad Request- error SequelizeValidationError, because longitude filled with wrong data type', (done) => {
+      request(app)
+        .put(`/tracking/${idLiveTracking}`)
+        .set("access_token", tokenAdmin)
+        .send({
+          "latitude" : -6.186331,
+          "longitude" : "longitude"
+        })
+        .end(function (err, res) {
+          if (err) done(err)
+          else {
+            expect(res.status).toBe(400)
+            expect(typeof res.body).toEqual('object')
+            expect(res.body.message[0]).toEqual('Invalid longitude')
+            done()
+          }
+        })
+    })
   })
 })
