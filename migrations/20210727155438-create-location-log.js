@@ -17,7 +17,13 @@ module.exports = {
         type: Sequelize.DOUBLE
       },
       OrderId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+				references: {
+					model: 'Orders',
+					key: 'id'
+				},
+				onDelete: 'cascade',
+				onUpdate: 'cascade'
       },
       createdAt: {
         allowNull: false,

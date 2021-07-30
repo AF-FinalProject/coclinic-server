@@ -18,6 +18,13 @@ module.exports = {
 			},
 			OrderId: {
 				type: Sequelize.INTEGER,
+				references: {
+					model: 'Orders',
+					key: 'id'
+				},
+				onDelete: 'cascade',
+				onUpdate: 'cascade'
+
 			},
 			createdAt: {
 				allowNull: false,

@@ -142,8 +142,18 @@ Status: 201 Created
 Response Body:
 
 {
-  status: true,
-  message: "Successfully placed order"
+    "success": true,
+    "message": "Successfully placed order",
+    "order": {
+        "id": 1,
+        "UserId": 2,
+        "status_payment": "Belum bayar",
+        "status_swab": "Menunggu",
+        "type_swab": "PCR",
+        "date_swab": "2021-07-31T00:00:00.000Z",
+        "updatedAt": "2021-07-30T00:34:37.195Z",
+        "createdAt": "2021-07-30T00:34:37.195Z"
+    }
 }
 ```
 

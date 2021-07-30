@@ -80,9 +80,7 @@ module.exports = (sequelize, DataTypes) => {
 					},
 				},
 			},
-			UserId: {
-				type: DataTypes.INTEGER,
-			},
+			UserId: DataTypes.INTEGER,
 		},
 		{
 			hooks: {

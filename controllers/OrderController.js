@@ -14,9 +14,9 @@ class OrderController {
 				type_swab,
 				date_swab
 			}
-			await Order.create(newOrder)
-
-			res.status(201).json({ success: true, message: "Successfully placed order" })
+			const order = await Order.create(newOrder)
+      console.log(order, 'ini order')
+			res.status(201).json({ success: true, message: "Successfully placed order", order })
 		} catch (error) {
 			next(error)
 		}

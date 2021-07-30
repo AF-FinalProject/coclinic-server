@@ -46,10 +46,6 @@ module.exports = (sequelize, DataTypes) => {
     OrderId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      references: {
-        model: 'Orders',
-        key: 'id'
-      },
       validate: {
         notNull: {
           args: true,
