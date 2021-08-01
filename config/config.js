@@ -4,6 +4,7 @@ if (env !== 'production') {
   require('dotenv').config()
 }
 
+
 const capsEnv = env.toUpperCase()
 
 const username = process.env["DB_USERNAME_" + capsEnv]

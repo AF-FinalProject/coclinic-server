@@ -37,6 +37,13 @@ http://localhost:3000
 - PUT /tracking/:id
 ```
 
+4. Transaction
+
+```
+- POST /midtrans/createTransaction
+- POST /midtrans/notification/handling
+```
+
 # Endpoints
 
 ### USERS
@@ -131,7 +138,7 @@ Required Auth: Yes(only for customer)
 
 ```
 {
-  date_swab: "<new todo title>",
+  date_swab: "<new date swab>",
 }
 ```
 
@@ -182,20 +189,67 @@ Response Body:
 
 
 {
-  "success": true,
+    "success": true,
     "data": {
         "orders": [
             {
                 "id": 1,
                 "status_payment": "Belum bayar",
+                "status_swab": "Positif",
+                "type_swab": "PCR",
+                "date_swab": "2021-07-31T00:00:00.000Z",
+                "UserId": 2,
+                "createdAt": "2021-07-30T00:34:37.195Z",
+                "updatedAt": "2021-07-30T00:50:15.167Z",
+                "Live_Tracking": {
+                    "id": 1,
+                    "latitude": 0,
+                    "longitude": 0,
+                    "OrderId": 1,
+                    "createdAt": "2021-07-30T00:50:15.166Z",
+                    "updatedAt": "2021-07-30T00:50:15.166Z"
+                },
+                "Location_Logs": [],
+                "User": {
+                    "id": 2,
+                    "name": "testCus",
+                    "nik": "1222222",
+                    "role": "Customer",
+                    "email": "testcus@mail.com",
+                    "address": "Jl. Bogor",
+                    "phone_number": "3333333333333",
+                    "dob": "1994-01-09T00:00:00.000Z",
+                    "latitude": -6.531673,
+                    "longitude": 106.796378,
+                    "createdAt": "2021-07-30T00:34:22.818Z",
+                    "updatedAt": "2021-07-30T00:34:22.818Z"
+                }
+            },
+            {
+                "id": 2,
+                "status_payment": "Belum bayar",
                 "status_swab": "Menunggu",
                 "type_swab": "PCR",
-                "date_swab": "2021-07-30T00:00:00.000Z",
+                "date_swab": "2021-08-31T00:00:00.000Z",
                 "UserId": 2,
-                "createdAt": "2021-07-29T18:26:37.120Z",
-                "updatedAt": "2021-07-29T18:26:37.120Z",
+                "createdAt": "2021-08-01T12:25:23.326Z",
+                "updatedAt": "2021-08-01T12:25:23.326Z",
                 "Live_Tracking": null,
-                "Location_Logs": []
+                "Location_Logs": [],
+                "User": {
+                    "id": 2,
+                    "name": "testCus",
+                    "nik": "1222222",
+                    "role": "Customer",
+                    "email": "testcus@mail.com",
+                    "address": "Jl. Bogor",
+                    "phone_number": "3333333333333",
+                    "dob": "1994-01-09T00:00:00.000Z",
+                    "latitude": -6.531673,
+                    "longitude": 106.796378,
+                    "createdAt": "2021-07-30T00:34:22.818Z",
+                    "updatedAt": "2021-07-30T00:34:22.818Z"
+                }
             }
         ]
     }
@@ -233,24 +287,59 @@ Response Body:
                 "status_payment": "Belum bayar",
                 "status_swab": "Menunggu",
                 "type_swab": "PCR",
-                "date_swab": "2021-08-01T00:00:00.000Z",
+                "date_swab": "2021-08-31T00:00:00.000Z",
                 "UserId": 2,
-                "createdAt": "2021-07-29T18:55:53.628Z",
-                "updatedAt": "2021-07-29T18:55:53.628Z",
+                "createdAt": "2021-08-01T12:25:23.326Z",
+                "updatedAt": "2021-08-01T12:25:23.326Z",
                 "Live_Tracking": null,
-                "Location_Logs": []
+                "Location_Logs": [],
+                "User": {
+                    "id": 2,
+                    "name": "testCus",
+                    "nik": "1222222",
+                    "role": "Customer",
+                    "email": "testcus@mail.com",
+                    "address": "Jl. Bogor",
+                    "phone_number": "3333333333333",
+                    "dob": "1994-01-09T00:00:00.000Z",
+                    "latitude": -6.531673,
+                    "longitude": 106.796378,
+                    "createdAt": "2021-07-30T00:34:22.818Z",
+                    "updatedAt": "2021-07-30T00:34:22.818Z"
+                }
             },
             {
                 "id": 1,
                 "status_payment": "Belum bayar",
-                "status_swab": "Menunggu",
+                "status_swab": "Positif",
                 "type_swab": "PCR",
-                "date_swab": "2021-07-30T00:00:00.000Z",
+                "date_swab": "2021-07-31T00:00:00.000Z",
                 "UserId": 2,
-                "createdAt": "2021-07-29T18:26:37.120Z",
-                "updatedAt": "2021-07-29T18:26:37.120Z",
-                "Live_Tracking": null,
-                "Location_Logs": []
+                "createdAt": "2021-07-30T00:34:37.195Z",
+                "updatedAt": "2021-07-30T00:50:15.167Z",
+                "Live_Tracking": {
+                    "id": 1,
+                    "latitude": 0,
+                    "longitude": 0,
+                    "OrderId": 1,
+                    "createdAt": "2021-07-30T00:50:15.166Z",
+                    "updatedAt": "2021-07-30T00:50:15.166Z"
+                },
+                "Location_Logs": [],
+                "User": {
+                    "id": 2,
+                    "name": "testCus",
+                    "nik": "1222222",
+                    "role": "Customer",
+                    "email": "testcus@mail.com",
+                    "address": "Jl. Bogor",
+                    "phone_number": "3333333333333",
+                    "dob": "1994-01-09T00:00:00.000Z",
+                    "latitude": -6.531673,
+                    "longitude": 106.796378,
+                    "createdAt": "2021-07-30T00:34:22.818Z",
+                    "updatedAt": "2021-07-30T00:34:22.818Z"
+                }
             }
         ]
     }
@@ -291,13 +380,34 @@ Response Body:
         "order": {
             "id": 1,
             "status_payment": "Belum bayar",
-            "status_swab": "Menunggu",
+            "status_swab": "Positif",
             "type_swab": "PCR",
-            "date_swab": "2021-07-30T00:00:00.000Z",
+            "date_swab": "2021-07-31T00:00:00.000Z",
             "UserId": 2,
-            "createdAt": "2021-07-29T18:26:37.120Z",
-            "updatedAt": "2021-07-29T18:26:37.120Z",
-            "Live_Tracking": null
+            "createdAt": "2021-07-30T00:34:37.195Z",
+            "updatedAt": "2021-07-30T00:50:15.167Z",
+            "Live_Tracking": {
+                "id": 1,
+                "latitude": 0,
+                "longitude": 0,
+                "OrderId": 1,
+                "createdAt": "2021-07-30T00:50:15.166Z",
+                "updatedAt": "2021-07-30T00:50:15.166Z"
+            },
+            "User": {
+                "id": 2,
+                "name": "testCus",
+                "nik": "1222222",
+                "role": "Customer",
+                "email": "testcus@mail.com",
+                "address": "Jl. Bogor",
+                "phone_number": "3333333333333",
+                "dob": "1994-01-09T00:00:00.000Z",
+                "latitude": -6.531673,
+                "longitude": 106.796378,
+                "createdAt": "2021-07-30T00:34:22.818Z",
+                "updatedAt": "2021-07-30T00:34:22.818Z"
+            }
         }
     }
 }
@@ -501,6 +611,110 @@ Response Body:
         }
     }
 }
+```
+
+`
+
+### TRANSACTIONS
+
+1. Create Transaction to Payment Gateway (midtrans)
+
+```
+Create new transaction to midtrans
+URL: /midtrans/createTransaction
+Method: POST
+Required Auth: Yes(only for customer)
+```
+
+- Request Headers:
+
+```
+{
+  access_token: "<user access_token>"
+}
+```
+
+- Request Body:
+
+```
+const parameter = {
+  "transaction_details": {
+    "order_id": "<order id>",
+    "gross_amount": "<PCR price>"
+  },
+  "credit_card": {
+    "secure": true
+  },
+  "customer_details": {
+    "name": "<customer name>",
+    "phone": "<customer phone>",
+    "email": "<customer email>",
+    "address": "<customer address>"
+  }
+};
+```
+
+- Success Response:
+
+```
+Status: 200 OK
+Response Body:
+
+{
+  token: "<string of token>",
+  redirect_url: "<redirect link midtrans>"
+}
+
+```
+
+2. Create transaction and record transaction in database
+
+```
+Create new record transaction
+URL: /midtrans/notification/handling
+Method: POST
+Required Auth: No
+```
+
+- Request Headers:
+
+```
+{
+  access_token: "<user access_token>"
+}
+```
+
+- Request Body:
+
+```
+{
+  "transaction_time": "2021-08-01 00:31:49",
+  "transaction_status": "settlement",
+  "transaction_id": "025f506c-cc41-4534-9325-6f1a96a087e8",
+  "status_message": "midtrans payment notification",
+  "status_code": "200",
+  "signature_key": "9fd205377440b64e7a439c93e8e6970ea43b2d6a9048ab0b7fd3685d2fa9c4cf07b7695dd614ec975f314947d30fef59af0b2c7d41c5507785c80ddeb2b33ffe",
+  "settlement_time": "2021-08-01 00:31:59" || null,
+  "payment_type": "bca_klikpay",
+  "order_id": "4",
+  "merchant_id": "G600070340",
+  "gross_amount": "200000.00",
+  "fraud_status": "accept",
+  "currency": "IDR",
+  "approval_code": "112233" || null
+}
+```
+
+- Success Response:
+
+```
+Status: 200 OK
+Response Body:
+
+{
+  OK : "OK"
+}
+
 ```
 
 # RESTful Error Message

@@ -108,7 +108,7 @@ describe('POST /orders', () => {
           }
         })
     })
-    it('400 bad Request - error because req body does not have date_swab ', (done) => {
+    it('400 Bad Request - error because req body does not have date_swab ', (done) => {
       const newOrder = {
       }
       request(app)
@@ -121,6 +121,54 @@ describe('POST /orders', () => {
             expect(res.status).toBe(400)
             expect(typeof res.body).toEqual('object')
             expect(res.body.message[0]).toEqual('Swab date must not be null')
+            done()
+          }
+        })
+    })
+    it('400 Bad Request - error because date_swab is empty ', (done) => {
+      const newOrder = { date_swab: "" }
+      request(app)
+        .post('/orders')
+        .set("access_token", tokenCustomer)
+        .send(newOrder)
+        .end(function (err, res) {
+          if (err) done(err)
+          else {
+            expect(res.status).toBe(400)
+            expect(typeof res.body).toEqual('object')
+            expect(res.body.message[0]).toEqual('Swab date must not be empty')
+            done()
+          }
+        })
+    })
+    it('400 Bad Request - error because date_swab must not be before than today', (done) => {
+      const newOrder = { date_swab: "2021-06-03" }
+      request(app)
+        .post('/orders')
+        .set("access_token", tokenCustomer)
+        .send(newOrder)
+        .end(function (err, res) {
+          if (err) done(err)
+          else {
+            expect(res.status).toBe(400)
+            expect(typeof res.body).toEqual('object')
+            expect(res.body.message[0]).toEqual('Swab Date must not be before than today')
+            done()
+          }
+        })
+    })
+    it('400 Bad Request - error because invalid date_swab', (done) => {
+      const newOrder = { date_swab: "2021-07-35" }
+      request(app)
+        .post('/orders')
+        .set("access_token", tokenCustomer)
+        .send(newOrder)
+        .end(function (err, res) {
+          if (err) done(err)
+          else {
+            expect(res.status).toBe(400)
+            expect(typeof res.body).toEqual('object')
+            expect(res.body.message[0]).toEqual('Invalid date')
             done()
           }
         })
@@ -367,7 +415,6 @@ describe('PUT /orders/:id', () => {
           }
         })
     })
-
   })
 })
 

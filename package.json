@@ -17,7 +17,7 @@
     "db:migrate:development": "NODE_ENV=development npx sequelize db:migrate",
     "db:seed:development": "NODE_ENV=development npx sequelize db:seed:all",
     "db:setup:development": "NODE_ENV=development npm run db:create:development && NODE_ENV=development npm run db:migrate:development && NODE_ENV=development npm run db:seed:development",
-    "test": "NODE_ENV=test npx jest --detectOpenHandles --forceExit --runInBand",
+    "test": "NODE_ENV=test npx jest --detectOpenHandles --forceExit --runInBand --coverage",
     "dev": "NODE_ENV=development nodemon bin/http.js",
     "start": "node bin/http.js"
   },
@@ -38,6 +38,7 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
+    "midtrans-client": "^1.2.4",
     "moment": "^2.29.1",
     "node-cron": "^3.0.0",
     "pg": "^8.6.0",
