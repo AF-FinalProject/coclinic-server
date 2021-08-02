@@ -7,7 +7,7 @@ class MidtransContoller {
       // client harus ngasi ttg order dan informasi user di req.body.data
       const { transaction_details, customer_details } = req.body.data;
       // hardcode 
-      let parameter = {
+      const parameter = {
         "transaction_details": {
           "order_id": transaction_details.order_id,
           "gross_amount": 20
@@ -16,8 +16,10 @@ class MidtransContoller {
           "secure": secure
         },
         "customer_details": {
-          "name": customer_details.name,
-          "email": customer_details.email,
+          "name": customer.name,
+          "email": customer.email,
+          "phone": customer.phone_number,
+          "address": customer.address
         }
       };
 
@@ -83,6 +85,13 @@ class MidtransContoller {
       const apiResponse = e.ApiResponse
       const rawHttpClientData = e.rawHttpClientData
       res.status(statusCode).json({ message, apiResponse, rawHttpClientData })
+    }
+  }
+  static async errorHandling(req, res, next) {
+    try {
+      console.log('masuk error handling midtrnas')
+    } catch(e) {
+      console.log(e, "from error midtrans >>>>>>>")
     }
   }
 }

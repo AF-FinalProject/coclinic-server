@@ -25,6 +25,7 @@ class OrderController {
 		try {
 			const orders = await Order.findAll({
 				where: { UserId: +req.logginUser.id },
+				order: [['createdAt', 'DESC']],
 				include: [
 					{ model: Live_Tracking },
 					{ model: Location_Log },
@@ -53,7 +54,8 @@ class OrderController {
 							exclude: ['password']
 						}
 					}
-				]
+				],
+				order: [['createdAt', 'DESC']],
 			})
 			res.status(200).json({ success: true, data: { orders } })
 		} catch (error) {

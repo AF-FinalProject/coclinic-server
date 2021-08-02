@@ -464,7 +464,6 @@ Response Body:
 
 note:
 if status_swab = "Positif", maka create Live_Tracking untuk mendeteksi keberadaan user positif
-Live_Tracking.create({ latitude: 0, longitude: 0, OrderId: order.id })
 jika "Negatif" maka tidak usah di pantau dan deteksi keberadaannya
 ```
 
