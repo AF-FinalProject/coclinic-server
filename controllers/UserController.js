@@ -32,6 +32,17 @@ class UserController {
     }
   }
 
+  static async fetchAllCustomer(req, res, next) {
+		try {
+			const customers = await User.findAll({
+				where: { role: "Customer" }
+			})
+			res.status(200).json({ success: true, data: { customers } })
+		} catch (err) {
+			next(err)
+		}
+  }
+
 }
 
 module.exports = UserController
