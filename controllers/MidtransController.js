@@ -1,5 +1,5 @@
 const snap = require('../helpers/snap-midtrans');
-const { Order, Transaction } = require('./models')
+const { Order, Transaction } = require('../models')
 
 class MidtransContoller {
   static async createTransaction(req, res, next) {
