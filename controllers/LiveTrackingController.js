@@ -40,7 +40,7 @@ class LiveTrackingController {
         let userLong = location.Order.User.longitude
         let calculateDiff = measure(userLat, userLong, latitude, longitude)
 
-        if (calculateDiff > 300) Location_Log.create({ latitude, longitude, OrderId: location.OrderId })
+        if (calculateDiff > 10) Location_Log.create({ latitude, longitude, OrderId: location.OrderId })
 
         location.latitude = latitude
         location.longitude = longitude
