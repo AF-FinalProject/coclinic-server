@@ -3,32 +3,33 @@ const { Order, Transaction } = require('../models')
 
 class MidtransContoller {
   static async createTransaction(req, res, next) {
-    console.log('masuk')
     try {
       // client harus ngasi ttg order dan informasi user di req.body.data
-      const { transaction_details, customer_details } = req.body.data;
+      console.log('masuk >>>>>>>>>>>>')
+      const { order } = req.body;
+
       // hardcode 
       const parameter = {
         "transaction_details": {
-          "order_id": transaction_details.order_id,
-          "gross_amount": transaction_details.gross_amount,
-          "status_payment": transaction_details.status_payment,
+          "order_id": order.id,
+          "gross_amount": order.price,
+          "status_payment": order.status_payment,
         },
         "credit_card": {
           "secure": true
         },
         "customer_details": {
-          "name": customer_details.name,
-          "email": customer_details.email,
-          "phone": customer_details.phone_number,
-          "address": customer_details.address
+          "name": order.User.name,
+          "email": order.User.email,
+          "phone": order.User.phone_number,
+          "address": order.User.address
         }
       };
       console.log(parameter, 'masuk nih createtransaction.....')
 
       //create redirect url to midtrans
-      const order = await Order.findByPk(+transaction_details.order_id);
-      if (order) {
+      const detailOrder = await Order.findByPk(+transaction_details.order_id);
+      if (detailOrder) {
         const transaction = await snap.createTransaction(parameter)
         //apakah disini langsung kita masukin ke db? tapi belum tentu dia nanti jadi pilih metode pembayarannya// db jadi penuh nanti 
         res.status(200).json(transaction)
@@ -36,15 +37,12 @@ class MidtransContoller {
         next({ msg: "Order not found" })
       }
     } catch (err) {
-      console.log(err, 'errrrrrrrrrrrrr')
       const message = err.message
       const statusCode = err.httpStatusCode
       const apiResponse = err.ApiResponse
       const rawHttpClientData = err.rawHttpClientData
       next({ statusCode, apiResponse, rawHttpClientData, message })
     }
-
-
   }
 
   static async notificationHandler(req, res, next) {
@@ -90,13 +88,13 @@ class MidtransContoller {
         next({ msg: "Order not found" })
       }
     } catch (err) {
-      console.log(err, 'errrrrrrrrrrrrr')
       const message = err.message
       const statusCode = err.httpStatusCode
       const apiResponse = err.ApiResponse
       const rawHttpClientData = err.rawHttpClientData
       next({ statusCode, apiResponse, rawHttpClientData, message })
     }
+
   }
 }
 

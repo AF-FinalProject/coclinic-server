@@ -3,13 +3,12 @@ const MidtransContoller = require('../controllers/MidtransController')
 const { authentication, authCustomer } = require('../middlewares/auth')
 
 
-// router.post('/notification/handling', MidtransContoller.notificationHandler)
-// router.use(authentication)
-// router.post('/createTransaction', authCustomer, MidtransContoller.createTransaction)
+router.post('/createTransaction', authentication, authCustomer, MidtransContoller.createTransaction)
+router.post('/notification/handling', MidtransContoller.notificationHandler)
 // router.get('/error/handling', MidtransContoller.errorHandling)
 
-router.post('/notification/handling', MidtransContoller.notificationHandler)
-router.post('/createTransaction', MidtransContoller.createTransaction)
+// router.post('/notification/handling', MidtransContoller.notificationHandler)
+// router.post('/createTransaction', MidtransContoller.createTransaction)
 
 
 
