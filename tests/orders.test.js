@@ -67,6 +67,7 @@ describe('POST /orders', () => {
             expect(typeof res.body).toEqual('object')
             expect(res.body).toHaveProperty('success', true)
             expect(res.body).toHaveProperty('message', 'Successfully placed order')
+            expect(res.body).toHaveProperty('order', expect.any(Object))
             done()
           }
         })

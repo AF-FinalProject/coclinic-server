@@ -511,7 +511,7 @@ Response Body:
 Update Lice Tracking by specific id
 URL: /tracking/:id
 Method: PUT
-Required Auth: Yes (only for admin role)
+Required Auth: Yes (only for customer role)
 ```
 
 - Params:

@@ -12,7 +12,8 @@ class OrderController {
 				status_payment,
 				status_swab,
 				type_swab,
-				date_swab
+				date_swab,
+				price: 175000
 			}
 			const order = await Order.create(newOrder)
 			res.status(201).json({ success: true, message: "Successfully placed order", order })

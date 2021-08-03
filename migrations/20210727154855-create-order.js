@@ -24,6 +24,10 @@ module.exports = {
 				type: Sequelize.DATE,
 				allowNull: false,
 			},
+			price: {
+				type: Sequelize.INTEGER,
+				allowNull: false,
+			},
 			UserId: {
 				type: Sequelize.INTEGER,
         references: {

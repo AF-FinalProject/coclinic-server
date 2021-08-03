@@ -31,6 +31,7 @@ const order = {
   status_swab: "positif",
   type_swab: "PCR",
   date_swab: new Date(),
+  price: 175000,
   UserId: 1,
   createdAt: new Date(),
   updatedAt: new Date()
@@ -143,7 +144,7 @@ describe('PUT /tracking/:id', () => {
     it('200 OK - Should return object of success true and message Successfully updated live tracking', (done) => {
       request(app)
         .put(`/tracking/${idLiveTracking}`)
-        .set('access_token', tokenAdmin)
+        .set('access_token', tokenCustomer)
         .send({
           "latitude" : -6.186331,
           "longitude" : 106.819939
@@ -181,7 +182,7 @@ describe('PUT /tracking/:id', () => {
     it('403 UnAuthorized - error because user is not admin', (done) => {
       request(app)
         .put(`/tracking/${idLiveTracking}`)
-        .set("access_token", tokenCustomer)
+        .set("access_token", tokenAdmin)
         .send({
           "latitude" : -6.186331,
           "longitude" : 106.819939
@@ -199,7 +200,7 @@ describe('PUT /tracking/:id', () => {
     it('400 Bad Request- error SequelizeValidationError, because latitude is null', (done) => {
       request(app)
         .put(`/tracking/${idLiveTracking}`)
-        .set("access_token", tokenAdmin)
+        .set("access_token", tokenCustomer)
         .send({
           "longitude" : 106.819939
         })
@@ -216,7 +217,7 @@ describe('PUT /tracking/:id', () => {
     it('400 Bad Request- error SequelizeValidationError, because longitude is null', (done) => {
       request(app)
         .put(`/tracking/${idLiveTracking}`)
-        .set("access_token", tokenAdmin)
+        .set("access_token", tokenCustomer)
         .send({
           "latitude" : -6.186331
         })
@@ -233,7 +234,7 @@ describe('PUT /tracking/:id', () => {
     it('400 Bad Request- error SequelizeValidationError, because latitude filled with wrong data type', (done) => {
       request(app)
         .put(`/tracking/${idLiveTracking}`)
-        .set("access_token", tokenAdmin)
+        .set("access_token", tokenCustomer)
         .send({
           "latitude" : "latitude",
           "longitude" : 106.819939
@@ -251,7 +252,7 @@ describe('PUT /tracking/:id', () => {
     it('400 Bad Request- error SequelizeValidationError, because longitude filled with wrong data type', (done) => {
       request(app)
         .put(`/tracking/${idLiveTracking}`)
-        .set("access_token", tokenAdmin)
+        .set("access_token", tokenCustomer)
         .send({
           "latitude" : -6.186331,
           "longitude" : "longitude"
@@ -269,7 +270,7 @@ describe('PUT /tracking/:id', () => {
     it('404 Not Found - error because live tracking with specific id is not found', (done) => {
       request(app)
         .put(`/tracking/${idNotFound}`)
-        .set('access_token', tokenAdmin)
+        .set('access_token', tokenCustomer)
         .send({
           "latitude" : -6.186331,
           "longitude" : 106.819939

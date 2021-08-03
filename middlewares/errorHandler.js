@@ -44,10 +44,10 @@ function errorHandler(err, req, res, next) {
       break;
   }
 
-  if (err.apiResponse) {
-    statusCode = err.statusCode;
-    message = [`${err.message}`];
-  }
+  // if (err.apiResponse) {
+  //   statusCode = err.statusCode;
+  //   message = [`${err.message}`];
+  // }
 
   console.log(statusCode, message, 'error handler ...........')
   res.status(statusCode).json({ status: statusCode, message })
