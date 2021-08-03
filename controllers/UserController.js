@@ -35,7 +35,11 @@ class UserController {
   static async fetchAllCustomer(req, res, next) {
 		try {
 			const customers = await User.findAll({
-				where: { role: "Customer" }
+        where: { role: "Customer" },
+        attributes: {
+          exclude: ['password']
+        },
+				order: [['createdAt', 'DESC']]
 			})
 			res.status(200).json({ success: true, data: { customers } })
 		} catch (err) {
