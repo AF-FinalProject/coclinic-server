@@ -74,6 +74,7 @@
 //         .end(function (err, res) {
 //           if (err) done(err)
 //           else {
+//             console.log('masuk ke sini')
 //             expect(res.status).toBe(200)
 //             expect(typeof res.body).toEqual('object')
 //             expect(res.body).toHaveProperty('token', expect.any(String))

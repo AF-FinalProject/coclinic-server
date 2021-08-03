@@ -6,9 +6,7 @@ class MidtransContoller {
     try {
       // client harus ngasi ttg order dan informasi user di req.body.data
       console.log('masuk >>>>>>>>>>>>')
-      const { order } = req.body;
-
-      // hardcode 
+      const order = req.body.data;
       const parameter = {
         "transaction_details": {
           "order_id": order.id,
@@ -25,10 +23,9 @@ class MidtransContoller {
           "address": order.User.address
         }
       };
-      console.log(parameter, 'masuk nih createtransaction.....')
 
       //create redirect url to midtrans
-      const detailOrder = await Order.findByPk(+transaction_details.order_id);
+      const detailOrder = await Order.findByPk(order.id);
       if (detailOrder) {
         const transaction = await snap.createTransaction(parameter)
         //apakah disini langsung kita masukin ke db? tapi belum tentu dia nanti jadi pilih metode pembayarannya// db jadi penuh nanti 
@@ -37,11 +34,14 @@ class MidtransContoller {
         next({ msg: "Order not found" })
       }
     } catch (err) {
-      const message = err.message
-      const statusCode = err.httpStatusCode
-      const apiResponse = JSON.parse(err.ApiResponse)
-      const rawHttpClientData = err.rawHttpClientData
-      next({ statusCode, apiResponse, rawHttpClientData, message })
+      console.log(err, 'ini errr>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
+      let e = err
+      const message = e.message
+      const statusCode = e.httpStatusCode
+      const apiResponse = e.ApiResponse
+      const statusText = e.rawHttpClientData.statusText
+      next({ statusCode, apiResponse, statusText, message })
+      //message: 'Midtrans API is returning API error. HTTP status code: 400. API response: {"error_messages":["transaction_details.order_id sudah digunakan"]}'
     }
   }
 
@@ -49,11 +49,9 @@ class MidtransContoller {
     console.log(req.body, 'req.body notif')
     try {
       let { order_id, transaction_id, transaction_time, transaction_status, payment_type, currency, gross_amount, fraud_status, status_payment } = req.body;
-      // jika settlement maka ada settlement time dan approval code 
       let newStatusPayment = status_payment
       if (transaction_status == 'capture') {
         if (fraud_status == 'challenge') {
-          // transaksi yang ditolak oleh merchant 
           newStatusPayment = 'Ditolak'
         } else if (fraud_status == 'accept') {
           newStatusPayment = 'Berhasil bayar'
@@ -88,13 +86,13 @@ class MidtransContoller {
         next({ msg: "Order not found" })
       }
     } catch (err) {
-      const message = err.message
-      const statusCode = err.httpStatusCode
-      const apiResponse = JSON.parse(err.ApiResponse)
-      const rawHttpClientData = err.rawHttpClientData
+      let e = err
+      const message = e.message
+      const statusCode = e.httpStatusCode
+      const apiResponse = e.ApiResponse
+      const rawHttpClientData = e.rawHttpClientData
       next({ statusCode, apiResponse, rawHttpClientData, message })
     }
-
   }
 }
 
