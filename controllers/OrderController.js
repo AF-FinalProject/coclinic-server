@@ -62,6 +62,27 @@ class OrderController {
 			next(error)
 		}
 	}
+	static async fetchAllForAdminById(req, res, next) {
+		try {
+			const orders = await Order.findAll({
+				where: { UserId: req.params.id },
+				include: [
+					{ model: Live_Tracking },
+					{ model: Location_Log },
+					{
+						model: User,
+						attributes: {
+							exclude: ['password']
+						}
+					}
+				],
+				order: [['createdAt', 'DESC']],
+			})
+			res.status(200).json({ success: true, data: { orders } })
+		} catch (error) {
+			next(error)
+		}
+	}
 	static async getDetailOrderById(req, res, next) {
 		try {
 			const { id } = req.params
