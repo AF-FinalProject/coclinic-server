@@ -1,7 +1,7 @@
 const { Live_Tracking, Order, User, Location_Log } = require('../models')
 
 function measure(lat1, lon1, lat2, lon2) {  // generally used geo measurement function
-  const R = 6378.137; // Radius of earth in KM
+  const R = 6371; // Radius of earth in KM
   const dLat = lat2 * Math.PI / 180 - lat1 * Math.PI / 180;
   const dLon = lon2 * Math.PI / 180 - lon1 * Math.PI / 180;
   let a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
@@ -39,9 +39,26 @@ class LiveTrackingController {
         let userLat = location.Order.User.latitude
         let userLong = location.Order.User.longitude
         let calculateDiff = measure(userLat, userLong, latitude, longitude)
-
-        if (calculateDiff > 10) Location_Log.create({ latitude, longitude, OrderId: location.OrderId })
-
+        // If distance from isoman place is more than 1 meter
+        console.log(calculateDiff, "meter distance from isoman place");
+        if (calculateDiff > 1) {
+          const lastLocationLog = await Location_Log.findAll({
+            limit: 1,
+            where: {
+              OrderId: location.Order.id
+            },
+            order: [['createdAt', 'DESC']]
+          })
+          
+          const {latitude:previousLatitude, longitude:previousLongitude} = lastLocationLog[0]
+          const calculateLastLocationDiff = measure(previousLatitude, previousLongitude, latitude, longitude)
+          // If distance from previously logged location is more than 1 meters
+          console.log(calculateLastLocationDiff, "meters from last logged");
+          if(calculateLastLocationDiff > 1) {
+            Location_Log.create({ latitude, longitude, OrderId: location.OrderId })
+            console.log("added");
+          }
+        }
         location.latitude = latitude
         location.longitude = longitude
         await location.save()
