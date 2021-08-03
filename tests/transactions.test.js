@@ -1,5 +1,8 @@
 // // PR BUAT BESOK NIH
 
+// create user
+
+
 
 // const request = require('supertest')
 // const app = require('../app')
@@ -57,7 +60,7 @@
 //            "gross_amount": 200000
 //          },
 //          "credit_card:" : {
-//            "secure:": secure
+//            "secure:": true
 //          },
 //          "customer_details": {
 //            "name": customer.name,
