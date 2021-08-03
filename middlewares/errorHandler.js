@@ -26,6 +26,7 @@ function errorHandler(err, req, res, next) {
 
 
   switch (err.msg) {
+    case 'Invalid Certificate':
     case 'Invalid email or password':
       statusCode = 400
       message = [`${err.msg}`]
