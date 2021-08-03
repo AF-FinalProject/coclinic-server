@@ -39,7 +39,7 @@ class MidtransContoller {
     } catch (err) {
       const message = err.message
       const statusCode = err.httpStatusCode
-      const apiResponse = err.ApiResponse
+      const apiResponse = JSON.parse(err.ApiResponse)
       const rawHttpClientData = err.rawHttpClientData
       next({ statusCode, apiResponse, rawHttpClientData, message })
     }
@@ -90,7 +90,7 @@ class MidtransContoller {
     } catch (err) {
       const message = err.message
       const statusCode = err.httpStatusCode
-      const apiResponse = err.ApiResponse
+      const apiResponse = JSON.parse(err.ApiResponse)
       const rawHttpClientData = err.rawHttpClientData
       next({ statusCode, apiResponse, rawHttpClientData, message })
     }
