@@ -31,7 +31,7 @@ class UserController {
       next(err)
     }
   }
-
+  //tambahan, belum ada test case(x) dan api_doc(v)
   static async fetchAllCustomer(req, res, next) {
 		try {
 			const customers = await User.findAll({

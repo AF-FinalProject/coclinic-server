@@ -24,6 +24,7 @@ http://localhost:3000
 ```
 - POST /register
 - POST /login
+- GET /customers
 ```
 
 2. Orders
@@ -119,6 +120,52 @@ Response Body:
 {
   email: "<user email>",
   access_token: "<user access_token>"
+}
+```
+
+3. Get All Customers
+
+```
+Get all customers in database
+URL: /customers
+Method: GET
+Required Auth: Yes(for admin only)
+```
+
+- Request Headers:
+
+```
+{
+  access_token: "<user access_token>"
+}
+
+```
+
+- Success Response:
+
+```
+Status: 200 OK
+Response Body:
+{
+    "success": true,
+    "data": {
+        "customers": [
+            {
+                "id": 2,
+                "name": "Rara",
+                "nik": "111111",
+                "role": "Customer",
+                "email": "rara@mail.com",
+                "address": "Bogor",
+                "phone_number": "0812112233333",
+                "dob": "1996-06-06T00:00:00.000Z",
+                "latitude": 0,
+                "longitude": 0,
+                "createdAt": "2021-08-03T03:12:20.000Z",
+                "updatedAt": "2021-08-03T03:12:20.000Z"
+            }
+        ]
+    }
 }
 ```
 
