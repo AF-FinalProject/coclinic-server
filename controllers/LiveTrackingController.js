@@ -71,7 +71,6 @@ class LiveTrackingController {
         next({ msg: "Location not found" })
       }
     } catch (err) {
-      console.log(err, 'gfrom update>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
       next(err)
     }
   }
@@ -102,6 +101,7 @@ class LiveTrackingController {
         next({ msg: "Location not found" })
       }
     } catch (err) {
+      /* istanbul ignore next */
       next(err)
     }
   }
