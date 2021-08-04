@@ -1,6 +1,6 @@
 const { Order, User } = require("../models");
 const CryptoJS = require('crypto-js');
-
+/* istanbul ignore next */
 class CertificateController {
   static async get(req, res, next){
     try {
