@@ -15,10 +15,10 @@ function measure(lat1, lon1, lat2, lon2) {  // generally used geo measurement fu
 class LiveTrackingController {
 
   static async update(req, res, next) {
-    const id = req.params.id
-    const { latitude, longitude } = req.body
-
     try {
+      const id = +req.params.id
+      const { latitude, longitude } = req.body
+      console.log(req.body, 'req body update  >>>>>>>>>>>>>>>')
       const location = await Live_Tracking.findOne({
         where: { id },
         include: [
@@ -48,26 +48,30 @@ class LiveTrackingController {
             },
             order: [['createdAt', 'DESC']]
           })
-
-          const { latitude: previousLatitude, longitude: previousLongitude } = lastLocationLog[0]
-          /* istanbul ignore next */
-          const calculateLastLocationDiff = measure(previousLatitude, previousLongitude, latitude, longitude)
-          // If distance from previously logged location is more than 1 meters
-          /* istanbul ignore next */
-          if (calculateLastLocationDiff > 1) {
-            /* istanbul ignore next */
+          if (!lastLocationLog.length) {
             Location_Log.create({ latitude, longitude, OrderId: location.OrderId })
+          } else {
+            const { latitude: previousLatitude, longitude: previousLongitude } = lastLocationLog[0]
+            /* istanbul ignore next */
+            const calculateLastLocationDiff = measure(previousLatitude, previousLongitude, latitude, longitude)
+            // If distance from previously logged location is more than 1 meters
+            /* istanbul ignore next */
+            if (calculateLastLocationDiff > 1) {
+              /* istanbul ignore next */
+              Location_Log.create({ latitude, longitude, OrderId: location.OrderId })
+            }
           }
+          location.latitude = latitude
+          location.longitude = longitude
+          await location.save()
+          res.status(200).json({ success: true, message: "Successfully updated live tracking" })
         }
-        location.latitude = latitude
-        location.longitude = longitude
-        await location.save()
-        res.status(200).json({ success: true, message: "Successfully updated live tracking" })
-
-      } else {
+      }
+      else {
         next({ msg: "Location not found" })
       }
     } catch (err) {
+      console.log(err, 'error put .........')
       next(err)
     }
   }
@@ -102,7 +106,8 @@ class LiveTrackingController {
       next(err)
     }
   }
-
 }
+
+
 
 module.exports = LiveTrackingController

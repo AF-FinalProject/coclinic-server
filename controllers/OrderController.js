@@ -40,6 +40,7 @@ class OrderController {
 			})
 			res.status(200).json({ success: true, data: { orders } })
 		} catch (error) {
+			/* istanbul ignore next */
 			next(error)
 		}
 	}
@@ -111,14 +112,13 @@ class OrderController {
 	static async updateOrderById(req, res, next) {
 		try {
 			const { id } = req.params
-			const { status_payment, status_swab } = req.body
+			const { status_swab } = req.body
 			const order = await Order.findByPk(id)
 			if (order) {
 				if (status_swab === "Positif" && order.status_swab === "Menunggu") {
 					Live_Tracking.create({ latitude: 0, longitude: 0, OrderId: order.id })
 				}
 
-				order.status_payment = Boolean(status_payment);
 				order.status_swab = status_swab;
 				order.save()
 				res.status(200).json({ success: true, message: "Successfully updated order" })

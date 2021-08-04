@@ -2,24 +2,24 @@ const { Order, User } = require("../models");
 const CryptoJS = require('crypto-js');
 /* istanbul ignore next */
 class CertificateController {
-  static async get(req, res, next){
+  static async get(req, res, next) {
     try {
-      let { order:id } = req.query;
+      let { order: id } = req.query;
 
       const decrypt = CryptoJS.AES.decrypt(id, 'rahasia')
       id = decrypt.toString(CryptoJS.enc.Utf8)
 
-      const order = await Order.findByPk(id, {include: [User]});
-      if(!order) throw({ msg: "Invalid Certificate" })
-      let {name, nik, dob} = order.User
-      let {status_swab, date_swab} = order
+      const order = await Order.findByPk(id, { include: [User] });
+      if (!order) throw ({ msg: "Invalid Certificate" })
+      let { name, nik, dob } = order.User
+      let { status_swab, date_swab } = order
       dob = dob.toLocaleDateString('id-ID')
       date_swab = date_swab.toLocaleDateString('id-ID')
 
-      if(status_swab !== 'Negatif'){
-        throw({ msg: "Invalid Certificate" })
+      if (status_swab !== 'Negatif') {
+        throw ({ msg: "Invalid Certificate" })
       }
-    
+
       res.send(
         `<!DOCTYPE html>
         <html lang="en">
@@ -191,7 +191,7 @@ class CertificateController {
       )
 
     } catch (error) {
-        next(error)
+      next(error)
     }
   }
 }
