@@ -813,6 +813,98 @@ Response Body:
 
 ```
 
+### LOCATION LOG
+
+```
+Get location log by specific id
+URL: /logs/:id
+Method: GET
+Required Auth: Yes (only for admin)
+```
+
+- Params:
+
+```
+id: integer
+```
+
+- Request Headers:
+
+```
+{
+  access_token: "<user access_token>"
+}
+```
+
+- Success Response:
+
+```
+Status: 200 OK
+{
+  "success": true,
+  "data": {
+    "location_logs": [
+      {
+        "id": 3,
+        "latitude": -6.1676,
+        "longitude": 106.8208,
+        "OrderId": 2,
+        "createdAt": "2021-08-05T12:20:39.000Z",
+        "updatedAt": "2021-08-03T12:20:39.000Z",
+        "Order": {
+          "id": 2,
+          "status_payment": "Berhasil bayar",
+          "status_swab": "Positif",
+          "type_swab": "PCR",
+          "date_swab": "2021-08-03T12:20:39.000Z",
+          "price": 950000,
+          "UserId": 2,
+          "createdAt": "2021-08-03T12:20:39.000Z",
+          "updatedAt": "2021-08-03T12:20:39.000Z",
+          "User": {
+            "id": 2,
+            "name": "oki",
+            "nik": "12312412412",
+            "role": "Customer",
+            "email": "oki@mail.com",
+            "address": "Jl. Jambu",
+            "phone_number": "081212379527",
+            "dob": "1996-06-06T00:00:00.000Z",
+            "latitude": 0,
+            "longitude": 0,
+            "createdAt": "2021-08-03T12:20:39.117Z",
+            "updatedAt": "2021-08-03T12:20:39.117Z"
+          }
+        }
+      }
+        }
+      }
+    ]
+  }
+}
+```
+
+### CERTIFICATE
+
+```
+Get Certificate from specific order id
+URL: /certificate/:id
+Method: GET
+Required Auth: No
+```
+
+- Params:
+
+```
+id: integer
+```
+
+- Success Response:
+
+```
+https://07fcce3e5e37.ngrok.io/certificate?order=U2FsdGVkX18zObYvhonMq36i5A2FgkFQS12YYcFDHRI=
+```
+
 # RESTful Error Message
 
 1. Response Error (400) Bad Request - SequelizeValidationError

@@ -9,7 +9,7 @@ class UserController {
     try {
       const { name, nik, email, password, address, phone_number, dob, latitude, longitude } = req.body;
       const newUser = { name, nik, email, password, address, phone_number, dob, latitude, longitude }
-
+      console.log('masuk register')
       await User.create(newUser)
       res.status(201).json({ status: true, message: "Successfully Added User" })
     } catch (err) {

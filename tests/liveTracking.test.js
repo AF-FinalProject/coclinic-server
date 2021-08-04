@@ -157,7 +157,7 @@ describe('PUT /tracking/:id', () => {
         .set('access_token', tokenCustomer)
         .send({
           "latitude": -6.186331,
-          "longitude": 106.819939,// error invalid longitude
+          "longitude": 106.819939,
         })
         .end(function (err, res) {
           if (err) done(err)

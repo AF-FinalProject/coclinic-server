@@ -16,7 +16,6 @@ class LiveTrackingController {
 
   static async update(req, res, next) {
     const id = req.params.id
-    console.log(req.body, '>>>>>>>>>>>>>>>>>>............. req body')
     const { latitude, longitude } = req.body
 
     try {
@@ -41,7 +40,6 @@ class LiveTrackingController {
         let userLong = location.Order.User.longitude
         let calculateDiff = measure(userLat, userLong, latitude, longitude)
         // If distance from isoman place is more than 1 meter
-        console.log(calculateDiff, "meter distance from isoman place");
         if (calculateDiff > 1) {
           const lastLocationLog = await Location_Log.findAll({
             limit: 1,
@@ -50,16 +48,15 @@ class LiveTrackingController {
             },
             order: [['createdAt', 'DESC']]
           })
-          
-          const {latitude:previousLatitude, longitude:previousLongitude} = lastLocationLog[0]
+
+          const { latitude: previousLatitude, longitude: previousLongitude } = lastLocationLog[0]
           /* istanbul ignore next */
           const calculateLastLocationDiff = measure(previousLatitude, previousLongitude, latitude, longitude)
           // If distance from previously logged location is more than 1 meters
-         /* istanbul ignore next */
-          if(calculateLastLocationDiff > 1) {
+          /* istanbul ignore next */
+          if (calculateLastLocationDiff > 1) {
             /* istanbul ignore next */
             Location_Log.create({ latitude, longitude, OrderId: location.OrderId })
-            console.log("added");
           }
         }
         location.latitude = latitude

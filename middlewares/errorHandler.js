@@ -1,4 +1,5 @@
 function errorHandler(err, req, res, next) {
+  console.log(err, 'error handler .........')
   let statusCode = 500
   let message = ["Internal server errors"]
 
@@ -52,10 +53,9 @@ function errorHandler(err, req, res, next) {
     /* istanbul ignore next */
     statusCode = err.statusCode;
     /* istanbul ignore next */
-    message = [`${err.apiResponse.error_message}`];
+    message = err.apiResponse.error_message;
   }
 
-  console.log(statusCode, message, 'error handler ...........')
   res.status(statusCode).json({ status: statusCode, message })
 }
 

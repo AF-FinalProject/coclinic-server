@@ -4,7 +4,6 @@ const { Order, Transaction } = require('../models')
 class MidtransContoller {
   static async createTransaction(req, res, next) {
     try {
-      console.log(req.body.data, 'masuk  >>>>>>>>>>>>>>')
       const order = req.body.data;
       const parameter = {
         "transaction_details": {
@@ -31,7 +30,6 @@ class MidtransContoller {
       } else {
         next({ msg: "Order not found" })
       }
-      /* istanbul ignore next */
     } catch (err) {
       /* istanbul ignore next */
       let e = err
@@ -49,7 +47,6 @@ class MidtransContoller {
   }
   /* istanbul ignore next */
   static async notificationHandler(req, res, next) {
-    console.log(req.body, 'req.body notif')
     try {
       let { order_id, transaction_id, transaction_time, transaction_status, payment_type, currency, gross_amount, fraud_status, status_payment } = req.body;
       let newStatusPayment = status_payment

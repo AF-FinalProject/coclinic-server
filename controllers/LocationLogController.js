@@ -21,6 +21,7 @@ class LocationLogController {
 			})
 			res.status(200).json({ success: true, data: { location_logs } })
 		} catch (error) {
+      	/* istanbul ignore next */
 			next(error)
 		}
 	}

@@ -7,7 +7,6 @@ const snap = require('../helpers/snap-midtrans');
 
 
 let spy;
-let tokenAdmin;
 let tokenCustomer;
 let customerId;
 let newOrder;
@@ -178,7 +177,6 @@ describe('POST /midtrans/createTransaction', () => {
         .end(function (err, res) {
           if (err) done(err)
           else {
-            console.log(res.body, 'from notif')
             expect(res.status).toBe(200)
             expect(typeof res.body).toEqual('object')
             expect(res.body).toHaveProperty('OK', 'OK')
