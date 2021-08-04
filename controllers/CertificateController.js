@@ -1,9 +1,14 @@
 const { Order, User } = require("../models");
+const CryptoJS = require('crypto-js');
 
 class CertificateController {
   static async get(req, res, next){
     try {
-    const { id } = req.params;
+    let { order:id } = req.params;
+    
+    const decrypt = CryptoJS.AES.decrypt(ciphertext, 'rahasia')
+    id = decrypt.toString(CryptoJS.enc.Utf8)
+
     const order = await Order.findByPk(id, {include: [User]});
     if(!order) throw({ msg: "Invalid Certificate" })
     let {name, nik, dob} = order.User
