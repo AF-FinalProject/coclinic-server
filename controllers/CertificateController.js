@@ -1,5 +1,5 @@
 const { Order, User } = require("../models");
-
+/* istanbul ignore next */
 class CertificateController {
   static async get(req, res, next){
     try {
@@ -10,10 +10,7 @@ class CertificateController {
     let {status_swab, date_swab} = order
     dob = dob.toLocaleDateString('id-ID')
     date_swab = date_swab.toLocaleDateString('id-ID')
-    // console.log(name, nik, dob, status_swab, date_swab);
-    // console.log(order);
-    console.log(status_swab);
-
+   
     if(status_swab !== 'Negatif'){
       throw({ msg: "Invalid Certificate" })
     }

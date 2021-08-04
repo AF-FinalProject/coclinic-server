@@ -1,7 +1,6 @@
 const { Order, User, Location_Log } = require('../models')
-
+/* istanbul ignore next */
 class LocationLogController {
-
   static async fetchAllByOrderId(req, res, next) {
 		try {
 			const location_logs = await Location_Log.findAll({

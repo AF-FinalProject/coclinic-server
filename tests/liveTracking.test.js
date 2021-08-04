@@ -1,6 +1,6 @@
 const request = require('supertest')
 const app = require('../app')
-const { Live_Tracking, User, Order } = require('../models')
+const { Live_Tracking, User, Order, Location_Log } = require('../models')
 const { hashPassword } = require('../helpers/password-helpers')
 const { generateToken } = require('../helpers/token-helper')
 
@@ -44,6 +44,13 @@ const liveTracking = {
   createdAt: new Date(),
   updatedAt: new Date()
 }
+const locationLog = {
+  latitude: -6.531673,
+  longitude: 106.796378,
+  OrderId: 1,
+  createdAt: new Date(),
+  updatedAt: new Date()
+}
 
 beforeAll(done => {
   User.findOne({ where: { email: "admin@mail.com" } })
@@ -55,6 +62,9 @@ beforeAll(done => {
       tokenCustomer = generateToken({ id: customer.id, email: customer.email, name: customer.name })
       customerId = customer.id;
       return Order.create(order);
+    })
+    .then(() => {
+      return Location_Log.create(locationLog);
     })
     .then(() => {
       return Live_Tracking.create(liveTracking);
@@ -69,11 +79,11 @@ beforeAll(done => {
 afterAll(done => {
   User.destroy({ where: { id: customerId } })
     .then(_ => Order.destroy({ where: {} }))
+    .then(_ => Location_Log.destroy({ where: {} }))
     .then(_ => Live_Tracking.destroy({ where: {} }))
     .then(_ => done())
     .catch(err => done(err))
 })
-
 
 describe('GET /tracking/:id', () => {
   describe('Success Case', () => {
@@ -146,8 +156,8 @@ describe('PUT /tracking/:id', () => {
         .put(`/tracking/${idLiveTracking}`)
         .set('access_token', tokenCustomer)
         .send({
-          "latitude" : -6.186331, 
-          "longitude" : 106.819939,// error invalid longitude
+          "latitude": -6.186331,
+          "longitude": 106.819939,// error invalid longitude
         })
         .end(function (err, res) {
           if (err) done(err)
@@ -166,8 +176,8 @@ describe('PUT /tracking/:id', () => {
       request(app)
         .put(`/tracking/${idLiveTracking}`)
         .send({
-          "latitude" : -6.186331,
-          "longitude" : 106.819939
+          "latitude": -6.186331,
+          "longitude": 106.819939
         })
         .end(function (err, res) {
           if (err) done(err)
@@ -184,8 +194,8 @@ describe('PUT /tracking/:id', () => {
         .put(`/tracking/${idLiveTracking}`)
         .set("access_token", tokenAdmin)
         .send({
-          "latitude" : -6.186331,
-          "longitude" : 106.819939
+          "latitude": -6.186331,
+          "longitude": 106.819939
         })
         .end(function (err, res) {
           if (err) done(err)
@@ -202,7 +212,7 @@ describe('PUT /tracking/:id', () => {
         .put(`/tracking/${idLiveTracking}`)
         .set("access_token", tokenCustomer)
         .send({
-          "longitude" : 106.819939
+          "longitude": 106.819939
         })
         .end(function (err, res) {
           if (err) done(err)
@@ -219,7 +229,7 @@ describe('PUT /tracking/:id', () => {
         .put(`/tracking/${idLiveTracking}`)
         .set("access_token", tokenCustomer)
         .send({
-          "latitude" : -6.186331
+          "latitude": -6.186331
         })
         .end(function (err, res) {
           if (err) done(err)
@@ -236,8 +246,8 @@ describe('PUT /tracking/:id', () => {
         .put(`/tracking/${idLiveTracking}`)
         .set("access_token", tokenCustomer)
         .send({
-          "latitude" : "latitude",
-          "longitude" : 106.819939
+          "latitude": "latitude",
+          "longitude": 106.819939
         })
         .end(function (err, res) {
           if (err) done(err)
@@ -254,8 +264,8 @@ describe('PUT /tracking/:id', () => {
         .put(`/tracking/${idLiveTracking}`)
         .set("access_token", tokenCustomer)
         .send({
-          "latitude" : -6.186331,
-          "longitude" : "longitude"
+          "latitude": -6.186331,
+          "longitude": "longitude"
         })
         .end(function (err, res) {
           if (err) done(err)
@@ -272,8 +282,8 @@ describe('PUT /tracking/:id', () => {
         .put(`/tracking/${idNotFound}`)
         .set('access_token', tokenCustomer)
         .send({
-          "latitude" : -6.186331,
-          "longitude" : 106.819939
+          "latitude": -6.186331,
+          "longitude": 106.819939
         })
         .end(function (err, res) {
           if (err) done(err)
