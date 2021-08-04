@@ -740,7 +740,7 @@ const parameter = {
 - Success Response:
 
 ```
-Status: 200 OK
+Status: 201 Created
 Response Body:
 
 {

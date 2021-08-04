@@ -4,16 +4,12 @@ const { Order, User, Transaction, Live_Tracking } = require('../models')
 const { hashPassword } = require('../helpers/password-helpers')
 const { generateToken } = require('../helpers/token-helper')
 const snap = require('../helpers/snap-midtrans');
-// jest.useFakeTimers()
-const MidtransController = require('../controllers/MidtransController')
-const { connect } = require('../routes')
-// console.log(MidtransController.createTransaction, 'ini midtras controller')
-let spy;
+
+
+
 let tokenAdmin;
 let tokenCustomer;
 let customerId;
-let idOrder;
-const idNotFound = 12323456;
 let newOrder;
 
 const customer = {
@@ -73,9 +69,6 @@ beforeAll(done => {
     })
     .catch(err => done(err))
 })
-// beforeEach(() => {
-//   jest.clearAllMocks();
-// });
 
 afterAll(done => {
   User.destroy({ where: { id: customerId } })
@@ -89,13 +82,12 @@ afterAll(done => {
 
 describe('POST /midtrans/createTransaction', () => {
   describe('Success Case', () => {
-    it('200 OK - should return object with key token and redirect_url', (done) => {
-      const spy = jest.spyOn(snap, 'createTransaction').mockImplementation(() => Promise.resolve(
+    it('201 Created - should return object with key token and redirect_url', (done) => {
+      const spy = jest.spyOn(snap, 'createTransaction').mockImplementation(() => (
         {
           "token": "66e4fa55-fdac-4ef9-91b5-733b97d1b862",
           "redirect_url": "https://app.sandbox.midtrans.com/snap/v2/vtweb/66e4fa55-fdac-4ef9-91b5-733b97d1b862"
         }))
-
       request(app)
         .post('/midtrans/createTransaction')
         .set('access_token', tokenCustomer)
@@ -104,7 +96,7 @@ describe('POST /midtrans/createTransaction', () => {
           if (err) done(err)
           else {
             expect(spy).toHaveBeenCalled()
-            expect(res.status).toBe(200)
+            expect(res.status).toBe(201)
             expect(typeof res.body).toEqual('object')
             expect(res.body).toHaveProperty('token', expect.any(String))
             expect(res.body).toHaveProperty('redirect_url', expect.any(String))
@@ -114,4 +106,6 @@ describe('POST /midtrans/createTransaction', () => {
     })
   })
 })
+
+
 
