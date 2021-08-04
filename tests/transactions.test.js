@@ -12,6 +12,7 @@ let tokenCustomer;
 let customerId;
 let newOrder;
 let idOrder;
+let idNotFound = 12344555555;
 
 
 const customer = {
@@ -113,7 +114,7 @@ describe('POST /midtrans/createTransaction', () => {
         .set('access_token', tokenCustomer)
         .send({
           data: {
-            id: 11234445,
+            id: idNotFound,
             status_payment: 'Belum bayar',
             status_swab: 'Menunggu',
             type_swab: 'PCR',
@@ -181,6 +182,38 @@ describe('POST /midtrans/createTransaction', () => {
             expect(res.status).toBe(200)
             expect(typeof res.body).toEqual('object')
             expect(res.body).toHaveProperty('OK', 'OK')
+            done()
+          }
+        })
+    })
+  })
+  describe('Error Case', () => {
+    it('404 Not Found - error because order id not found', (done) => {
+      request(app)
+        .post('/midtrans/notification/handling')
+        .set('access_token', tokenCustomer)
+        .send({
+          "transaction_time": "2021-08-03 07:21:47",
+          "transaction_status": "settlement",
+          "transaction_id": "b3a4a6e2-a837-4906-9789-ea20c7e7eb98",
+          "status_message": "midtrans payment notification",
+          "status_code": "200",
+          "signature_key": "55f1fc29cd17014a886ec059300e5531e82fa4b4f91507359c0d376cd696e47df9043e026df8794bc8b0f01f63f6dde1640b6f89aea61c03ff0209bb9cf7ad7c",
+          "settlement_time": "2021-08-03 07:21:54",
+          "payment_type": "danamon_online",
+          "order_id": idNotFound,
+          "merchant_id": "G600070340",
+          "gross_amount": "900000",
+          "fraud_status": "accept",
+          "currency": "IDR",
+          "approval_code": "esFh3x0jFpx1Y0"
+        })
+        .end(function (err, res) {
+          if (err) done(err)
+          else {
+            expect(res.status).toBe(404)
+            expect(typeof res.body).toEqual('object')
+            expect(res.body.message[0]).toEqual('Order not found')
             done()
           }
         })
