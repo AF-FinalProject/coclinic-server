@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">83.33% </span>
+                <span class="strong">97.62% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>35/42</span>
+                <span class='fraction'>41/42</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">75% </span>
+                <span class="strong">87.5% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>6/8</span>
+                <span class='fraction'>7/8</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">83.33% </span>
+                <span class="strong">97.62% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>35/42</span>
+                <span class='fraction'>41/42</span>
             </div>
         
             
@@ -168,15 +168,15 @@
 <a name='L109'></a><a href='#L109'>109</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -219,25 +219,25 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -327,18 +327,18 @@ class LiveTrackingController {
           })
           
           const {latitude:previousLatitude, longitude:previousLongitude} = lastLocationLog[0]
-          const calculateLastLocationDiff = <span class="cstat-no" title="statement not covered" >measure(previousLatitude, previousLongitude, latitude, longitude)</span>
+          const calculateLastLocationDiff = measure(previousLatitude, previousLongitude, latitude, longitude)
           // If distance from previously logged location is more than 1 meters
-<span class="cstat-no" title="statement not covered" >          console.log(calculateLastLocationDiff, "meters from last logged");</span>
-<span class="cstat-no" title="statement not covered" >          if(calculateLastLocationDiff &gt; 1) {</span>
-<span class="cstat-no" title="statement not covered" >            Location_Log.create({ latitude, longitude, OrderId: location.OrderId })</span>
-<span class="cstat-no" title="statement not covered" >            console.log("added");</span>
+          console.log(calculateLastLocationDiff, "meters from last logged");
+          <span class="missing-if-branch" title="else path not taken" >E</span>if(calculateLastLocationDiff &gt; 1) {
+            Location_Log.create({ latitude, longitude, OrderId: location.OrderId })
+            console.log("added");
           }
         }
         location.latitude = latitude
         location.longitude = longitude
         await location.save()
-<span class="cstat-no" title="statement not covered" >        res.status(200).json({ success: true, message: "Successfully updated live tracking" })</span>
+        res.status(200).json({ success: true, message: "Successfully updated live tracking" })
 &nbsp;
       } else {
         next({ msg: "Location not found" })
@@ -388,7 +388,7 @@ module.exports = LiveTrackingController</pre></td></tr></table></pre>
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Wed Aug 04 2021 18:52:35 GMT+0700 (Western Indonesia Time)
+                at Wed Aug 04 2021 20:01:47 GMT+0700 (Western Indonesia Time)
             </div>
         </div>
         <script src="../../prettify.js"></script>

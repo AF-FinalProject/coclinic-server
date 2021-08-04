@@ -1,6 +1,6 @@
 const request = require('supertest')
 const app = require('../app')
-const { Live_Tracking, User, Order } = require('../models')
+const { Live_Tracking, User, Order, Location_Log } = require('../models')
 const { hashPassword } = require('../helpers/password-helpers')
 const { generateToken } = require('../helpers/token-helper')
 
@@ -45,6 +45,14 @@ const liveTracking = {
   updatedAt: new Date()
 }
 
+const locationLog = {
+  latitude: -6.531673,
+  longitude: 106.796378,
+  OrderId: 1,
+  createdAt: new Date(),
+  updatedAt: new Date()
+}
+
 beforeAll(done => {
   User.findOne({ where: { email: "admin@mail.com" } })
     .then(admin => {
@@ -55,6 +63,9 @@ beforeAll(done => {
       tokenCustomer = generateToken({ id: customer.id, email: customer.email, name: customer.name })
       customerId = customer.id;
       return Order.create(order);
+    })
+    .then(() => {
+      return Location_Log.create(locationLog);
     })
     .then(() => {
       return Live_Tracking.create(liveTracking);
@@ -69,6 +80,7 @@ beforeAll(done => {
 afterAll(done => {
   User.destroy({ where: { id: customerId } })
     .then(_ => Order.destroy({ where: {} }))
+    .then(_ => Location_Log.destroy({ where: {} }))
     .then(_ => Live_Tracking.destroy({ where: {} }))
     .then(_ => done())
     .catch(err => done(err))
