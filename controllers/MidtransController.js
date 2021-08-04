@@ -27,7 +27,6 @@ class MidtransContoller {
       const detailOrder = await Order.findByPk(order.id);
       if (detailOrder) {
         const transaction = await snap.createTransaction(parameter)
-        //apakah disini langsung kita masukin ke db? tapi belum tentu dia nanti jadi pilih metode pembayarannya// db jadi penuh nanti 
         res.status(201).json(transaction)
       } else {
         next({ msg: "Order not found" })
