@@ -52,6 +52,18 @@ http://localhost:3000
 - POST /midtrans/notification/handling
 ```
 
+5. Location_log
+
+```
+- GET /logs/:id
+```
+
+6. Certificate
+
+```
+- GET /certificate/:id
+```
+
 # Endpoints
 
 ### USERS
@@ -688,6 +700,7 @@ Required Auth: Yes(only for customer)
 ```
 
 - Request Body:
+
 ```
 data: {
       id: 100,
@@ -768,6 +781,7 @@ Required Auth: No
 ```
 
 - Request Body:
+
 ```
 {
   "transaction_time": "2021-08-01 00:31:49",
