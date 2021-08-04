@@ -688,6 +688,36 @@ Required Auth: Yes(only for customer)
 ```
 
 - Request Body:
+```
+data: {
+      id: 100,
+      status_payment: 'Belum bayar',
+      status_swab: 'Menunggu',
+      type_swab: 'PCR',
+      date_swab: '2021-08-04T09:57:53.452Z',
+      price: 900000,
+      UserId: 154,
+      createdAt: '2021-08-04T09:57:53.452Z',
+      updatedAt: '2021-08-04T09:57:53.452Z',
+      Live_Tracking: null,
+      User: {
+        id: 154,
+        name: 'Lili',
+        nik: '321111111',
+        role: 'Customer',
+        email: 'lili@mail.com',
+        address: 'Jl. Batu Gede Jakarta',
+        phone_number: '085712342222',
+        dob: '1995-01-07T00:00:00.000Z',
+        latitude: -6.531673,
+        longitude: 106.796378,
+        createdAt: '2021-08-04T09:57:53.322Z',
+        updatedAt: '2021-08-04T09:57:53.383Z'
+      }
+    }
+```
+
+- Request Parameter for snap.createTransaction:
 
 ```
 const parameter = {
@@ -738,7 +768,6 @@ Required Auth: No
 ```
 
 - Request Body:
-
 ```
 {
   "transaction_time": "2021-08-01 00:31:49",
@@ -746,7 +775,7 @@ Required Auth: No
   "transaction_id": "025f506c-cc41-4534-9325-6f1a96a087e8",
   "status_message": "midtrans payment notification",
   "status_code": "200",
-  "signature_key": "9fd205377440b64e7a439c93e8e6970ea43b2d6a9048ab0b7fd3685d2fa9c4cf07b7695dd614ec975f314947d30fef59af0b2c7d41c5507785c80ddeb2b33ffe",
+  "signature_key": <signature key>,
   "settlement_time": "2021-08-01 00:31:59" || null,
   "payment_type": "bca_klikpay",
   "order_id": "4",

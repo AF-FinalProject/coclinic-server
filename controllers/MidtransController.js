@@ -4,8 +4,7 @@ const { Order, Transaction } = require('../models')
 class MidtransContoller {
   static async createTransaction(req, res, next) {
     try {
-      // client harus ngasi ttg order dan informasi user di req.body.data
-      console.log('masuk >>>>>>>>>>>>')
+      console.log(req.body.data, 'masuk  >>>>>>>>>>>>>>')
       const order = req.body.data;
       const parameter = {
         "transaction_details": {
@@ -28,19 +27,20 @@ class MidtransContoller {
       const detailOrder = await Order.findByPk(order.id);
       if (detailOrder) {
         const transaction = await snap.createTransaction(parameter)
+        console.log(transaction, 'ini transaction...................................')
         //apakah disini langsung kita masukin ke db? tapi belum tentu dia nanti jadi pilih metode pembayarannya// db jadi penuh nanti 
         res.status(200).json(transaction)
       } else {
         next({ msg: "Order not found" })
       }
     } catch (err) {
-      console.log(err, 'ini errr>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
+      console.log(err, 'ini errr controller >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
       let e = err
       const message = e.message
       const statusCode = e.httpStatusCode
       const apiResponse = e.ApiResponse
-      const statusText = e.rawHttpClientData.statusText
-      next({ statusCode, apiResponse, statusText, message })
+      next({ statusCode, apiResponse, message })
+
       //message: 'Midtrans API is returning API error. HTTP status code: 400. API response: {"error_messages":["transaction_details.order_id sudah digunakan"]}'
     }
   }

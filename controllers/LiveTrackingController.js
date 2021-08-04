@@ -16,6 +16,7 @@ class LiveTrackingController {
 
   static async update(req, res, next) {
     const id = req.params.id
+    console.log(req.body, '>>>>>>>>>>>>>>>>>>............. req body')
     const { latitude, longitude } = req.body
 
     try {
@@ -68,6 +69,7 @@ class LiveTrackingController {
         next({ msg: "Location not found" })
       }
     } catch (err) {
+      console.log(err, 'gfrom update>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
       next(err)
     }
   }
