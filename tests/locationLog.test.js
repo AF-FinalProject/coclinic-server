@@ -8,7 +8,7 @@ const { generateToken } = require('../helpers/token-helper')
 let tokenAdmin;
 let tokenCustomer;
 let customerId;
-let idLiveTracking;
+let idOrder;
 const idNotFound = 456789;
 
 const customer = {
@@ -64,14 +64,14 @@ beforeAll(done => {
       customerId = customer.id;
       return Order.create(order);
     })
-    .then(() => {
+    .then((order) => {
+      idOrder = order.id
       return Location_Log.create(locationLog);
     })
     .then(() => {
       return Live_Tracking.create(liveTracking);
     })
-    .then((liveTracking) => {
-      idLiveTracking = liveTracking.id
+    .then(() => {
       done();
     })
     .catch(err => done(err))
@@ -84,4 +84,54 @@ afterAll(done => {
     .then(_ => Live_Tracking.destroy({ where: {} }))
     .then(_ => done())
     .catch(err => done(err))
+})
+
+describe('GET /logs/:id', () => {
+  describe('Success Case', () => {
+    it('200 OK - should return object of success true and data include of object location logs', (done) => {
+      request(app)
+        .get(`/logs/${idOrder}`)
+        .set('access_token', tokenAdmin)
+        .end(function (err, res) {
+          if (err) done(err)
+          else {
+            expect(res.status).toBe(200)
+            expect(typeof res.body).toEqual('object')
+            expect(res.body).toHaveProperty('success', true)
+            expect(res.body.data).toHaveProperty('location_logs', expect.any(Object))
+            done()
+          }
+        })
+    })
+  })
+  describe('Error Cases', () => {
+    it('401 UnAuthenticated - error because user has not logged in', (done) => {
+      request(app)
+        .get(`/logs/${idOrder}`)
+        .end(function (err, res) {
+          if (err) done(err)
+          else {
+            expect(res.status).toBe(401)
+            expect(typeof res.body).toEqual('object')
+            expect(res.body.message[0]).toEqual('UnAuthenticated - You are not logged in')
+            done()
+          }
+        })
+    })
+    it('403 UnAuthorized - error because user is not admin', (done) => {
+      request(app)
+        .get(`/logs/${idOrder}`)
+        .set("access_token", tokenCustomer)
+        .end(function (err, res) {
+          if (err) done(err)
+          else {
+            expect(res.status).toBe(403)
+            expect(typeof res.body).toEqual('object')
+            expect(res.body.message[0]).toEqual('UnAuthorized - Access is denied')
+            done()
+          }
+        })
+    })
+
+  })
 })
