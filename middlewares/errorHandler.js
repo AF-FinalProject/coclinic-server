@@ -1,3 +1,4 @@
+ /* istanbul ignore next */
 function errorHandler(err, req, res, next) {
   let statusCode = 500
   let message = ["Internal server errors"]
@@ -43,7 +44,6 @@ function errorHandler(err, req, res, next) {
       message = [`${err.msg}`]
       break;
   }
-
   if (err.apiResponse) {
     statusCode = err.statusCode;
     message = [`${err.apiResponse.error_message}`];

@@ -28,10 +28,10 @@ class UserController {
         next({ msg: "Invalid email or password" })
       }
     } catch (err) {
+      /* istanbul ignore next */
       next(err)
     }
   }
-  //tambahan, belum ada test case(x) dan api_doc(v)
   static async fetchAllCustomer(req, res, next) {
 		try {
 			const customers = await User.findAll({
@@ -43,6 +43,7 @@ class UserController {
 			})
 			res.status(200).json({ success: true, data: { customers } })
 		} catch (err) {
+      /* istanbul ignore next */
 			next(err)
 		}
   }

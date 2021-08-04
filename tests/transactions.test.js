@@ -1,6 +1,6 @@
 const request = require('supertest')
 const app = require('../app')
-const { Order, User, Transaction, Live_Tracking } = require('../models')
+const { Order, User, Live_Tracking } = require('../models')
 const { hashPassword } = require('../helpers/password-helpers')
 const { generateToken } = require('../helpers/token-helper')
 const snap = require('../helpers/snap-midtrans');

@@ -4,7 +4,7 @@ const app = express();
 const router = require('./routes');
 const errorHandler = require('./middlewares/errorHandler');
 
-
+/* istanbul ignore next */
 if (process.env.NODE_ENV !== 'test') {
   require('./services/cron')
 }

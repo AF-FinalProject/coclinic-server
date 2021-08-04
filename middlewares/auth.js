@@ -6,10 +6,12 @@ const authentication = async (req, res, next) => {
   try {
     const decode = verifyToken(req.headers.access_token)
     const user = await User.findByPk(+decode.id)
+    /* istanbul ignore next */
     if (user) {
       req.logginUser = { id: user.id, email: user.email, role: user.role }
       next()
     } else {
+      /* istanbul ignore next */
       next(err)
     }
   } catch (err) {

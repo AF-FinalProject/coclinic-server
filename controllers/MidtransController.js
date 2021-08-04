@@ -31,18 +31,23 @@ class MidtransContoller {
       } else {
         next({ msg: "Order not found" })
       }
+      /* istanbul ignore next */
     } catch (err) {
-      console.log(err, 'ini errr controller >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
+      /* istanbul ignore next */
       let e = err
+      /* istanbul ignore next */
       const message = e.message
+      /* istanbul ignore next */
       const statusCode = e.httpStatusCode
+      /* istanbul ignore next */
       const apiResponse = e.ApiResponse
+      /* istanbul ignore next */
       next({ statusCode, apiResponse, message })
 
       //message: 'Midtrans API is returning API error. HTTP status code: 400. API response: {"error_messages":["transaction_details.order_id sudah digunakan"]}'
     }
   }
-
+  /* istanbul ignore next */
   static async notificationHandler(req, res, next) {
     console.log(req.body, 'req.body notif')
     try {
