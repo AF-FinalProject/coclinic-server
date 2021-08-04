@@ -1,5 +1,5 @@
 const env = process.env.NODE_ENV
-
+/* istanbul ignore next */
 if (env !== 'production') {
   require('dotenv').config()
 }

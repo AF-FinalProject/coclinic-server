@@ -1,7 +1,11 @@
 const request = require('supertest')
 const app = require('../app')
 const { User } = require('../models')
-const { hashPassword } = require('../helpers/password-helpers')
+const { hashPassword } = require('../helpers/password-helpers');
+const { generateToken } = require('../helpers/token-helper');
+
+let adminToken;
+let adminCustomer;
 
 const userCustomer = {
   name: 'User Customer Test',
@@ -20,6 +24,17 @@ const admin = {
   email: 'admin@mail.com',
   password: '123456'
 }
+
+beforeAll(done => {
+  User.findOne({ where: { email: admin.email } })
+    .then(user => {
+      adminToken = generateToken({ id: user.id, email: user.email, name: user.name })
+      done()
+    })
+    .catch(err => done(err))
+})
+
+
 afterAll(done => {
   User.destroy({
     where: { email: userCustomer.email }
@@ -84,7 +99,7 @@ describe('POST /register', () => {
           }
         })
     })
-  
+
     it('400 Bad Request- error SequelizeValidationError, because NIK is empty', (done) => {
       request(app)
         .post('/register')
@@ -497,6 +512,7 @@ describe('POST /login', () => {
         .end(function (err, res) {
           if (err) done(err)
           else {
+            customerToken = res.body.access_token
             expect(res.status).toBe(200)
             expect(typeof res.body).toEqual('object')
             expect(res.body).toHaveProperty('status', true)
@@ -539,6 +555,59 @@ describe('POST /login', () => {
             expect(res.status).toBe(400)
             expect(typeof res.body).toEqual('object')
             expect(res.body.message[0]).toEqual('Invalid email or password')
+            done()
+          }
+        })
+    })
+  })
+})
+
+
+//fetall customers
+describe('GET /customers', () => {
+  describe('Success Case', () => {
+    it('200 OK - should return object with success true and data customers', (done) => {
+      request(app)
+        .get('/customers')
+        .set('access_token', adminToken)
+        .end(function (err, res) {
+          if (err) done(err)
+          else {
+            expect(res.status).toBe(200)
+            expect(typeof res.body).toEqual('object')
+            expect(res.body).toHaveProperty('success', true)
+            expect(res.body.data).toHaveProperty('customers', expect.any(Array))
+            done()
+          }
+        })
+    })
+  })
+
+  describe('Error Cases', () => {
+    it('401 Bad Request - error because user has not logged in', (done) => {
+      request(app)
+        .get('/customers')
+        .end(function (err, res) {
+          if (err) done(err)
+          else {
+            expect(res.status).toBe(401)
+            expect(typeof res.body).toEqual('object')
+            expect(res.body.message[0]).toEqual('UnAuthenticated - You are not logged in')
+            done()
+          }
+        })
+    })
+
+    it('403 UnAuthorized - error because token is not admin role', (done) => {
+      request(app)
+        .get('/customers')
+        .set('access_token',customerToken)
+        .end(function (err, res) {
+          if (err) done(err)
+          else {
+            expect(res.status).toBe(403)
+            expect(typeof res.body).toEqual('object')
+            expect(res.body.message[0]).toEqual('UnAuthorized - Access is denied')
             done()
           }
         })

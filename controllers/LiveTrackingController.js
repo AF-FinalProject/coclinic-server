@@ -16,6 +16,7 @@ class LiveTrackingController {
 
   static async update(req, res, next) {
     const id = req.params.id
+    console.log(req.body, '>>>>>>>>>>>>>>>>>>............. req body')
     const { latitude, longitude } = req.body
 
     try {
@@ -51,10 +52,12 @@ class LiveTrackingController {
           })
           
           const {latitude:previousLatitude, longitude:previousLongitude} = lastLocationLog[0]
+          /* istanbul ignore next */
           const calculateLastLocationDiff = measure(previousLatitude, previousLongitude, latitude, longitude)
           // If distance from previously logged location is more than 1 meters
-          console.log(calculateLastLocationDiff, "meters from last logged");
+         /* istanbul ignore next */
           if(calculateLastLocationDiff > 1) {
+            /* istanbul ignore next */
             Location_Log.create({ latitude, longitude, OrderId: location.OrderId })
             console.log("added");
           }
@@ -68,6 +71,7 @@ class LiveTrackingController {
         next({ msg: "Location not found" })
       }
     } catch (err) {
+      console.log(err, 'gfrom update>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
       next(err)
     }
   }
