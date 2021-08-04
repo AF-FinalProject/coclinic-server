@@ -71,7 +71,7 @@ class LiveTrackingController {
         next({ msg: "Location not found" })
       }
     } catch (err) {
-      console.log(err, 'error put .........')
+      /* istanbul ignore next */
       next(err)
     }
   }
