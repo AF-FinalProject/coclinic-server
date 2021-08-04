@@ -5,8 +5,16 @@ class CertificateController {
   static async get(req, res, next){
     try {
       let { order:id } = req.query;
+      const order = await Order.findByPk(id, {include: [User]});
+      if(!order) throw({ msg: "Invalid Certificate" })
+      let {name, nik, dob} = order.User
+      let {status_swab, date_swab} = order
+      dob = dob.toLocaleDateString('id-ID')
+      date_swab = date_swab.toLocaleDateString('id-ID')
       
-      console.log(id, "<<<<<<<<<<<<<<<<<<");
+      if(status_swab !== 'Negatif'){
+        throw({ msg: "Invalid Certificate" })
+      }
       const decrypt = CryptoJS.AES.decrypt(id, 'rahasia')
       id = decrypt.toString(CryptoJS.enc.Utf8)
 
@@ -16,9 +24,6 @@ class CertificateController {
       let {status_swab, date_swab} = order
       dob = dob.toLocaleDateString('id-ID')
       date_swab = date_swab.toLocaleDateString('id-ID')
-      // console.log(name, nik, dob, status_swab, date_swab);
-      // console.log(order);
-      console.log(status_swab);
 
       if(status_swab !== 'Negatif'){
         throw({ msg: "Invalid Certificate" })
