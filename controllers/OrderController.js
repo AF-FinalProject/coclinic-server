@@ -61,10 +61,10 @@ class OrderController {
 			})
 			res.status(200).json({ success: true, data: { orders } })
 		} catch (error) {
+				/* istanbul ignore next */
 			next(error)
 		}
 	}
-	/* istanbul ignore next */
 	static async fetchAllForAdminById(req, res, next) {
 		try {
 			const orders = await Order.findAll({
@@ -83,6 +83,7 @@ class OrderController {
 			})
 			res.status(200).json({ success: true, data: { orders } })
 		} catch (error) {
+				/* istanbul ignore next */
 			next(error)
 		}
 	}
@@ -123,7 +124,6 @@ class OrderController {
 				order.save()
 				res.status(200).json({ success: true, message: "Successfully updated order" })
 			} else {
-				/* istanbul ignore next */
 				next({ msg: "Order not found" })
 			}
 		} catch (error) {

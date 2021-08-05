@@ -8,7 +8,7 @@ let tokenAdmin;
 let tokenCustomer;
 let customerId;
 let idOrder;
-const idNotFound = 1232;
+const idNotFound = 12324444;
 
 
 const customer = {
@@ -347,7 +347,6 @@ describe('PUT /orders/:id', () => {
         .put(`/orders/${idOrder}`)
         .set('access_token', tokenAdmin)
         .send({
-          status_payment: "Berhasil",
           status_swab: "Positif"
         })
         .end(function (err, res) {
@@ -367,7 +366,6 @@ describe('PUT /orders/:id', () => {
       request(app)
         .put(`/orders/${idOrder}`)
         .send({
-          status_payment: "Berhasil",
           status_swab: "Positif"
         })
         .end(function (err, res) {
@@ -385,7 +383,6 @@ describe('PUT /orders/:id', () => {
         .put(`/orders/${idOrder}`)
         .set("access_token", tokenCustomer)
         .send({
-          status_payment: "Berhasil",
           status_swab: "Positif"
         })
         .end(function (err, res) {
@@ -403,7 +400,6 @@ describe('PUT /orders/:id', () => {
         .put(`/orders/${idNotFound}`)
         .set('access_token', tokenAdmin)
         .send({
-          status_payment: "Berhasil",
           status_swab: "Positif"
         })
         .end(function (err, res) {
@@ -482,6 +478,54 @@ describe('DELETE /orders/:id', () => {
   })
 })
 
+describe('GET /orders/admin/:id', () => {
+  describe('Success Case', () => {
+    it('200 OK - should return object of success true and data', (done) => {
+      request(app)
+        .get(`/orders/admin/${idOrder}`)
+        .set('access_token', tokenAdmin)
+        .end(function (err, res) {
+          if (err) done(err)
+          else {
+            expect(res.status).toBe(200)
+            expect(typeof res.body).toEqual('object')
+            expect(res.body).toHaveProperty('success', true)
+            expect(res.body).toHaveProperty('data', expect.any(Object))
+            done()
+          }
+        })
+    })
+  })
+  describe('Error Cases', () => {
+    it('401 UnAuthenticated - error because user has not logged in', (done) => {
+      request(app)
+        .get(`/orders/admin/${idOrder}`)
+        .end(function (err, res) {
+          if (err) done(err)
+          else {
+            expect(res.status).toBe(401)
+            expect(typeof res.body).toEqual('object')
+            expect(res.body.message[0]).toEqual('UnAuthenticated - You are not logged in')
+            done()
+          }
+        })
+    })
+    it('403 UnAuthorized - error because user is not admin', (done) => {
+      request(app)
+        .get(`/orders/admin/${idOrder}`)
+        .set("access_token", tokenCustomer)
+        .end(function (err, res) {
+          if (err) done(err)
+          else {
+            expect(res.status).toBe(403)
+            expect(typeof res.body).toEqual('object')
+            expect(res.body.message[0]).toEqual('UnAuthorized - Access is denied')
+            done()
+          }
+        })
+    })
+  })
+})
 
 
 

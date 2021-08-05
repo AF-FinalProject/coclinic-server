@@ -563,7 +563,6 @@ describe('POST /login', () => {
 })
 
 
-//fetall customers
 describe('GET /customers', () => {
   describe('Success Case', () => {
     it('200 OK - should return object with success true and data customers', (done) => {

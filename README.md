@@ -148,7 +148,7 @@ Required Auth: Yes(for admin only)
 
 ```
 {
-  access_token: "<user access_token>"
+  access_token: "<admin access_token>"
 }
 
 ```
@@ -196,7 +196,7 @@ Required Auth: Yes(only for customer)
 
 ```
 {
-  access_token: "<user access_token>"
+  access_token: "<customer access_token>"
 }
 ```
 
@@ -243,7 +243,7 @@ Required Auth: Yes (only for customer role, orders belongs to current user loggi
 
 ```
 {
-  access_token: "<user access_token>"
+  access_token: "<customer access_token>"
 }
 ```
 
@@ -335,7 +335,7 @@ Required Auth: Yes (only for admin role)
 
 ```
 {
-  access_token: "<user access_token>"
+  access_token: "<admin access_token>"
 }
 ```
 
@@ -431,7 +431,7 @@ id: integer
 
 ```
 {
-  access_token: "<user access_token>"
+  access_token: "<admin access_token>"
 }
 ```
 
@@ -498,7 +498,7 @@ id: integer
 
 ```
 {
-  access_token: "<user access_token>"
+  access_token: "<admin access_token>"
 }
 ```
 
@@ -506,7 +506,6 @@ id: integer
 
 ```
 {
-  status_payment: "<new payment status>",
   status_swab: "<new status swab>",
 }
 ```
@@ -545,7 +544,7 @@ id: integer
 
 ```
 {
-  access_token: "<user access_token>"
+  access_token: "<admin access_token>"
 }
 ```
 
@@ -560,6 +559,74 @@ Response Body:
     "message": "Successfully deleted order"
 }
 
+```
+
+7. Get all Order for admin
+
+```
+Get detail order for admin by specific id
+URL: /orders/admin/:id
+Method: GET
+Required Auth: Yes (only for admin role)
+```
+
+- Params:
+
+```
+id: integer
+```
+
+- Request Headers:
+
+```
+{
+  access_token: "<admin access_token>"
+}
+```
+
+- Success Response:
+
+```
+Status: 200 OK
+Response Body:
+{
+    "success": true,
+    "data": {
+        "order": {
+            "id": 1,
+            "status_payment": "Belum bayar",
+            "status_swab": "Positif",
+            "type_swab": "PCR",
+            "date_swab": "2021-07-31T00:00:00.000Z",
+            "UserId": 2,
+            "createdAt": "2021-07-30T00:34:37.195Z",
+            "updatedAt": "2021-07-30T00:50:15.167Z",
+            "Live_Tracking": {
+                "id": 1,
+                "latitude": 0,
+                "longitude": 0,
+                "OrderId": 1,
+                "createdAt": "2021-07-30T00:50:15.166Z",
+                "updatedAt": "2021-07-30T00:50:15.166Z"
+            },
+            "Location_Logs": [],
+            "User": {
+                "id": 2,
+                "name": "testCus",
+                "nik": "1222222",
+                "role": "Customer",
+                "email": "testcus@mail.com",
+                "address": "Jl. Bogor",
+                "phone_number": "3333333333333",
+                "dob": "1994-01-09T00:00:00.000Z",
+                "latitude": -6.531673,
+                "longitude": 106.796378,
+                "createdAt": "2021-07-30T00:34:22.818Z",
+                "updatedAt": "2021-07-30T00:34:22.818Z"
+            }
+        }
+    }
+}
 ```
 
 ### LIVE TRACKING
@@ -583,7 +650,7 @@ id: integer
 
 ```
 {
-  access_token: "<user access_token>"
+  access_token: "<customer access_token>"
 }
 ```
 
@@ -632,7 +699,7 @@ id: integer
 
 ```
 {
-  access_token: "<user access_token>"
+  access_token: "<admin access_token>"
 }
 ```
 
@@ -695,7 +762,7 @@ Required Auth: Yes(only for customer)
 
 ```
 {
-  access_token: "<user access_token>"
+  access_token: "<customer access_token>"
 }
 ```
 
@@ -832,7 +899,7 @@ id: integer
 
 ```
 {
-  access_token: "<user access_token>"
+  access_token: "<admin access_token>"
 }
 ```
 

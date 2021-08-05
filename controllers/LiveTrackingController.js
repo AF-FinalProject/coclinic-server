@@ -52,7 +52,7 @@ class LiveTrackingController {
             Location_Log.create({ latitude, longitude, OrderId: location.OrderId })
           } else {
             const { latitude: previousLatitude, longitude: previousLongitude } = lastLocationLog[0]
-            /* istanbul ignore next */
+
             const calculateLastLocationDiff = measure(previousLatitude, previousLongitude, latitude, longitude)
             // If distance from previously logged location is more than 1 meters
             /* istanbul ignore next */
