@@ -67,7 +67,7 @@ class CertificateController {
         
         .content::before{
           content: "";
-          background-image: url("https://www.dropbox.com/s/4tju7zw88uexiq7/oclinic.png?dl=1");
+          background-image: url("https://www.dropbox.com/s/g7j9xqg54h8em5f/logo_oclinic.png?dl=1");
           background-repeat: no-repeat;
           background-size: 50%;
           background-position: center;

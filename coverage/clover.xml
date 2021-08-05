@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1628145409187" clover="3.2.0">
-  <project timestamp="1628145409187" name="All files">
+<coverage generated="1628171069447" clover="3.2.0">
+  <project timestamp="1628171069447" name="All files">
     <metrics statements="294" coveredstatements="290" conditionals="38" coveredconditionals="35" methods="40" coveredmethods="40" elements="372" coveredelements="365" complexity="0" loc="294" ncloc="294" packages="7" files="26" classes="26"/>
     <package name="coclinic-server">
       <metrics statements="11" coveredstatements="11" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
