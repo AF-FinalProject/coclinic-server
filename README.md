@@ -34,6 +34,7 @@ http://localhost:3000
 - GET /orders/customers
 - GET /orders/admin
 - GET /orders/:id
+- GET /orders/admin/:id
 - PUT /orders/:id
 - DELETE /orders/:id
 ```
@@ -45,7 +46,7 @@ http://localhost:3000
 - PUT /tracking/:id
 ```
 
-4. Transaction
+4. Midtrans
 
 ```
 - POST /midtrans/createTransaction
@@ -747,7 +748,7 @@ Response Body:
 
 `
 
-### TRANSACTIONS
+### MIDTRANS
 
 1. Create Transaction to Payment Gateway (midtrans)
 
@@ -1062,7 +1063,19 @@ https://07fcce3e5e37.ngrok.io/certificate?order=U2FsdGVkX18zObYvhonMq36i5A2FgkFQ
 }
 ```
 
-9. Status 500 Internal server errors
+
+9. Status 400 Error Api Response - Midtrans
+
+- Response Body:
+
+```
+{
+  status: 400,
+  message: ['transaction details order_id sudah digunakan']
+}
+```
+
+10. Status 500 Internal server errors
 
 - Response Body:
 
