@@ -16,7 +16,7 @@ class CertificateController {
       dob = dob.toLocaleDateString('id-ID')
       date_swab = date_swab.toLocaleDateString('id-ID')
 
-      if (status_swab !== 'Negatif') {
+      if (status_swab.toLowerCase() !== 'negatif') {
         throw ({ msg: "Invalid Certificate" })
       }
 
@@ -191,6 +191,7 @@ class CertificateController {
       )
 
     } catch (error) {
+      console.log(error, 'sertificate error')
       next(error)
     }
   }

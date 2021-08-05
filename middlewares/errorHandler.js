@@ -54,7 +54,6 @@ function errorHandler(err, req, res, next) {
     /* istanbul ignore next */
     message = err.apiResponse.error_messages;
   }
-  console.log(statusCode, message, 'from error handler >>>>>>>>>>>')
   res.status(statusCode).json({ status: statusCode, message })
 }
 

@@ -107,6 +107,7 @@ class OrderController {
 				next({ msg: "Order not found" })
 			}
 		} catch (error) {
+			/* istanbul ignore next */
 			next(error)
 		}
 	}
@@ -116,7 +117,7 @@ class OrderController {
 			const { status_swab } = req.body
 			const order = await Order.findByPk(id)
 			if (order) {
-				if (status_swab === "Positif" && order.status_swab === "Menunggu") {
+				if (status_swab.toLowerCase() === "positif" && order.status_swab.toLowerCase() === "menunggu") {
 					Live_Tracking.create({ latitude: 0, longitude: 0, OrderId: order.id })
 				}
 

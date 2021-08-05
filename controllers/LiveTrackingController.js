@@ -18,7 +18,6 @@ class LiveTrackingController {
     try {
       const id = +req.params.id
       const { latitude, longitude } = req.body
-      console.log(req.body, 'req body update  >>>>>>>>>>>>>>>')
       const location = await Live_Tracking.findOne({
         where: { id },
         include: [
