@@ -9,7 +9,7 @@ class UserController {
     try {
       const { name, nik, email, password, address, phone_number, dob, latitude, longitude } = req.body;
       const newUser = { name, nik, email, password, address, phone_number, dob, latitude, longitude }
-
+      console.log('masuk register')
       await User.create(newUser)
       res.status(201).json({ status: true, message: "Successfully Added User" })
     } catch (err) {
@@ -28,8 +28,24 @@ class UserController {
         next({ msg: "Invalid email or password" })
       }
     } catch (err) {
+      /* istanbul ignore next */
       next(err)
     }
+  }
+  static async fetchAllCustomer(req, res, next) {
+		try {
+			const customers = await User.findAll({
+        where: { role: "Customer" },
+        attributes: {
+          exclude: ['password']
+        },
+				order: [['createdAt', 'DESC']]
+			})
+			res.status(200).json({ success: true, data: { customers } })
+		} catch (err) {
+      /* istanbul ignore next */
+			next(err)
+		}
   }
 
 }

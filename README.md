@@ -4,6 +4,13 @@
 Co.Clinic
 ```
 
+### App Flow Schema Diagram Database, Layout, Mockup Design Mobile, Web
+
+```
+https://app.diagrams.net/#G138hlz_HyzJzV11oPkT7Ns_qbBvjWJrCk
+
+```
+
 ### URL:
 
 ```
@@ -17,6 +24,7 @@ http://localhost:3000
 ```
 - POST /register
 - POST /login
+- GET /customers
 ```
 
 2. Orders
@@ -35,6 +43,25 @@ http://localhost:3000
 ```
 - GET /tracking/:id
 - PUT /tracking/:id
+```
+
+4. Transaction
+
+```
+- POST /midtrans/createTransaction
+- POST /midtrans/notification/handling
+```
+
+5. Location_log
+
+```
+- GET /logs/:id
+```
+
+6. Certificate
+
+```
+- GET /certificate/:id
 ```
 
 # Endpoints
@@ -108,6 +135,52 @@ Response Body:
 }
 ```
 
+3. Get All Customers
+
+```
+Get all customers in database
+URL: /customers
+Method: GET
+Required Auth: Yes(for admin only)
+```
+
+- Request Headers:
+
+```
+{
+  access_token: "<admin access_token>"
+}
+
+```
+
+- Success Response:
+
+```
+Status: 200 OK
+Response Body:
+{
+    "success": true,
+    "data": {
+        "customers": [
+            {
+                "id": 2,
+                "name": "Rara",
+                "nik": "111111",
+                "role": "Customer",
+                "email": "rara@mail.com",
+                "address": "Bogor",
+                "phone_number": "0812112233333",
+                "dob": "1996-06-06T00:00:00.000Z",
+                "latitude": 0,
+                "longitude": 0,
+                "createdAt": "2021-08-03T03:12:20.000Z",
+                "updatedAt": "2021-08-03T03:12:20.000Z"
+            }
+        ]
+    }
+}
+```
+
 ### ORDERS
 
 1. Create Orders
@@ -123,7 +196,7 @@ Required Auth: Yes(only for customer)
 
 ```
 {
-  access_token: "<user access_token>"
+  access_token: "<customer access_token>"
 }
 ```
 
@@ -131,7 +204,7 @@ Required Auth: Yes(only for customer)
 
 ```
 {
-  date_swab: "<new todo title>",
+  date_swab: "<new date swab>",
 }
 ```
 
@@ -170,7 +243,7 @@ Required Auth: Yes (only for customer role, orders belongs to current user loggi
 
 ```
 {
-  access_token: "<user access_token>"
+  access_token: "<customer access_token>"
 }
 ```
 
@@ -182,20 +255,67 @@ Response Body:
 
 
 {
-  "success": true,
+    "success": true,
     "data": {
         "orders": [
             {
                 "id": 1,
                 "status_payment": "Belum bayar",
+                "status_swab": "Positif",
+                "type_swab": "PCR",
+                "date_swab": "2021-07-31T00:00:00.000Z",
+                "UserId": 2,
+                "createdAt": "2021-07-30T00:34:37.195Z",
+                "updatedAt": "2021-07-30T00:50:15.167Z",
+                "Live_Tracking": {
+                    "id": 1,
+                    "latitude": 0,
+                    "longitude": 0,
+                    "OrderId": 1,
+                    "createdAt": "2021-07-30T00:50:15.166Z",
+                    "updatedAt": "2021-07-30T00:50:15.166Z"
+                },
+                "Location_Logs": [],
+                "User": {
+                    "id": 2,
+                    "name": "testCus",
+                    "nik": "1222222",
+                    "role": "Customer",
+                    "email": "testcus@mail.com",
+                    "address": "Jl. Bogor",
+                    "phone_number": "3333333333333",
+                    "dob": "1994-01-09T00:00:00.000Z",
+                    "latitude": -6.531673,
+                    "longitude": 106.796378,
+                    "createdAt": "2021-07-30T00:34:22.818Z",
+                    "updatedAt": "2021-07-30T00:34:22.818Z"
+                }
+            },
+            {
+                "id": 2,
+                "status_payment": "Belum bayar",
                 "status_swab": "Menunggu",
                 "type_swab": "PCR",
-                "date_swab": "2021-07-30T00:00:00.000Z",
+                "date_swab": "2021-08-31T00:00:00.000Z",
                 "UserId": 2,
-                "createdAt": "2021-07-29T18:26:37.120Z",
-                "updatedAt": "2021-07-29T18:26:37.120Z",
+                "createdAt": "2021-08-01T12:25:23.326Z",
+                "updatedAt": "2021-08-01T12:25:23.326Z",
                 "Live_Tracking": null,
-                "Location_Logs": []
+                "Location_Logs": [],
+                "User": {
+                    "id": 2,
+                    "name": "testCus",
+                    "nik": "1222222",
+                    "role": "Customer",
+                    "email": "testcus@mail.com",
+                    "address": "Jl. Bogor",
+                    "phone_number": "3333333333333",
+                    "dob": "1994-01-09T00:00:00.000Z",
+                    "latitude": -6.531673,
+                    "longitude": 106.796378,
+                    "createdAt": "2021-07-30T00:34:22.818Z",
+                    "updatedAt": "2021-07-30T00:34:22.818Z"
+                }
             }
         ]
     }
@@ -215,7 +335,7 @@ Required Auth: Yes (only for admin role)
 
 ```
 {
-  access_token: "<user access_token>"
+  access_token: "<admin access_token>"
 }
 ```
 
@@ -233,24 +353,59 @@ Response Body:
                 "status_payment": "Belum bayar",
                 "status_swab": "Menunggu",
                 "type_swab": "PCR",
-                "date_swab": "2021-08-01T00:00:00.000Z",
+                "date_swab": "2021-08-31T00:00:00.000Z",
                 "UserId": 2,
-                "createdAt": "2021-07-29T18:55:53.628Z",
-                "updatedAt": "2021-07-29T18:55:53.628Z",
+                "createdAt": "2021-08-01T12:25:23.326Z",
+                "updatedAt": "2021-08-01T12:25:23.326Z",
                 "Live_Tracking": null,
-                "Location_Logs": []
+                "Location_Logs": [],
+                "User": {
+                    "id": 2,
+                    "name": "testCus",
+                    "nik": "1222222",
+                    "role": "Customer",
+                    "email": "testcus@mail.com",
+                    "address": "Jl. Bogor",
+                    "phone_number": "3333333333333",
+                    "dob": "1994-01-09T00:00:00.000Z",
+                    "latitude": -6.531673,
+                    "longitude": 106.796378,
+                    "createdAt": "2021-07-30T00:34:22.818Z",
+                    "updatedAt": "2021-07-30T00:34:22.818Z"
+                }
             },
             {
                 "id": 1,
                 "status_payment": "Belum bayar",
-                "status_swab": "Menunggu",
+                "status_swab": "Positif",
                 "type_swab": "PCR",
-                "date_swab": "2021-07-30T00:00:00.000Z",
+                "date_swab": "2021-07-31T00:00:00.000Z",
                 "UserId": 2,
-                "createdAt": "2021-07-29T18:26:37.120Z",
-                "updatedAt": "2021-07-29T18:26:37.120Z",
-                "Live_Tracking": null,
-                "Location_Logs": []
+                "createdAt": "2021-07-30T00:34:37.195Z",
+                "updatedAt": "2021-07-30T00:50:15.167Z",
+                "Live_Tracking": {
+                    "id": 1,
+                    "latitude": 0,
+                    "longitude": 0,
+                    "OrderId": 1,
+                    "createdAt": "2021-07-30T00:50:15.166Z",
+                    "updatedAt": "2021-07-30T00:50:15.166Z"
+                },
+                "Location_Logs": [],
+                "User": {
+                    "id": 2,
+                    "name": "testCus",
+                    "nik": "1222222",
+                    "role": "Customer",
+                    "email": "testcus@mail.com",
+                    "address": "Jl. Bogor",
+                    "phone_number": "3333333333333",
+                    "dob": "1994-01-09T00:00:00.000Z",
+                    "latitude": -6.531673,
+                    "longitude": 106.796378,
+                    "createdAt": "2021-07-30T00:34:22.818Z",
+                    "updatedAt": "2021-07-30T00:34:22.818Z"
+                }
             }
         ]
     }
@@ -276,7 +431,7 @@ id: integer
 
 ```
 {
-  access_token: "<user access_token>"
+  access_token: "<admin access_token>"
 }
 ```
 
@@ -291,13 +446,34 @@ Response Body:
         "order": {
             "id": 1,
             "status_payment": "Belum bayar",
-            "status_swab": "Menunggu",
+            "status_swab": "Positif",
             "type_swab": "PCR",
-            "date_swab": "2021-07-30T00:00:00.000Z",
+            "date_swab": "2021-07-31T00:00:00.000Z",
             "UserId": 2,
-            "createdAt": "2021-07-29T18:26:37.120Z",
-            "updatedAt": "2021-07-29T18:26:37.120Z",
-            "Live_Tracking": null
+            "createdAt": "2021-07-30T00:34:37.195Z",
+            "updatedAt": "2021-07-30T00:50:15.167Z",
+            "Live_Tracking": {
+                "id": 1,
+                "latitude": 0,
+                "longitude": 0,
+                "OrderId": 1,
+                "createdAt": "2021-07-30T00:50:15.166Z",
+                "updatedAt": "2021-07-30T00:50:15.166Z"
+            },
+            "User": {
+                "id": 2,
+                "name": "testCus",
+                "nik": "1222222",
+                "role": "Customer",
+                "email": "testcus@mail.com",
+                "address": "Jl. Bogor",
+                "phone_number": "3333333333333",
+                "dob": "1994-01-09T00:00:00.000Z",
+                "latitude": -6.531673,
+                "longitude": 106.796378,
+                "createdAt": "2021-07-30T00:34:22.818Z",
+                "updatedAt": "2021-07-30T00:34:22.818Z"
+            }
         }
     }
 }
@@ -322,7 +498,7 @@ id: integer
 
 ```
 {
-  access_token: "<user access_token>"
+  access_token: "<admin access_token>"
 }
 ```
 
@@ -330,7 +506,6 @@ id: integer
 
 ```
 {
-  status_payment: "<new payment status>",
   status_swab: "<new status swab>",
 }
 ```
@@ -347,7 +522,6 @@ Response Body:
 
 note:
 if status_swab = "Positif", maka create Live_Tracking untuk mendeteksi keberadaan user positif
-Live_Tracking.create({ latitude: 0, longitude: 0, OrderId: order.id })
 jika "Negatif" maka tidak usah di pantau dan deteksi keberadaannya
 ```
 
@@ -370,7 +544,7 @@ id: integer
 
 ```
 {
-  access_token: "<user access_token>"
+  access_token: "<admin access_token>"
 }
 ```
 
@@ -387,14 +561,12 @@ Response Body:
 
 ```
 
-### LIVE TRACKING
-
-1. Update Live Tracking
+7. Get all Order for admin
 
 ```
-Update Lice Tracking by specific id
-URL: /tracking/:id
-Method: PUT
+Get detail order for admin by specific id
+URL: /orders/admin/:id
+Method: GET
 Required Auth: Yes (only for admin role)
 ```
 
@@ -408,7 +580,77 @@ id: integer
 
 ```
 {
-  access_token: "<user access_token>"
+  access_token: "<admin access_token>"
+}
+```
+
+- Success Response:
+
+```
+Status: 200 OK
+Response Body:
+{
+    "success": true,
+    "data": {
+        "order": {
+            "id": 1,
+            "status_payment": "Belum bayar",
+            "status_swab": "Positif",
+            "type_swab": "PCR",
+            "date_swab": "2021-07-31T00:00:00.000Z",
+            "UserId": 2,
+            "createdAt": "2021-07-30T00:34:37.195Z",
+            "updatedAt": "2021-07-30T00:50:15.167Z",
+            "Live_Tracking": {
+                "id": 1,
+                "latitude": 0,
+                "longitude": 0,
+                "OrderId": 1,
+                "createdAt": "2021-07-30T00:50:15.166Z",
+                "updatedAt": "2021-07-30T00:50:15.166Z"
+            },
+            "Location_Logs": [],
+            "User": {
+                "id": 2,
+                "name": "testCus",
+                "nik": "1222222",
+                "role": "Customer",
+                "email": "testcus@mail.com",
+                "address": "Jl. Bogor",
+                "phone_number": "3333333333333",
+                "dob": "1994-01-09T00:00:00.000Z",
+                "latitude": -6.531673,
+                "longitude": 106.796378,
+                "createdAt": "2021-07-30T00:34:22.818Z",
+                "updatedAt": "2021-07-30T00:34:22.818Z"
+            }
+        }
+    }
+}
+```
+
+### LIVE TRACKING
+
+1. Update Live Tracking
+
+```
+Update Lice Tracking by specific id
+URL: /tracking/:id
+Method: PUT
+Required Auth: Yes (only for customer role)
+```
+
+- Params:
+
+```
+id: integer
+```
+
+- Request Headers:
+
+```
+{
+  access_token: "<customer access_token>"
 }
 ```
 
@@ -457,7 +699,7 @@ id: integer
 
 ```
 {
-  access_token: "<user access_token>"
+  access_token: "<admin access_token>"
 }
 ```
 
@@ -501,6 +743,233 @@ Response Body:
         }
     }
 }
+```
+
+`
+
+### TRANSACTIONS
+
+1. Create Transaction to Payment Gateway (midtrans)
+
+```
+Create new transaction to midtrans
+URL: /midtrans/createTransaction
+Method: POST
+Required Auth: Yes(only for customer)
+```
+
+- Request Headers:
+
+```
+{
+  access_token: "<customer access_token>"
+}
+```
+
+- Request Body:
+
+```
+data: {
+      id: 100,
+      status_payment: 'Belum bayar',
+      status_swab: 'Menunggu',
+      type_swab: 'PCR',
+      date_swab: '2021-08-04T09:57:53.452Z',
+      price: 900000,
+      UserId: 154,
+      createdAt: '2021-08-04T09:57:53.452Z',
+      updatedAt: '2021-08-04T09:57:53.452Z',
+      Live_Tracking: null,
+      User: {
+        id: 154,
+        name: 'Lili',
+        nik: '321111111',
+        role: 'Customer',
+        email: 'lili@mail.com',
+        address: 'Jl. Batu Gede Jakarta',
+        phone_number: '085712342222',
+        dob: '1995-01-07T00:00:00.000Z',
+        latitude: -6.531673,
+        longitude: 106.796378,
+        createdAt: '2021-08-04T09:57:53.322Z',
+        updatedAt: '2021-08-04T09:57:53.383Z'
+      }
+    }
+```
+
+- Request Parameter for snap.createTransaction:
+
+```
+const parameter = {
+  "transaction_details": {
+    "order_id": "<order id>",
+    "gross_amount": "<PCR price>"
+  },
+  "credit_card": {
+    "secure": true
+  },
+  "customer_details": {
+    "name": "<customer name>",
+    "phone": "<customer phone>",
+    "email": "<customer email>",
+    "address": "<customer address>"
+  }
+};
+```
+
+- Success Response:
+
+```
+Status: 201 Created
+Response Body:
+
+{
+  token: "<string of token>",
+  redirect_url: "<redirect link midtrans>"
+}
+
+```
+
+2. Create transaction and record transaction in database
+
+```
+Create new record transaction
+URL: /midtrans/notification/handling
+Method: POST
+Required Auth: No
+```
+
+- Request Headers:
+
+```
+{
+  access_token: "<user access_token>"
+}
+```
+
+- Request Body:
+
+```
+{
+  "transaction_time": "2021-08-01 00:31:49",
+  "transaction_status": "settlement",
+  "transaction_id": "025f506c-cc41-4534-9325-6f1a96a087e8",
+  "status_message": "midtrans payment notification",
+  "status_code": "200",
+  "signature_key": <signature key>,
+  "settlement_time": "2021-08-01 00:31:59" || null,
+  "payment_type": "bca_klikpay",
+  "order_id": "4",
+  "merchant_id": "G600070340",
+  "gross_amount": "200000.00",
+  "fraud_status": "accept",
+  "currency": "IDR",
+  "approval_code": "112233" || null
+}
+```
+
+- Success Response:
+
+```
+Status: 200 OK
+Response Body:
+
+{
+  OK : "OK"
+}
+
+```
+
+### LOCATION LOG
+
+```
+Get location log by specific id
+URL: /logs/:id
+Method: GET
+Required Auth: Yes (only for admin)
+```
+
+- Params:
+
+```
+id: integer
+```
+
+- Request Headers:
+
+```
+{
+  access_token: "<admin access_token>"
+}
+```
+
+- Success Response:
+
+```
+Status: 200 OK
+{
+  "success": true,
+  "data": {
+    "location_logs": [
+      {
+        "id": 3,
+        "latitude": -6.1676,
+        "longitude": 106.8208,
+        "OrderId": 2,
+        "createdAt": "2021-08-05T12:20:39.000Z",
+        "updatedAt": "2021-08-03T12:20:39.000Z",
+        "Order": {
+          "id": 2,
+          "status_payment": "Berhasil bayar",
+          "status_swab": "Positif",
+          "type_swab": "PCR",
+          "date_swab": "2021-08-03T12:20:39.000Z",
+          "price": 950000,
+          "UserId": 2,
+          "createdAt": "2021-08-03T12:20:39.000Z",
+          "updatedAt": "2021-08-03T12:20:39.000Z",
+          "User": {
+            "id": 2,
+            "name": "oki",
+            "nik": "12312412412",
+            "role": "Customer",
+            "email": "oki@mail.com",
+            "address": "Jl. Jambu",
+            "phone_number": "081212379527",
+            "dob": "1996-06-06T00:00:00.000Z",
+            "latitude": 0,
+            "longitude": 0,
+            "createdAt": "2021-08-03T12:20:39.117Z",
+            "updatedAt": "2021-08-03T12:20:39.117Z"
+          }
+        }
+      }
+        }
+      }
+    ]
+  }
+}
+```
+
+### CERTIFICATE
+
+```
+Get Certificate from specific order id
+URL: /certificate/:id
+Method: GET
+Required Auth: No
+```
+
+- Params:
+
+```
+id: integer
+```
+
+- Success Response:
+
+```
+https://07fcce3e5e37.ngrok.io/certificate?order=U2FsdGVkX18zObYvhonMq36i5A2FgkFQS12YYcFDHRI=
 ```
 
 # RESTful Error Message

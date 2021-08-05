@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
 			Order.belongsTo(models.User);
 			Order.hasOne(models.Live_Tracking);
 			Order.hasMany(models.Location_Log);
+			Order.hasMany(models.Transaction)
 		}
 	}
 	Order.init(
@@ -80,14 +81,31 @@ module.exports = (sequelize, DataTypes) => {
 					},
 				},
 			},
+			price: {
+				type: DataTypes.INTEGER,
+				allowNull: false,
+				validate: {
+					notNull: {
+						args: true,
+						msg: "Price must not be null",
+					},
+					notEmpty: {
+						args: true,
+						msg: "Price must not be empty",
+					},
+				},
+			},
 			UserId: DataTypes.INTEGER,
 		},
 		{
 			hooks: {
 				beforeCreate: (order) => {
-					if (!order.status_payment) order.status_payment = false;
+					/* istanbul ignore next */
+					if (!order.status_payment) order.status_payment = "Belum bayar";
+					/* istanbul ignore next */
 					if (!order.type_swab) order.type_swab = "PCR";
-					if (!order.status_swab) order.status_swab = "Menunggu"; 
+					/* istanbul ignore next */
+					if (!order.status_swab) order.status_swab = "Menunggu";
 					return order
 				},
 			},

@@ -11,8 +11,8 @@ function errorHandler(err, req, res, next) {
       statusCode = 400
       message = err.errors.map(el => `${el.value} is already exist`)
       break;
+    /* istanbul ignore next */
     case "SequelizeDatabaseError":
-
       if (err.parent.code === '23502') {
         statusCode = 400
         message = err.errors[0].message
@@ -25,8 +25,12 @@ function errorHandler(err, req, res, next) {
       break;
   }
 
-
   switch (err.msg) {
+    /* istanbul ignore next */
+    case 'Invalid Certificate':
+      statusCode = 400
+      message = [`${err.msg}`]
+      break;
     case 'Invalid email or password':
       statusCode = 400
       message = [`${err.msg}`]
@@ -44,8 +48,14 @@ function errorHandler(err, req, res, next) {
       message = [`${err.msg}`]
       break;
   }
-
-  console.log(statusCode, message, 'error handler ...........')
+  /* istanbul ignore next */
+  if (err.apiResponse) {
+    /* istanbul ignore next */
+    statusCode = err.statusCode;
+    /* istanbul ignore next */
+    message = err.apiResponse.error_messages;
+  }
+  console.log(statusCode, message, 'from error handler >>>>>>>>>>>')
   res.status(statusCode).json({ status: statusCode, message })
 }
 
