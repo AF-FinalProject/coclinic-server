@@ -131,7 +131,7 @@ Status: 200 OK
 Response Body:
 
 {
-  email: "<user email>",
+  success: true,
   access_token: "<user access_token>"
 }
 ```
@@ -237,7 +237,7 @@ Response Body:
 Get all orders from database
 URL: /orders
 Method: GET
-Required Auth: Yes (only for customer role, orders belongs to current user loggin only)
+Required Auth: Yes (only for customer role, orders belongs to current user logged in only)
 ```
 
 - Request Headers:
@@ -461,6 +461,7 @@ Response Body:
                 "createdAt": "2021-07-30T00:50:15.166Z",
                 "updatedAt": "2021-07-30T00:50:15.166Z"
             },
+            "Location_Logs": [],
             "User": {
                 "id": 2,
                 "name": "testCus",
@@ -562,10 +563,10 @@ Response Body:
 
 ```
 
-7. Get all Order for admin
+7. Get all order by specific user id
 
 ```
-Get detail order for admin by specific id
+Get all order by specific user id
 URL: /orders/admin/:id
 Method: GET
 Required Auth: Yes (only for admin role)
@@ -1062,7 +1063,6 @@ https://07fcce3e5e37.ngrok.io/certificate?order=U2FsdGVkX18zObYvhonMq36i5A2FgkFQ
   message: ['Location not found']
 }
 ```
-
 
 9. Status 400 Error Api Response - Midtrans
 
