@@ -636,7 +636,7 @@ Response Body:
 1. Update Live Tracking
 
 ```
-Update Lice Tracking by specific id
+Update Live Tracking by specific id
 URL: /tracking/:id
 Method: PUT
 Required Auth: Yes (only for customer role)
