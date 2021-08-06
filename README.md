@@ -678,8 +678,8 @@ Response Body:
 
 note:
 if status_swab = "Positif", maka create Live_Tracking untuk mendeteksi keberadaan user positif
-Live_Tracking.create({ latitude: 0, longitude: 0, OrderId: order.id })
-jika "Negatif" maka tidak usah di pantau dan deteksi keberadaannya
+
+jika "Negatif" maka tidak usah di pantau dan deteksi keberadaannya, tapi nanti kita kasi qr code berisi sertifikat hasil swab PCR negatif untuk keperluan verifikasi ketika melakukan perjalanan
 ```
 
 2. Get Detail Live Tracking
@@ -758,6 +758,10 @@ Create new transaction to midtrans
 URL: /midtrans/createTransaction
 Method: POST
 Required Auth: Yes(only for customer)
+
+Note: 
+- Need developer serveyKey and clientKey
+- Need register some endpoint in configuration midtrans
 ```
 
 - Request Headers:
@@ -832,7 +836,7 @@ Response Body:
 
 ```
 
-2. Create transaction and record transaction in database
+2. Get notification from midtrans and create history transaction in database
 
 ```
 Create new record transaction
